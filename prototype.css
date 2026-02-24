@@ -1946,7 +1946,7 @@ html, body {
 }
 
 /* Mobile: full-screen app (no phone frame), responsive for modern phones */
-@media (max-width: 480px) {
+@media (max-width: 540px) {
   html, body {
     height: 100%;
     min-height: 100dvh;
