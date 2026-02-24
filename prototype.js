@@ -300,6 +300,14 @@
     lastFocusedBeforeDrawer = document.activeElement;
     drawerOverlay.classList.add('is-open');
     drawerOverlay.setAttribute('aria-hidden', 'false');
+    var cardVideo = document.getElementById('drawerCardVideo');
+    if (cardVideo) {
+      cardVideo.playsInline = true;
+      cardVideo.muted = true;
+      cardVideo.load();
+      var p = cardVideo.play();
+      if (p && typeof p.catch === 'function') p.catch(function () {});
+    }
     if (drawerClose) {
       drawerClose.focus();
     }

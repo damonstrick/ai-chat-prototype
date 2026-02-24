@@ -993,6 +993,9 @@ html, body {
   margin-bottom: 12px;
   position: relative;
   overflow: hidden;
+  /* Help iOS Safari render video background (compositing layer) */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 .drawer-card-video {
   position: absolute;
@@ -1001,6 +1004,11 @@ html, body {
   height: 100%;
   object-fit: cover;
   border-radius: 24px;
+  /* Force own compositing layer so iOS Safari paints video inside overflow:hidden */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .drawer-card-overlay {
   position: absolute;
