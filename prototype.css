@@ -1005,9 +1005,7 @@ html, body {
 .drawer-card-overlay {
   position: absolute;
   inset: 0;
-  background-color: unset;
-  background: unset;
-  background-image: none;
+  background: rgba(0, 0, 0, 0);
   border-radius: 24px;
   pointer-events: none;
 }
