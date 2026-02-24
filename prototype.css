@@ -1000,12 +1000,36 @@ html, body {
   margin: 0;
   font-size: 17px;
   font-weight: 600;
-  color: #2D5859;
+  background: linear-gradient(
+    90deg,
+    #2D5859 0%,
+    #2D5859 25%,
+    #6BD5D1 50%,
+    #2D5859 75%,
+    #2D5859 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: drawerLoadingShimmer 1.8s ease-in-out infinite;
 }
 .drawer-success-sub {
   margin: 0;
   font-size: 15px;
-  color: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.6) 25%,
+    #6BD5D1 50%,
+    rgba(0, 0, 0, 0.6) 75%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: drawerLoadingShimmer 1.8s ease-in-out infinite;
 }
 .drawer-overlay.drawer-showing-success .drawer-footer-btns-confirm {
   display: none !important;
