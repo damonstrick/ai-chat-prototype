@@ -893,6 +893,32 @@
     .drawer-overlay.drawer-after-loading .drawer-footer-btns-confirm {
       display: flex !important;
     }
+    .drawer-footer-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .drawer-success-text {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      color: #2D5859;
+    }
+    .drawer-success-sub {
+      margin: 0;
+      font-size: 15px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+    .drawer-overlay.drawer-showing-success .drawer-footer-btns-confirm {
+      display: none !important;
+    }
+    .drawer-overlay.drawer-showing-success .drawer-footer-success {
+      display: flex !important;
+    }
     .drawer-card {
       border-radius: 24px;
       padding: 0;
@@ -2146,6 +2172,10 @@
             <button type="button" class="drawer-footer-btn drawer-footer-btn-secondary" id="drawerCancelBtn">Cancel</button>
             <button type="button" class="drawer-footer-btn drawer-footer-btn-primary drawer-footer-btn-primary--twoline" id="drawerConfirmEstimateBtn"><span class="drawer-footer-btn-primary-line">Confirm</span><span class="drawer-footer-btn-primary-line">estimate</span></button>
           </div>
+          <div class="drawer-footer-success" id="drawerFooterSuccess" aria-live="polite">
+            <p class="drawer-success-text">Estimate confirmed!</p>
+            <p class="drawer-success-sub">Taking you back to chat...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -2317,6 +2347,55 @@
         </div>
       `;
       return wrap;
+    }
+
+    function getEstimateSummaryFromDrawer() {
+      var resultCard = document.getElementById('drawerResultCard');
+      if (!resultCard) return { procedure: 'your procedure', totalPay: '', facility: '' };
+      var titleEl = resultCard.querySelector('.drawer-card-result-title');
+      var procedure = titleEl ? (titleEl.textContent || '').trim().replace(/\s+/g, ' ') || 'your procedure' : 'your procedure';
+      var priceEl = resultCard.querySelector('.drawer-card-result-price');
+      var totalPay = priceEl ? (priceEl.textContent || '').trim() : '';
+      var facilityEl = resultCard.querySelector('.drawer-card-facility-name');
+      var facility = facilityEl ? (facilityEl.textContent || '').trim() : '';
+      return { procedure: procedure, totalPay: totalPay, facility: facility };
+    }
+
+    function appendCongratsMessage(summary) {
+      var procedure = summary.procedure || 'your procedure';
+      var totalPay = summary.totalPay || '';
+      var facility = summary.facility || '';
+      var aiWrap = document.createElement('div');
+      aiWrap.className = 'message assistant';
+      var bubble = document.createElement('div');
+      bubble.className = 'bubble assistant';
+      var p1 = document.createElement('p');
+      p1.textContent = "Congratulations on getting your estimate! We're glad we could help you understand your costs.";
+      bubble.appendChild(p1);
+      var p2 = document.createElement('p');
+      p2.textContent = "Wishing you the best with your procedure — take care!";
+      bubble.appendChild(p2);
+      var p3 = document.createElement('p');
+      p3.textContent = "Here's a quick summary of what you confirmed:";
+      bubble.appendChild(p3);
+      var ul = document.createElement('ul');
+      var li1 = document.createElement('li');
+      li1.textContent = "Procedure: " + procedure;
+      ul.appendChild(li1);
+      if (totalPay) {
+        var li2 = document.createElement('li');
+        li2.textContent = "Total you pay: " + totalPay;
+        ul.appendChild(li2);
+      }
+      if (facility) {
+        var li3 = document.createElement('li');
+        li3.textContent = "Facility: " + facility;
+        ul.appendChild(li3);
+      }
+      bubble.appendChild(ul);
+      aiWrap.appendChild(bubble);
+      chatContainer.appendChild(aiWrap);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
     function appendPartToBubble(bubble, part) {
@@ -2768,7 +2847,7 @@
     }
     function closeDrawer() {
       if (drawerOverlay) {
-        drawerOverlay.classList.remove('is-open', 'drawer-after-loading');
+        drawerOverlay.classList.remove('is-open', 'drawer-after-loading', 'drawer-showing-success');
         drawerOverlay.setAttribute('aria-hidden', 'true');
       }
       if (drawerPanel) drawerPanel.classList.remove('is-loading');
@@ -2866,8 +2945,20 @@
     var drawerConfirmEstimateBtn = document.getElementById('drawerConfirmEstimateBtn');
     if (drawerConfirmEstimateBtn) {
       drawerConfirmEstimateBtn.addEventListener('click', function() {
-        closeDrawer();
-        runDemo();
+        var summary = getEstimateSummaryFromDrawer();
+        if (drawerOverlay) drawerOverlay.classList.add('drawer-showing-success');
+        setTimeout(function() {
+          if (drawerOverlay) drawerOverlay.classList.remove('drawer-showing-success');
+          closeDrawer();
+          var loadingMsg = createAssistantLoading();
+          chatContainer.appendChild(loadingMsg);
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+          setTimeout(function() {
+            loadingMsg.remove();
+            appendCongratsMessage(summary);
+            setTimeout(runDemo, 6000);
+          }, 1000);
+        }, 1800);
       });
     }
     if (drawerBenefitsBreakdownToggle && drawerBenefitsBreakdown) {

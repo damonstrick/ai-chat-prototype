@@ -315,7 +315,7 @@
   }
 
   function closeDrawer() {
-    drawerOverlay.classList.remove('is-open', 'drawer-after-loading');
+    drawerOverlay.classList.remove('is-open', 'drawer-after-loading', 'drawer-showing-success');
     drawerOverlay.setAttribute('aria-hidden', 'true');
     drawerPanel.classList.remove('is-loading');
     if (drawerBodyCards) drawerBodyCards.classList.remove('is-hidden');
@@ -374,8 +374,71 @@
     drawerCancelBtn.addEventListener('click', closeDrawer);
   }
 
+  function getEstimateSummaryFromDrawer() {
+    var resultCard = document.getElementById('drawerResultCard');
+    if (!resultCard) return { procedure: 'your procedure', totalPay: '', facility: '' };
+    var titleEl = resultCard.querySelector('.drawer-card-result-title');
+    var procedure = titleEl ? (titleEl.textContent || '').trim().replace(/\s+/g, ' ') || 'your procedure' : 'your procedure';
+    var priceEl = resultCard.querySelector('.drawer-card-result-price');
+    var totalPay = priceEl ? (priceEl.textContent || '').trim() : '';
+    var facilityEl = resultCard.querySelector('.drawer-card-facility-name');
+    var facility = facilityEl ? (facilityEl.textContent || '').trim() : '';
+    return { procedure: procedure, totalPay: totalPay, facility: facility };
+  }
+
+  function appendCongratsMessage(summary) {
+    var procedure = summary.procedure || 'your procedure';
+    var totalPay = summary.totalPay || '';
+    var facility = summary.facility || '';
+    var aiWrap = document.createElement('div');
+    aiWrap.className = 'message assistant';
+    var bubble = document.createElement('div');
+    bubble.className = 'bubble assistant';
+    var p1 = document.createElement('p');
+    p1.textContent = "Congratulations on getting your estimate! We're glad we could help you understand your costs.";
+    bubble.appendChild(p1);
+    var p2 = document.createElement('p');
+    p2.textContent = "Wishing you the best with your procedure — take care!";
+    bubble.appendChild(p2);
+    var p3 = document.createElement('p');
+    p3.textContent = "Here's a quick summary of what you confirmed:";
+    bubble.appendChild(p3);
+    var ul = document.createElement('ul');
+    var li1 = document.createElement('li');
+    li1.textContent = 'Procedure: ' + procedure;
+    ul.appendChild(li1);
+    if (totalPay) {
+      var li2 = document.createElement('li');
+      li2.textContent = 'Total you pay: ' + totalPay;
+      ul.appendChild(li2);
+    }
+    if (facility) {
+      var li3 = document.createElement('li');
+      li3.textContent = 'Facility: ' + facility;
+      ul.appendChild(li3);
+    }
+    bubble.appendChild(ul);
+    aiWrap.appendChild(bubble);
+    chatContainer.appendChild(aiWrap);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
   if (drawerConfirmEstimateBtn) {
-    drawerConfirmEstimateBtn.addEventListener('click', closeDrawer);
+    drawerConfirmEstimateBtn.addEventListener('click', function () {
+      var summary = getEstimateSummaryFromDrawer();
+      drawerOverlay.classList.add('drawer-showing-success');
+      setTimeout(function () {
+        drawerOverlay.classList.remove('drawer-showing-success');
+        closeDrawer();
+        var loadingMsg = createAssistantLoading();
+        chatContainer.appendChild(loadingMsg);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        setTimeout(function () {
+          loadingMsg.remove();
+          appendCongratsMessage(summary);
+        }, 1000);
+      }, 1800);
+    });
   }
 
   if (drawerBenefitsBreakdownToggle && drawerBenefitsBreakdown) {
