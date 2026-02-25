@@ -38,7 +38,7 @@
   function updateSuggestionVisibility() {
     if (!inputSuggestion) return;
     var val = (inputField.value || '').trim();
-    var show = val.length > 0 && val !== DEMO_PROMPT;
+    var show = val.length === 0;
     inputSuggestion.classList.toggle('is-hidden', !show);
   }
 
@@ -78,7 +78,7 @@
       }
     });
   }
-  if (inputSuggestion) inputSuggestion.classList.add('is-hidden');
+  if (inputSuggestion) updateSuggestionVisibility();
 
   function createUserBubble(text) {
     var wrap = document.createElement('div');
