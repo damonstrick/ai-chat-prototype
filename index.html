@@ -1237,11 +1237,15 @@
       border: none;
       border-radius: 24px;
     }
-    .drawer-overlay.drawer-after-loading .drawer-card:not(.drawer-card--result):not(.drawer-card--benefits):not(.drawer-card--tips) {
+    .drawer-overlay:not(.drawer-after-loading) .drawer-card--cost-breakdown {
+      display: none !important;
+    }
+    .drawer-overlay.drawer-after-loading .drawer-card:not(.drawer-card--result):not(.drawer-card--benefits):not(.drawer-card--cost-breakdown):not(.drawer-card--tips) {
       display: none !important;
     }
     .drawer-overlay.drawer-after-loading .drawer-card--result,
     .drawer-overlay.drawer-after-loading .drawer-card--benefits,
+    .drawer-overlay.drawer-after-loading .drawer-card--cost-breakdown,
     .drawer-overlay.drawer-after-loading .drawer-card--tips {
       display: block !important;
     }
@@ -1561,6 +1565,31 @@
       margin: 0 24px 20px;
       padding: 0;
     }
+
+    /* Cost breakdown: Facility (Ancillary) + Professional fees */
+    .drawer-card--cost-breakdown { background: #fff; padding: 0; border: 1px solid #e3e7ea; border-radius: 24px; overflow: hidden; }
+    .drawer-cost-breakdown-header { display: flex; align-items: flex-start; gap: 12px; padding: 20px 24px 16px; }
+    .drawer-cost-breakdown-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #2D5859; flex-shrink: 0; }
+    .drawer-cost-breakdown-title-wrap { flex: 1; min-width: 0; }
+    .drawer-cost-breakdown-title { font-size: 17px; font-weight: 600; color: #0d0d0d; margin: 0 0 2px 0; }
+    .drawer-cost-breakdown-subtitle { font-size: 14px; font-weight: 400; color: rgba(0,0,0,0.6); margin: 0; }
+    .drawer-cost-breakdown-total { text-align: right; flex-shrink: 0; }
+    .drawer-cost-breakdown-total-amount { display: block; font-size: 20px; font-weight: 600; color: #0d0d0d; }
+    .drawer-cost-breakdown-case-rate { font-size: 12px; color: rgba(0,0,0,0.5); text-decoration: underline dotted; cursor: help; }
+    .drawer-cost-breakdown-section { border-top: none; border-image: none; }
+    .drawer-cost-breakdown-section--professional { background: rgba(45,88,89,0); border-top: none; border-left: none; }
+    .drawer-cost-breakdown-section-header { display: flex; align-items: center; gap: 8px; width: 100%; padding: 14px 24px; background: none; border: none; font-family: inherit; font-size: 15px; font-weight: 600; color: #0d0d0d; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .drawer-cost-breakdown-section--professional .drawer-cost-breakdown-section-header { padding-left: 21px; }
+    .drawer-cost-breakdown-section-title { flex: 1; }
+    .drawer-cost-breakdown-section-count { font-size: 13px; font-weight: 500; color: rgba(0,0,0,0.5); }
+    .drawer-cost-breakdown-section-caret { display: flex; transition: transform 0.2s ease; }
+    .drawer-cost-breakdown-section-header[aria-expanded="false"] .drawer-cost-breakdown-section-caret { transform: rotate(-90deg); }
+    .drawer-cost-breakdown-section-body { padding: 0 24px 12px; }
+    .drawer-cost-breakdown-section-header[aria-expanded="false"] + .drawer-cost-breakdown-section-body { display: none; }
+    .drawer-cost-breakdown-section--professional .drawer-cost-breakdown-section-body { padding-left: 21px; border: none; border-bottom: none; }
+    .drawer-cost-breakdown-item { padding: 10px 12px; font-size: 14px; color: #0d0d0d; background: #f5f6f7; border-radius: 8px; margin-bottom: 6px; }
+    .drawer-cost-breakdown-item:last-child { margin-bottom: 0; }
+    .drawer-cost-breakdown-disclaimer { font-size: 13px; color: rgba(137,152,155,0.85); line-height: 1.4; margin: 0 24px 20px; padding: 16px 0 0; }
 
     /* Tips card: estimated cost info (Figma 493-38467) */
     .drawer-tips-inner {
@@ -2159,6 +2188,49 @@
             </div>
             <p class="drawer-benefits-note">Since you've already met your deductible and are close to your out-of-pocket max, you only pay the remaining amount based on your co-insurance.</p>
           </div>
+          <!-- Cost breakdown: Facility (Ancillary) + Professional fees (prod-inspired) -->
+          <div class="drawer-card drawer-card--cost-breakdown" id="drawerCostBreakdownCard" aria-hidden="true">
+            <div class="drawer-cost-breakdown-header">
+              <div class="drawer-cost-breakdown-title-wrap">
+                <h4 class="drawer-cost-breakdown-title">Primary Service Cost</h4>
+                <p class="drawer-cost-breakdown-subtitle">Estimated cost with associated fees</p>
+              </div>
+              <div class="drawer-cost-breakdown-total">
+                <span class="drawer-cost-breakdown-total-amount">$17,340</span>
+                <span class="drawer-cost-breakdown-case-rate">Case Rate</span>
+              </div>
+            </div>
+            <div class="drawer-cost-breakdown-section">
+              <button type="button" class="drawer-cost-breakdown-section-header" data-section="facility" aria-expanded="true" aria-controls="drawerCostBreakdownFacility">
+                <span class="drawer-cost-breakdown-section-title">Facility Fees</span>
+                <span class="drawer-cost-breakdown-section-count">8 Fees</span>
+                <span class="drawer-cost-breakdown-section-caret" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="18 15 12 9 6 15"/></svg></span>
+              </button>
+              <div class="drawer-cost-breakdown-section-body" id="drawerCostBreakdownFacility">
+                <div class="drawer-cost-breakdown-item">Delivery – Vaginal</div>
+                <div class="drawer-cost-breakdown-item">Pharmacy – General</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – General</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – Hematology</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – Chemistry</div>
+                <div class="drawer-cost-breakdown-item">Labor Room/Delivery – General</div>
+                <div class="drawer-cost-breakdown-item">Labor Room/Delivery – Delivery</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – Immunology</div>
+              </div>
+            </div>
+            <div class="drawer-cost-breakdown-section drawer-cost-breakdown-section--professional">
+              <button type="button" class="drawer-cost-breakdown-section-header" data-section="professional" aria-expanded="true" aria-controls="drawerCostBreakdownProfessional">
+                <span class="drawer-cost-breakdown-section-title">Professional Fees</span>
+                <span class="drawer-cost-breakdown-section-count">3 Fees</span>
+                <span class="drawer-cost-breakdown-section-caret" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="18 15 12 9 6 15"/></svg></span>
+              </button>
+              <div class="drawer-cost-breakdown-section-body" id="drawerCostBreakdownProfessional">
+                <div class="drawer-cost-breakdown-item">Obstetrician – Labor &amp; Delivery</div>
+                <div class="drawer-cost-breakdown-item">Anesthesiologist – Epidural</div>
+                <div class="drawer-cost-breakdown-item">Pediatrician – Newborn Care</div>
+              </div>
+            </div>
+            <p class="drawer-cost-breakdown-disclaimer">This estimate includes services commonly performed during this treatment. Facility fees cover hospital/facility charges; professional fees are paid to physicians and specialists.</p>
+          </div>
           <!-- Tips card: estimated cost info (Figma 493-38467) -->
           <div class="drawer-card drawer-card--tips" id="drawerTipsCard" aria-hidden="true">
             <div class="drawer-tips-inner">
@@ -2194,7 +2266,7 @@
           </div>
           <div class="drawer-footer-btns drawer-footer-btns-confirm">
             <button type="button" class="drawer-footer-btn drawer-footer-btn-secondary" id="drawerCancelBtn">Cancel</button>
-            <button type="button" class="drawer-footer-btn drawer-footer-btn-primary drawer-footer-btn-primary--twoline" id="drawerConfirmEstimateBtn"><span class="drawer-footer-btn-primary-line">Confirm</span><span class="drawer-footer-btn-primary-line">estimate</span></button>
+            <button type="button" class="drawer-footer-btn drawer-footer-btn-primary" id="drawerConfirmEstimateBtn"><span class="drawer-footer-btn-primary-line">Confirm estimate</span></button>
           </div>
           <div class="drawer-footer-success" id="drawerFooterSuccess" aria-live="polite">
             <p class="drawer-success-text">Estimate confirmed!</p>
@@ -2397,7 +2469,7 @@
       p1.textContent = "Congratulations on getting your estimate! We're glad we could help you understand your costs.";
       bubble.appendChild(p1);
       var p2 = document.createElement('p');
-      p2.textContent = "Wishing you the best with your procedure — take care!";
+      p2.textContent = "Wishing you the best with your procedure!";
       bubble.appendChild(p2);
       var p3 = document.createElement('p');
       p3.textContent = "Here's a quick summary of what you confirmed:";
@@ -2417,6 +2489,9 @@
         ul.appendChild(li3);
       }
       bubble.appendChild(ul);
+      var p4 = document.createElement('p');
+      p4.textContent = "Want help comparing this with other hospitals nearby, or exploring payment plans and financial assistance options?";
+      bubble.appendChild(p4);
       aiWrap.appendChild(bubble);
       chatContainer.appendChild(aiWrap);
       chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -2864,9 +2939,11 @@
       }
       var resultCard = document.getElementById('drawerResultCard');
       var benefitsCard = document.getElementById('drawerBenefitsCard');
+      var costBreakdownCard = document.getElementById('drawerCostBreakdownCard');
       var tipsCard = document.getElementById('drawerTipsCard');
       if (resultCard) resultCard.setAttribute('aria-hidden', 'true');
       if (benefitsCard) benefitsCard.setAttribute('aria-hidden', 'true');
+      if (costBreakdownCard) costBreakdownCard.setAttribute('aria-hidden', 'true');
       if (tipsCard) tipsCard.setAttribute('aria-hidden', 'true');
     }
     function closeDrawer() {
@@ -2885,9 +2962,11 @@
       }
       var resultCard = document.getElementById('drawerResultCard');
       var benefitsCard = document.getElementById('drawerBenefitsCard');
+      var costBreakdownCard = document.getElementById('drawerCostBreakdownCard');
       var tipsCard = document.getElementById('drawerTipsCard');
       if (resultCard) resultCard.setAttribute('aria-hidden', 'true');
       if (benefitsCard) benefitsCard.setAttribute('aria-hidden', 'true');
+      if (costBreakdownCard) costBreakdownCard.setAttribute('aria-hidden', 'true');
       if (tipsCard) tipsCard.setAttribute('aria-hidden', 'true');
     }
     function showDrawerResultCard() {
@@ -2901,9 +2980,11 @@
       if (drawerOverlay) drawerOverlay.classList.add('drawer-after-loading');
       var resultCard = document.getElementById('drawerResultCard');
       var benefitsCard = document.getElementById('drawerBenefitsCard');
+      var costBreakdownCard = document.getElementById('drawerCostBreakdownCard');
       var tipsCard = document.getElementById('drawerTipsCard');
       if (resultCard) resultCard.setAttribute('aria-hidden', 'false');
       if (benefitsCard) benefitsCard.setAttribute('aria-hidden', 'false');
+      if (costBreakdownCard) costBreakdownCard.setAttribute('aria-hidden', 'false');
       if (tipsCard) tipsCard.setAttribute('aria-hidden', 'false');
       startFinalSequence();
     }
@@ -2992,6 +3073,12 @@
         drawerBenefitsBreakdownToggle.setAttribute('aria-label', isCollapsed ? 'Your benefits breakdown, collapsed. Click to expand.' : 'Your benefits breakdown, expanded. Click to collapse.');
       });
     }
+    document.querySelectorAll('.drawer-cost-breakdown-section-header').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      });
+    });
     document.addEventListener('click', function(e) {
       if (e.target.closest('.btn-primary')) {
         e.preventDefault();

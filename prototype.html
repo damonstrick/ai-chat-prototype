@@ -256,6 +256,48 @@
             </div>
             <p class="drawer-benefits-note">Since you've already met your deductible and are close to your out-of-pocket max, you only pay the remaining amount based on your co-insurance.</p>
           </div>
+          <div class="drawer-card drawer-card--cost-breakdown" id="drawerCostBreakdownCard" aria-hidden="true">
+            <div class="drawer-cost-breakdown-header">
+              <div class="drawer-cost-breakdown-title-wrap">
+                <h4 class="drawer-cost-breakdown-title">Primary Service Cost</h4>
+                <p class="drawer-cost-breakdown-subtitle">Estimated cost with associated fees</p>
+              </div>
+              <div class="drawer-cost-breakdown-total">
+                <span class="drawer-cost-breakdown-total-amount">$17,340</span>
+                <span class="drawer-cost-breakdown-case-rate">Case Rate</span>
+              </div>
+            </div>
+            <div class="drawer-cost-breakdown-section">
+              <button type="button" class="drawer-cost-breakdown-section-header" data-section="facility" aria-expanded="true" aria-controls="drawerCostBreakdownFacility">
+                <span class="drawer-cost-breakdown-section-title">Facility Fees</span>
+                <span class="drawer-cost-breakdown-section-count">8 Fees</span>
+                <span class="drawer-cost-breakdown-section-caret" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="18 15 12 9 6 15"/></svg></span>
+              </button>
+              <div class="drawer-cost-breakdown-section-body" id="drawerCostBreakdownFacility">
+                <div class="drawer-cost-breakdown-item">Delivery – Vaginal</div>
+                <div class="drawer-cost-breakdown-item">Pharmacy – General</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – General</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – Hematology</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – Chemistry</div>
+                <div class="drawer-cost-breakdown-item">Labor Room/Delivery – General</div>
+                <div class="drawer-cost-breakdown-item">Labor Room/Delivery – Delivery</div>
+                <div class="drawer-cost-breakdown-item">Laboratory – Immunology</div>
+              </div>
+            </div>
+            <div class="drawer-cost-breakdown-section drawer-cost-breakdown-section--professional">
+              <button type="button" class="drawer-cost-breakdown-section-header" data-section="professional" aria-expanded="true" aria-controls="drawerCostBreakdownProfessional">
+                <span class="drawer-cost-breakdown-section-title">Professional Fees</span>
+                <span class="drawer-cost-breakdown-section-count">3 Fees</span>
+                <span class="drawer-cost-breakdown-section-caret" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="18 15 12 9 6 15"/></svg></span>
+              </button>
+              <div class="drawer-cost-breakdown-section-body" id="drawerCostBreakdownProfessional">
+                <div class="drawer-cost-breakdown-item">Obstetrician – Labor &amp; Delivery</div>
+                <div class="drawer-cost-breakdown-item">Anesthesiologist – Epidural</div>
+                <div class="drawer-cost-breakdown-item">Pediatrician – Newborn Care</div>
+              </div>
+            </div>
+            <p class="drawer-cost-breakdown-disclaimer">This estimate includes services commonly performed during this treatment. Facility fees cover hospital/facility charges; professional fees are paid to physicians and specialists.</p>
+          </div>
           <div class="drawer-card drawer-card--tips" id="drawerTipsCard" aria-hidden="true">
             <div class="drawer-tips-inner">
               <span class="drawer-tips-icon-wrap" aria-hidden="true">
@@ -290,7 +332,7 @@
           </div>
           <div class="drawer-footer-btns drawer-footer-btns-confirm">
             <button type="button" class="drawer-footer-btn drawer-footer-btn-secondary" id="drawerCancelBtn">Cancel</button>
-            <button type="button" class="drawer-footer-btn drawer-footer-btn-primary drawer-footer-btn-primary--twoline" id="drawerConfirmEstimateBtn"><span class="drawer-footer-btn-primary-line">Confirm</span><span class="drawer-footer-btn-primary-line">estimate</span></button>
+            <button type="button" class="drawer-footer-btn drawer-footer-btn-primary" id="drawerConfirmEstimateBtn"><span class="drawer-footer-btn-primary-line">Confirm estimate</span></button>
           </div>
           <div class="drawer-footer-success" id="drawerFooterSuccess" aria-live="polite">
             <p class="drawer-success-text">Estimate confirmed!</p>

@@ -398,7 +398,7 @@
     p1.textContent = "Congratulations on getting your estimate! We're glad we could help you understand your costs.";
     bubble.appendChild(p1);
     var p2 = document.createElement('p');
-    p2.textContent = "Wishing you the best with your procedure — take care!";
+    p2.textContent = "Wishing you the best with your procedure!";
     bubble.appendChild(p2);
     var p3 = document.createElement('p');
     p3.textContent = "Here's a quick summary of what you confirmed:";
@@ -418,6 +418,9 @@
       ul.appendChild(li3);
     }
     bubble.appendChild(ul);
+    var p4 = document.createElement('p');
+    p4.textContent = "Want help comparing this with other hospitals nearby, or exploring payment plans and financial assistance options?";
+    bubble.appendChild(p4);
     aiWrap.appendChild(bubble);
     chatContainer.appendChild(aiWrap);
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -448,6 +451,13 @@
       drawerBenefitsBreakdownToggle.setAttribute('aria-label', isCollapsed ? 'Your benefits breakdown, collapsed. Click to expand.' : 'Your benefits breakdown, expanded. Click to collapse.');
     });
   }
+
+  document.querySelectorAll('.drawer-cost-breakdown-section-header').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
+  });
 
   document.addEventListener('click', function (e) {
     if (e.target.closest('.btn-primary') && e.target.id !== 'drawerApplyBtn' && e.target.id !== 'drawerConfirmEstimateBtn') {

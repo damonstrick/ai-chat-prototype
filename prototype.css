@@ -1331,11 +1331,15 @@ html, body {
   border: none;
   border-radius: 24px;
 }
-.drawer-overlay.drawer-after-loading .drawer-card:not(.drawer-card--result):not(.drawer-card--benefits):not(.drawer-card--tips) {
+.drawer-overlay:not(.drawer-after-loading) .drawer-card--cost-breakdown {
+  display: none !important;
+}
+.drawer-overlay.drawer-after-loading .drawer-card:not(.drawer-card--result):not(.drawer-card--benefits):not(.drawer-card--cost-breakdown):not(.drawer-card--tips) {
   display: none !important;
 }
 .drawer-overlay.drawer-after-loading .drawer-card--result,
 .drawer-overlay.drawer-after-loading .drawer-card--benefits,
+.drawer-overlay.drawer-after-loading .drawer-card--cost-breakdown,
 .drawer-overlay.drawer-after-loading .drawer-card--tips {
   display: block !important;
 }
@@ -1654,6 +1658,136 @@ html, body {
   line-height: 1.45;
   margin: 0 24px 20px;
   padding: 0;
+}
+
+/* Cost breakdown: Facility (Ancillary) + Professional fees */
+.drawer-card--cost-breakdown {
+  background: #fff;
+  padding: 0;
+  border: 1px solid #e3e7ea;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.drawer-cost-breakdown-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 24px 16px;
+}
+.drawer-cost-breakdown-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #2D5859;
+  flex-shrink: 0;
+}
+.drawer-cost-breakdown-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.drawer-cost-breakdown-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #0d0d0d;
+  margin: 0 0 2px 0;
+}
+.drawer-cost-breakdown-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+.drawer-cost-breakdown-total {
+  text-align: right;
+  flex-shrink: 0;
+}
+.drawer-cost-breakdown-total-amount {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0d0d0d;
+}
+.drawer-cost-breakdown-case-rate {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  cursor: help;
+}
+.drawer-cost-breakdown-section {
+  border-top: none;
+  border-image: none;
+}
+.drawer-cost-breakdown-section--professional {
+  background: rgba(45, 88, 89, 0);
+  border-top: none;
+  border-left: none;
+}
+.drawer-cost-breakdown-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0d0d0d;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.drawer-cost-breakdown-section--professional .drawer-cost-breakdown-section-header {
+  padding-left: 21px;
+}
+.drawer-cost-breakdown-section-title {
+  flex: 1;
+}
+.drawer-cost-breakdown-section-count {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+}
+.drawer-cost-breakdown-section-caret {
+  display: flex;
+  transition: transform 0.2s ease;
+}
+.drawer-cost-breakdown-section-header[aria-expanded="false"] .drawer-cost-breakdown-section-caret {
+  transform: rotate(-90deg);
+}
+.drawer-cost-breakdown-section-body {
+  padding: 0 24px 12px;
+}
+.drawer-cost-breakdown-section-header[aria-expanded="false"] + .drawer-cost-breakdown-section-body {
+  display: none;
+}
+.drawer-cost-breakdown-section--professional .drawer-cost-breakdown-section-body {
+  padding-left: 21px;
+  border: none;
+  border-bottom: none;
+}
+.drawer-cost-breakdown-item {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #0d0d0d;
+  background: #f5f6f7;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+.drawer-cost-breakdown-item:last-child {
+  margin-bottom: 0;
+}
+.drawer-cost-breakdown-disclaimer {
+  font-size: 13px;
+  color: rgba(137, 152, 155, 0.85);
+  line-height: 1.4;
+  margin: 0 24px 20px;
+  padding: 16px 0 0;
 }
 
 /* Tips card: estimated cost info (Figma 493-38467) */
