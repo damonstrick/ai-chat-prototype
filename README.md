@@ -10,6 +10,10 @@ To use your screen recording as the slide background:
 
 The page will use the first available source: `background.mov` then `background.mp4`. The video plays muted, looped, behind the phone mockup.
 
+## Map (prototype)
+
+The Anthropic-flow map is a **static screenshot** (no API). It looks like Google Maps but is just an image with price bubbles overlaid. Add a screenshot of Google Maps centered on San Francisco as **`assets/sf-map.png`** (e.g. zoom level ~12, standard map view). If the file is missing, a gray placeholder is shown.
+
 ## Layout
 
 - **Full page:** Video fills the viewport (slide look).

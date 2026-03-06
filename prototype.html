@@ -16,13 +16,48 @@
   </nav>
 
   <div class="prototype-backdrop" aria-hidden="true"></div>
+
   <div class="slide-content">
     <div class="phone-frame-zoom-wrapper" id="phoneFrameWrapper">
     <div class="phone-frame" id="phoneFrame">
+  <!-- Nav menu: inside phone frame so on desktop it appears in the device -->
+  <div class="nav-menu-overlay" id="navMenuOverlay" aria-hidden="true">
+    <div class="nav-menu-panel">
+      <button type="button" class="nav-menu-close" id="navMenuClose" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <nav class="nav-menu-list" role="navigation" aria-label="Flow selection">
+        <div class="nav-menu-group">
+          <div class="nav-menu-group-title">OpenAI</div>
+          <a href="#" class="nav-menu-item" data-flow="openai-1">Flow 1</a>
+          <a href="#" class="nav-menu-item" data-flow="openai-2">Flow 2</a>
+          <a href="#" class="nav-menu-item" data-flow="openai-3">Flow 3</a>
+        </div>
+        <div class="nav-menu-group">
+          <div class="nav-menu-group-title">Anthropic</div>
+          <a href="#" class="nav-menu-item" data-flow="anthropic-1">Flow 1</a>
+          <a href="#" class="nav-menu-item" data-flow="anthropic-2">Flow 2</a>
+          <a href="#" class="nav-menu-item" data-flow="anthropic-3">Flow 3</a>
+        </div>
+        <div class="nav-menu-group">
+          <div class="nav-menu-group-title">Counsel</div>
+          <a href="#" class="nav-menu-item" data-flow="counsel-1">Flow 1</a>
+          <a href="#" class="nav-menu-item" data-flow="counsel-2">Flow 2</a>
+          <a href="#" class="nav-menu-item" data-flow="counsel-3">Flow 3</a>
+        </div>
+        <div class="nav-menu-group">
+          <div class="nav-menu-group-title">Generic</div>
+          <a href="#" class="nav-menu-item is-active" data-flow="generic-1">Flow 1</a>
+          <a href="#" class="nav-menu-item" data-flow="generic-2">Flow 2</a>
+          <a href="#" class="nav-menu-item" data-flow="generic-3">Flow 3</a>
+        </div>
+      </nav>
+    </div>
+  </div>
   <div class="top-bar">
-    <header class="header">
+    <header class="header header-generic">
       <div class="header-left">
-        <button type="button" class="nav-icon" aria-label="Menu">
+        <button type="button" class="nav-icon" id="headerMenuBtn" aria-label="Open menu">
           <img src="assets/header-menu.png" alt="" class="header-icon-img">
         </button>
       </div>
@@ -36,17 +71,423 @@
         </button>
       </div>
     </header>
+    <header class="header header-anthropic" aria-hidden="true">
+      <div class="header-left">
+        <button type="button" class="nav-icon nav-icon-anthropic" id="headerMenuBtnAnthropic" aria-label="Open menu">
+          <img src="assets/anth-nav-button.svg" alt="" class="header-icon-img">
+        </button>
+      </div>
+      <div class="header-center header-center-anthropic">
+        <span class="header-anthropic-title">Opus</span>
+        <span class="header-anthropic-version">4.6</span>
+        <span class="header-chevron" aria-hidden="true">
+          <svg viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+      <div class="header-right">
+        <button type="button" class="nav-icon nav-icon-anthropic" aria-label="New chat">
+          <img src="assets/anth-right-topbar-button.svg" alt="" class="header-icon-img">
+        </button>
+      </div>
+    </header>
   </div>
 
   <main class="chat-container" id="chatContainer">
     <div class="chat-welcome" id="chatWelcome" aria-hidden="false">
       <p class="chat-welcome-text">Good Afternoon Chris, how can we help?</p>
     </div>
+    <div class="chat-welcome chat-welcome-anthropic" id="chatWelcomeAnthropic" aria-hidden="true">
+      <div class="chat-welcome-anthropic-inner">
+        <img src="assets/anthropic-logo.svg" alt="" class="chat-welcome-anthropic-logo" width="48" height="48">
+        <p class="chat-welcome-anthropic-text">Good afternoon Chris, how can we help?</p>
+      </div>
+    </div>
+    <!-- Generic flow: map component + provider cards (separate from Anthropic styling) -->
+    <div class="generic-map-component-wrap" id="genericMapComponentWrap">
+      <div class="generic-map-component">
+        <div class="generic-map-header">
+          <span class="generic-map-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <p class="generic-map-header-title">Arthroscopic Knee Repair in San Francisco</p>
+        </div>
+        <div class="generic-map-body">
+          <div class="generic-map-image-area">
+            <div class="generic-map-google-container">
+              <img src="assets/sf-map.png" alt="Map of San Francisco" class="generic-map-screenshot" />
+            </div>
+            <div class="generic-map-pills">
+              <span class="generic-map-pill is-selected" style="left: 10%; top: 41%;">4.8 ★</span>
+              <span class="generic-map-pill" style="left: 30%; top: 9%;">4.6 ★</span>
+              <span class="generic-map-pill" style="left: 63%; top: 14%;">4.6 ★</span>
+              <span class="generic-map-pill" style="left: 28%; top: 23%;">4.9 ★</span>
+              <span class="generic-map-pill" style="left: 50%; top: 28%;">4.8 ★</span>
+            </div>
+          </div>
+          <div class="generic-map-cards-row">
+            <div class="generic-map-cards">
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Post Street Surgery Center LLC</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Arthroscopic - Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">Negotiated Rate</span>
+                    <span class="generic-map-card-price-value">$500</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">San Francisco Surgery Center</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Arthroscopic - Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">Negotiated Rate</span>
+                    <span class="generic-map-card-price-value">$600</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Presidio Surgery Center</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Arthroscopic - Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">Negotiated Rate</span>
+                    <span class="generic-map-card-price-value">$550</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">UCSF Health Saint Francis Hospital</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Arthroscopic - Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">Negotiated Rate</span>
+                    <span class="generic-map-card-price-value">$640</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">California Pacific Medical Center - Van Ness Campus</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Arthroscopic - Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">Negotiated Rate</span>
+                    <span class="generic-map-card-price-value">$700</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="generic-map-google-logo" aria-hidden="true">Google</div>
+        </div>
+      </div>
+    </div>
+    <!-- Price version: map with price pills + full cards (Cigna + price) for insurance response -->
+    <div class="generic-map-component-wrap price-version" id="genericMapComponentWrapPrice">
+      <div class="generic-map-component">
+        <div class="generic-map-header">
+          <span class="generic-map-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <p class="generic-map-header-title">Arthroscopic Knee Repair in San Francisco</p>
+        </div>
+        <div class="generic-map-body">
+          <div class="generic-map-image-area">
+            <div class="generic-map-google-container">
+              <img src="assets/sf-map.png" alt="Map of San Francisco" class="generic-map-screenshot" />
+            </div>
+            <div class="generic-map-pills">
+              <span class="generic-map-pill is-selected" style="left: 10%; top: 41%;">$500</span>
+              <span class="generic-map-pill" style="left: 30%; top: 9%;">$600</span>
+              <span class="generic-map-pill" style="left: 63%; top: 14%;">$2,000</span>
+              <span class="generic-map-pill" style="left: 28%; top: 23%;">$640</span>
+              <span class="generic-map-pill" style="left: 50%; top: 28%;">$700</span>
+            </div>
+          </div>
+          <div class="generic-map-cards-row">
+            <div class="generic-map-cards">
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Post Street Surgery Center LLC</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Consult for Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$103</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">San Francisco Surgery Center</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Consult for Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$620</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Presidio Surgery Center</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Consult for Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$648</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">UCSF Health Saint Francis Hospital</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Consult for Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$890</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">California Pacific Medical Center - Van Ness Campus</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">Consult for Knee Repair</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$1,218</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="generic-map-google-logo" aria-hidden="true">Google</div>
+        </div>
+      </div>
+    </div>
+    <!-- Generic Flow 2 (X-Ray): Denver, CO map with X-Ray providers + Aetna prices -->
+    <div class="generic-map-component-wrap generic-map-component-wrap--xray" id="genericMapComponentWrapXray" aria-hidden="true">
+      <div class="generic-map-component">
+        <div class="generic-map-header">
+          <span class="generic-map-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <p class="generic-map-header-title">Denver, CO</p>
+        </div>
+        <div class="generic-map-body">
+          <div class="generic-map-image-area">
+            <div class="generic-map-google-container">
+              <img src="assets/denver-map.png" alt="Map of Denver" class="generic-map-screenshot" />
+            </div>
+            <div class="generic-map-pills">
+              <span class="generic-map-pill is-selected" style="left: 10%; top: 41%;">$50</span>
+              <span class="generic-map-pill" style="left: 30%; top: 9%;">$65</span>
+              <span class="generic-map-pill" style="left: 63%; top: 14%;">$65</span>
+              <span class="generic-map-pill" style="left: 28%; top: 23%;">$95</span>
+              <span class="generic-map-pill" style="left: 50%; top: 28%;">$55</span>
+            </div>
+          </div>
+          <div class="generic-map-cards-row">
+            <div class="generic-map-cards">
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Denver Radiology &amp; Imaging Center</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">X-Ray</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Aetna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$50</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Union Station Imaging Clinic</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">X-Ray</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Aetna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$65</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Aurora Advanced Imaging</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">X-Ray</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Aetna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$65</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Capitol Hill Diagnostic Imaging</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">X-Ray</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Aetna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$95</span>
+                  </div>
+                </div>
+              </div>
+              <div class="generic-map-card">
+                <div class="generic-map-card-top">
+                  <div class="generic-map-card-head">
+                    <p class="generic-map-card-title">Cherry Creek Imaging Center</p>
+                    <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+                  </div>
+                  <p class="generic-map-card-service">X-Ray</p>
+                </div>
+                <div class="generic-map-card-bottom">
+                  <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Aetna</span>
+                  <div class="generic-map-card-price">
+                    <span class="generic-map-card-price-label">With benefits*</span>
+                    <span class="generic-map-card-price-value">$55</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="generic-map-google-logo" aria-hidden="true">Google</div>
+        </div>
+      </div>
+    </div>
+    <div class="generic-chat-card-wrap" id="genericChatCardWrap">
+      <div class="generic-map-card">
+        <div class="generic-map-card-top">
+          <div class="generic-map-card-head">
+            <p class="generic-map-card-title">Post Street Surgery Center LLC</p>
+            <div class="generic-map-card-rating">4.8 <span class="star">★</span></div>
+          </div>
+          <p class="generic-map-card-service">MRI</p>
+        </div>
+        <div class="generic-map-card-bottom">
+          <span class="generic-map-card-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Cigna</span>
+          <div class="generic-map-card-price">
+            <span class="generic-map-card-price-label">Negotiated Rate</span>
+            <span class="generic-map-card-price-value">$500</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="generic-chat-card-cta-wrap" id="genericChatCardCtaWrap">
+      <div class="generic-map-card-cta">
+        <div class="generic-map-card-cta-top">
+          <div class="generic-map-card-cta-image-wrap">
+            <img src="assets/card-provider-image.png" alt="" class="generic-map-card-cta-image" />
+          </div>
+          <div class="generic-map-card-cta-content">
+            <p class="generic-map-card-cta-title">Post Street Surgery Center LLC</p>
+            <p class="generic-map-card-cta-service">SSP MS002 - MRI</p>
+            <div class="generic-map-card-cta-price-row">
+              <div class="generic-map-card-cta-locked">
+                <svg class="generic-map-card-cta-locked-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Price Locked</span>
+              </div>
+              <span class="generic-map-card-cta-price">$500</span>
+            </div>
+          </div>
+        </div>
+        <div class="generic-map-card-cta-actions">
+          <button type="button" class="generic-map-card-cta-btn">Book &amp; Pay</button>
+          <p class="generic-map-card-cta-disclaimer">Price confirmed via Turquoise Health.</p>
+        </div>
+      </div>
+    </div>
   </main>
 
   <div class="input-area">
+    <!-- Generic Flow 1: autocomplete suggestions above input -->
+    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1" role="button" tabindex="0" aria-label="Use suggested question: Who's the best knee surgeon in San Francisco?" data-suggestion="Who's the best knee surgeon in San Francisco?">Who's the best knee surgeon in San Francisco?</div>
+    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1Second" role="button" tabindex="0" aria-label="Use suggested follow-up about ACL surgery" data-suggestion="I tore my ACL so I'll need surgery to repair that. I'm looking for the best provider closest to me with the highest ratings.">I tore my ACL so I'll need surgery to repair that. I'm looking for the best provider closest to me with the highest ratings.</div>
+    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1Third" role="button" tabindex="0" aria-label="Use suggested insurance details" data-suggestion="Cigna&#10;Meredith Palmer&#10;11000362778&#10;01/01/1980">Cigna, Meredith Palmer, 11000362778, 01/01/1980</div>
+    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1Fourth" role="button" tabindex="0" aria-label="Use suggested question about Post Street estimate" data-suggestion="I'm interested in learning more about Post Street Surgery Center LLC and would like an estimate for the procedure">I'm interested in learning more about Post Street Surgery Center LLC and would like an estimate for the procedure</div>
+    <!-- Generic Flow 2: X-Ray / Denver prompt -->
+    <div class="autocomplete-bubble autocomplete-bubble--flow2" id="autocompleteBubbleFlow2" role="button" tabindex="0" aria-label="Use suggested question about x-ray cost" data-suggestion="The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?">The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?</div>
+    <div class="autocomplete-bubble autocomplete-bubble--flow2" id="autocompleteBubbleFlow2Second" role="button" tabindex="0" aria-label="Use suggested follow-up about Denver Radiology" data-suggestion="I'm interested in Denver Radiology &amp; Imaging Center">I'm interested in Denver Radiology &amp; Imaging Center</div>
     <div class="input-suggestion" id="inputSuggestion" role="button" tabindex="0" aria-label="Use suggested question: How much does it cost to have a baby at UCLA?">How much does it cost to have a baby at UCLA?</div>
-    <div class="input-row" id="inputRow">
+    <!-- Generic / OpenAI / Counsel: original single-row input -->
+    <div class="input-row input-row-generic" id="inputRow">
       <button type="button" class="input-btn-plus" aria-label="Add">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
@@ -54,9 +495,30 @@
       <button type="button" class="input-btn-icon" aria-label="Microphone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
       </button>
-      <button type="button" class="input-btn-icon" id="submitIconBtn" aria-label="Audio">
+      <button type="button" class="input-btn-icon" id="submitIconBtn" aria-label="Send">
         <img src="assets/audio-icon.png" alt="" class="input-btn-icon-img">
       </button>
+    </div>
+    <!-- Anthropic only: composer-style input -->
+    <div class="input-row input-row-composer input-row-anthropic" id="inputRowAnthropic" aria-hidden="true">
+      <div class="input-composer-inner">
+        <div class="input-composer-field-wrap">
+          <textarea class="input-field" id="inputFieldAnthropic" placeholder="Chat with Claude" rows="1"></textarea>
+        </div>
+        <div class="input-composer-actions">
+          <button type="button" class="input-btn-plus" aria-label="Add">
+            <img src="assets/Add-803ef487-f7a4-4397-a8f3-3811e091cf71.png" alt="" class="input-btn-icon-img">
+          </button>
+          <div class="input-composer-right">
+            <button type="button" class="input-btn-icon input-btn-mic" aria-label="Microphone">
+              <img src="assets/anthropic_mic-272f2ecb-8c0a-4a87-999e-a534020a9342.png" alt="" class="input-btn-icon-img">
+            </button>
+            <button type="button" class="input-btn-icon input-btn-send" id="submitIconBtnAnthropic" aria-label="Send">
+              <img src="assets/anthropoic_voice-e0def987-4fbd-483f-a0c1-a4e41bd67de7.png" alt="" class="input-btn-icon-img">
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
     <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true">
@@ -173,6 +635,65 @@
                 <span class="drawer-card-result-price">$3,869</span>
               </div>
             </div>
+            <!-- Cost Share Expanded body (Figma 798-96632): only visible in lock-price mode -->
+            <div class="drawer-result-cost-share-body" id="drawerResultCostShareBody" aria-hidden="true">
+              <div class="drawer-result-cost-share-cigna">
+                <img src="assets/cigna-logo.png" alt="" class="drawer-result-cost-share-cigna-logo">
+                <span class="drawer-result-cost-share-cigna-plan">Cigna National OAP</span>
+                <button type="button" class="drawer-result-cost-share-edit" aria-label="Edit insurance">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+              </div>
+              <!-- X-Ray / Aetna card (Figma 837-55392): negotiated rate, bar, you pay, insurance covers -->
+              <div class="drawer-result-cost-share-xray-main" id="drawerResultCostShareXrayMain" aria-hidden="true">
+                <div class="drawer-result-cost-share-negotiated">
+                  <span class="drawer-result-cost-share-negotiated-label">Total negotiated rate</span>
+                  <span class="drawer-result-cost-share-negotiated-value" id="drawerXrayNegotiatedValue">$171</span>
+                </div>
+                <div class="drawer-result-cost-share-bar" role="presentation">
+                  <span class="drawer-result-cost-share-bar-teal" style="width: 70.8%;"></span>
+                  <span class="drawer-result-cost-share-bar-dark" style="flex: 1;"></span>
+                </div>
+                <div class="drawer-result-cost-share-dotted-rows">
+                  <div class="drawer-result-cost-share-dotted-row">
+                    <span class="drawer-result-cost-share-dot" aria-hidden="true"></span>
+                    <span class="drawer-result-cost-share-dotted-label">Total you pay</span>
+                    <span class="drawer-result-cost-share-dotted-value" id="drawerXrayYouPayValue">$50</span>
+                  </div>
+                  <div class="drawer-result-cost-share-dotted-row">
+                    <span class="drawer-result-cost-share-dot" aria-hidden="true"></span>
+                    <span class="drawer-result-cost-share-dotted-label">Your insurance covers</span>
+                    <span class="drawer-result-cost-share-dotted-value" id="drawerXrayInsuranceValue">-$121</span>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-result-cost-share-calc">
+                <button type="button" class="drawer-result-cost-share-calc-header" id="drawerResultCostShareBreakdownToggle" aria-expanded="true" aria-controls="drawerResultCostShareBreakdownBody">
+                  <img src="assets/shield-check.png" alt="" class="drawer-result-cost-share-calc-icon">
+                  <div class="drawer-result-cost-share-calc-title-wrap">
+                    <h4 class="drawer-result-cost-share-calc-title">Your benefits breakdown</h4>
+                    <p class="drawer-result-cost-share-calc-member">Member ID: 11000362778</p>
+                  </div>
+                  <span class="drawer-result-cost-share-calc-caret" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="18 15 12 9 6 15"/></svg>
+                  </span>
+                </button>
+                <div class="drawer-result-cost-share-calc-body" id="drawerResultCostShareBreakdownBody">
+                  <div class="drawer-result-cost-share-row">
+                    <span class="drawer-result-cost-share-label">Deductible remaining</span>
+                    <span class="drawer-result-cost-share-val" data-key="deductible">$0</span>
+                  </div>
+                  <div class="drawer-result-cost-share-row">
+                    <span class="drawer-result-cost-share-label">Out-of-pocket max remaining</span>
+                    <span class="drawer-result-cost-share-val" data-key="oop">$1,500</span>
+                  </div>
+                  <div class="drawer-result-cost-share-row">
+                    <span class="drawer-result-cost-share-label">Your co-pay</span>
+                    <span class="drawer-result-cost-share-val" data-key="copay">$50</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="drawer-card-divider" aria-hidden="true"></div>
             <div class="drawer-card-result-facility">
               <span class="drawer-card-facility-icon" aria-hidden="true">
@@ -194,52 +715,169 @@
               </div>
             </div>
           </div>
-          <div class="drawer-card drawer-card--benefits" id="drawerBenefitsCard" aria-hidden="true">
-            <div class="drawer-benefits-header">
-              <span class="drawer-benefits-plan">
-                <span class="drawer-benefits-plan-icon" aria-hidden="true">
-                  <img src="assets/cigna-benefits-logo.png" alt="" class="drawer-benefits-plan-logo">
-                </span>
-                Cigna National OAP
-              </span>
-              <button type="button" class="drawer-benefits-edit" aria-label="Edit insurance">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
+          <!-- Lock-price second card: tabs "Price Lock" (initial consult) + "Other Estimates" (knee repair) -->
+          <div class="drawer-card drawer-card--lock-price-detail" id="drawerLockPriceDetailCard" aria-hidden="true">
+            <div class="drawer-lock-detail-tabs" role="tablist" aria-label="Price lock and estimates">
+              <button type="button" class="drawer-lock-detail-tab is-selected" role="tab" id="drawerLockDetailTabPriceLock" aria-selected="true" aria-controls="drawerLockDetailPanelPriceLock">Price Lock</button>
+              <button type="button" class="drawer-lock-detail-tab" role="tab" id="drawerLockDetailTabOther" aria-selected="false" aria-controls="drawerLockDetailPanelOther">Other Estimates</button>
             </div>
-            <div class="drawer-benefits-negotiated">
-              <span class="drawer-benefits-negotiated-label">Total negotiated rate</span>
-              <span class="drawer-benefits-negotiated-value">$17,340</span>
-            </div>
-            <div class="drawer-benefits-bar" role="presentation">
-              <span class="drawer-benefits-bar-teal" style="width: 77.7%;"></span>
-              <span class="drawer-benefits-bar-purple" style="width: 22.3%;"></span>
-            </div>
-            <div class="drawer-benefits-rows">
-              <div class="drawer-benefits-row">
-                <span class="drawer-benefits-dot drawer-benefits-dot--teal"></span>
-                <span class="drawer-benefits-row-label">Total you pay</span>
-                <span class="drawer-benefits-row-value drawer-benefits-value--teal">$3,869</span>
-              </div>
-              <div class="drawer-benefits-row">
-                <span class="drawer-benefits-dot drawer-benefits-dot--purple"></span>
-                <span class="drawer-benefits-row-label">Your insurance covers</span>
-                <span class="drawer-benefits-row-value">-$13,471</span>
-              </div>
-            </div>
-            <div class="drawer-benefits-breakdown is-collapsed" id="drawerBenefitsBreakdown">
-              <button type="button" class="drawer-benefits-breakdown-header" id="drawerBenefitsBreakdownToggle" aria-expanded="false" aria-controls="drawerBenefitsBreakdownBody" aria-label="Your benefits breakdown, collapsed. Click to expand.">
-                <span class="drawer-benefits-breakdown-icon" aria-hidden="true">
-                  <img src="assets/shield-check.png" alt="" class="drawer-benefits-breakdown-icon-img">
-                </span>
-                <div class="drawer-benefits-breakdown-title-wrap">
-                  <h4 class="drawer-benefits-breakdown-title">Your benefits breakdown</h4>
-                  <p class="drawer-benefits-breakdown-member">Member ID: 11000362778</p>
+            <div class="drawer-lock-detail-panel is-active" id="drawerLockDetailPanelPriceLock" role="tabpanel" aria-labelledby="drawerLockDetailTabPriceLock">
+              <div class="drawer-lock-detail-section">
+                <div class="drawer-lock-detail-header">
+                  <span class="drawer-lock-detail-title">Initial Consult</span>
+                  <span class="drawer-lock-detail-price">$50</span>
                 </div>
-                <span class="drawer-benefits-breakdown-caret" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
-                </span>
+                <div class="drawer-lock-detail-negotiated">
+                  <span class="drawer-lock-detail-negotiated-label">Total negotiated rate</span>
+                  <span class="drawer-lock-detail-negotiated-value">$144</span>
+                </div>
+                <div class="drawer-lock-detail-bar" role="presentation">
+                  <span class="drawer-lock-detail-bar-teal" style="width: 34.7%;"></span>
+                  <span class="drawer-lock-detail-bar-dark" style="flex: 1;"></span>
+                </div>
+                <div class="drawer-lock-detail-rows">
+                  <div class="drawer-lock-detail-row">
+                    <span class="drawer-lock-detail-dot drawer-lock-detail-dot--teal"></span>
+                    <span class="drawer-lock-detail-row-label">Total you pay</span>
+                    <span class="drawer-lock-detail-row-value">$50</span>
+                  </div>
+                  <div class="drawer-lock-detail-row">
+                    <span class="drawer-lock-detail-dot drawer-lock-detail-dot--dark"></span>
+                    <span class="drawer-lock-detail-row-label">Your insurance covers</span>
+                    <span class="drawer-lock-detail-row-value">-$94</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="drawer-lock-detail-panel" id="drawerLockDetailPanelOther" role="tabpanel" aria-labelledby="drawerLockDetailTabOther" aria-hidden="true">
+              <div class="drawer-lock-detail-section">
+                <div class="drawer-lock-detail-header">
+                  <span class="drawer-lock-detail-title">Arthroscopic Knee Repair</span>
+                  <span class="drawer-lock-detail-price">$1,243</span>
+                </div>
+                <div class="drawer-lock-detail-negotiated">
+                  <span class="drawer-lock-detail-negotiated-label">Total negotiated rate</span>
+                  <span class="drawer-lock-detail-negotiated-value">$3,602</span>
+                </div>
+                <div class="drawer-lock-detail-bar" role="presentation">
+                  <span class="drawer-lock-detail-bar-teal" style="width: 34.5%;"></span>
+                  <span class="drawer-lock-detail-bar-dark" style="flex: 1;"></span>
+                </div>
+                <div class="drawer-lock-detail-rows">
+                  <div class="drawer-lock-detail-row">
+                    <span class="drawer-lock-detail-dot drawer-lock-detail-dot--teal"></span>
+                    <span class="drawer-lock-detail-row-label">Total you pay</span>
+                    <span class="drawer-lock-detail-row-value">$1,243</span>
+                  </div>
+                  <div class="drawer-lock-detail-row">
+                    <span class="drawer-lock-detail-dot drawer-lock-detail-dot--dark"></span>
+                    <span class="drawer-lock-detail-row-label">Your insurance covers</span>
+                    <span class="drawer-lock-detail-row-value">-$2,359</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="drawer-lock-detail-disclaimer">This provider enables you to lock in an estimate for an arthroscopic knee repair. This guarantees you'll not pay more than this estimate for this service. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.</p>
+          </div>
+          <!-- Lock-price last card (Figma 798-96754): Your Doctor + facility -->
+          <div class="drawer-card drawer-card--lock-price-doctor" id="drawerLockPriceDoctorCard" aria-hidden="true">
+            <div class="drawer-doctor-header">
+              <h3 class="drawer-doctor-title">Your Doctor</h3>
+              <button type="button" class="drawer-doctor-edit" aria-label="Edit doctor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </button>
-              <div class="drawer-benefits-breakdown-body" id="drawerBenefitsBreakdownBody">
+            </div>
+            <div class="drawer-doctor-block">
+              <div class="drawer-doctor-avatar" aria-hidden="true"></div>
+              <div class="drawer-doctor-info">
+                <p class="drawer-doctor-name">Dr. Daniel Roth, MD</p>
+                <p class="drawer-doctor-specialty">Orthopedic Surgeon</p>
+                <span class="drawer-doctor-verified" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="drawer-doctor-meta">
+              <div class="drawer-doctor-meta-item">
+                <span class="drawer-doctor-meta-label">Specialties</span>
+                <span class="drawer-doctor-meta-value">Knee &amp; Sports Medicine</span>
+              </div>
+              <div class="drawer-doctor-meta-item">
+                <span class="drawer-doctor-meta-label">Experience</span>
+                <span class="drawer-doctor-meta-value">18 Years</span>
+              </div>
+              <div class="drawer-doctor-meta-item">
+                <span class="drawer-doctor-meta-label">Rating</span>
+                <span class="drawer-doctor-meta-value">4.8 <span class="drawer-doctor-star" aria-hidden="true">★</span></span>
+              </div>
+            </div>
+            <div class="drawer-doctor-facility">
+              <div class="drawer-doctor-facility-row">
+                <img src="assets/card-provider-image.png" alt="" class="drawer-doctor-facility-logo" onerror="this.style.display='none'">
+                <p class="drawer-doctor-facility-name">Post Street Surgery Center LLC</p>
+              </div>
+              <div class="drawer-doctor-address">
+                <svg class="drawer-doctor-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                1111 E McDowell Rd, San Francisco, CA 85006
+              </div>
+              <div class="drawer-doctor-stars" aria-label="4.8 out of 5 stars">
+                <span class="drawer-doctor-star filled">★</span>
+                <span class="drawer-doctor-star filled">★</span>
+                <span class="drawer-doctor-star filled">★</span>
+                <span class="drawer-doctor-star filled">★</span>
+                <span class="drawer-doctor-star">★</span>
+              </div>
+            </div>
+          </div>
+          <div class="drawer-card drawer-card--benefits" id="drawerBenefitsCard" aria-hidden="true">
+            <div class="drawer-benefits-inner">
+              <div class="drawer-benefits-header">
+                <span class="drawer-benefits-plan">
+                  <span class="drawer-benefits-plan-icon" aria-hidden="true">
+                    <img src="assets/cigna-benefits-logo.png" alt="" class="drawer-benefits-plan-logo">
+                  </span>
+                  Cigna National OAP
+                </span>
+                <button type="button" class="drawer-benefits-edit" aria-label="Edit insurance">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+              </div>
+              <div class="drawer-benefits-main">
+                <div class="drawer-benefits-negotiated">
+                  <span class="drawer-benefits-negotiated-label">Total negotiated rate</span>
+                  <span class="drawer-benefits-negotiated-value">$17,340</span>
+                </div>
+                <div class="drawer-benefits-bar" role="presentation">
+                  <span class="drawer-benefits-bar-teal" style="width: 77.7%;"></span>
+                  <span class="drawer-benefits-bar-dark" style="flex: 1;"></span>
+                </div>
+                <div class="drawer-benefits-rows">
+                  <div class="drawer-benefits-row">
+                    <span class="drawer-benefits-dot drawer-benefits-dot--teal"></span>
+                    <span class="drawer-benefits-row-label">Total you pay</span>
+                    <span class="drawer-benefits-row-value">$3,869</span>
+                  </div>
+                  <div class="drawer-benefits-row">
+                    <span class="drawer-benefits-dot drawer-benefits-dot--teal"></span>
+                    <span class="drawer-benefits-row-label">Your insurance covers</span>
+                    <span class="drawer-benefits-row-value">-$13,471</span>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-benefits-breakdown is-collapsed" id="drawerBenefitsBreakdown">
+                <button type="button" class="drawer-benefits-breakdown-header" id="drawerBenefitsBreakdownToggle" aria-expanded="false" aria-controls="drawerBenefitsBreakdownBody" aria-label="Your benefits breakdown, collapsed. Click to expand.">
+                  <span class="drawer-benefits-breakdown-icon" aria-hidden="true">
+                    <img src="assets/shield-check.png" alt="" class="drawer-benefits-breakdown-icon-img">
+                  </span>
+                  <div class="drawer-benefits-breakdown-title-wrap">
+                    <h4 class="drawer-benefits-breakdown-title">Your benefits breakdown</h4>
+                    <p class="drawer-benefits-breakdown-member">Member ID: 11000362778</p>
+                  </div>
+                  <span class="drawer-benefits-breakdown-caret" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>
+                  </span>
+                </button>
+                <div class="drawer-benefits-breakdown-body" id="drawerBenefitsBreakdownBody">
                 <div class="drawer-benefits-breakdown-row">
                   <span class="drawer-benefits-breakdown-label">Deductible</span>
                   <span class="drawer-benefits-breakdown-val">Met</span>
@@ -254,7 +892,8 @@
                 </div>
               </div>
             </div>
-            <p class="drawer-benefits-note">Since you've already met your deductible and are close to your out-of-pocket max, you only pay the remaining amount based on your co-insurance.</p>
+              <p class="drawer-benefits-note">Since you've already met your deductible and are close to your out-of-pocket max, you only pay the remaining amount based on your co-insurance.</p>
+            </div>
           </div>
           <div class="drawer-card drawer-card--cost-breakdown" id="drawerCostBreakdownCard" aria-hidden="true">
             <div class="drawer-cost-breakdown-header">
@@ -298,6 +937,41 @@
             </div>
             <p class="drawer-cost-breakdown-disclaimer">This estimate includes services commonly performed during this treatment. Facility fees cover hospital/facility charges; professional fees are paid to physicians and specialists.</p>
           </div>
+          <!-- Flow 2 (X-Ray): Select a Date & Time card (Figma 837-103946) -->
+          <div class="drawer-card drawer-card--date-time" id="drawerDateTimeCard" aria-hidden="true">
+            <div class="drawer-date-time-inner">
+              <h4 class="drawer-date-time-title">Select a Date &amp; Time</h4>
+              <div class="drawer-date-time-groups">
+                <div class="drawer-date-time-group">
+                  <div class="drawer-date-time-group-header">
+                    <span class="drawer-date-time-day">Today</span>
+                    <span class="drawer-date-time-dot" aria-hidden="true">•</span>
+                    <span class="drawer-date-time-date">2/12</span>
+                  </div>
+                  <div class="drawer-date-time-slots">
+                    <button type="button" class="drawer-date-time-slot">3:00 pm</button>
+                    <button type="button" class="drawer-date-time-slot">3:30 pm</button>
+                    <button type="button" class="drawer-date-time-slot is-selected">4:00 pm</button>
+                    <button type="button" class="drawer-date-time-slot">5:00 pm</button>
+                  </div>
+                </div>
+                <div class="drawer-date-time-group">
+                  <div class="drawer-date-time-group-header">
+                    <span class="drawer-date-time-day">Tomorrow</span>
+                    <span class="drawer-date-time-dot" aria-hidden="true">•</span>
+                    <span class="drawer-date-time-date">2/13</span>
+                  </div>
+                  <div class="drawer-date-time-slots">
+                    <button type="button" class="drawer-date-time-slot">10:00 am</button>
+                    <button type="button" class="drawer-date-time-slot">11:00 am</button>
+                    <button type="button" class="drawer-date-time-slot">3:00 pm</button>
+                    <button type="button" class="drawer-date-time-slot">4:00 pm</button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="drawer-date-time-more">View more times</button>
+            </div>
+          </div>
           <div class="drawer-card drawer-card--tips" id="drawerTipsCard" aria-hidden="true">
             <div class="drawer-tips-inner">
               <span class="drawer-tips-icon-wrap" aria-hidden="true">
@@ -333,6 +1007,15 @@
           <div class="drawer-footer-btns drawer-footer-btns-confirm">
             <button type="button" class="drawer-footer-btn drawer-footer-btn-secondary" id="drawerCancelBtn">Cancel</button>
             <button type="button" class="drawer-footer-btn drawer-footer-btn-primary" id="drawerConfirmEstimateBtn"><span class="drawer-footer-btn-primary-line">Confirm estimate</span></button>
+          </div>
+          <div class="drawer-footer-btns drawer-footer-btns-xray" id="drawerFooterBtnsXray">
+            <button type="button" class="drawer-footer-btn drawer-footer-btn-secondary" id="drawerLockPriceBtn">
+              <span class="drawer-footer-btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              Lock Price
+            </button>
+            <button type="button" class="drawer-footer-btn drawer-footer-btn-primary" id="drawerBookPayBtn">Book &amp; Pay Now</button>
           </div>
           <div class="drawer-footer-success" id="drawerFooterSuccess" aria-live="polite">
             <p class="drawer-success-text">Estimate confirmed!</p>

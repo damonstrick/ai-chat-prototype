@@ -5,8 +5,12 @@
   z-index: 0;
   background: #F8F7F1;
 }
+body.flow-anthropic .prototype-backdrop {
+  background: #FAF8F5;
+}
 
-/* View toggle – top-left, visible on hover (Slides | Prototype) */
+/* View toggle – top-left, visible on hover (Slides | Prototype).
+   Bar uses pointer-events: none so it never blocks clicks on the prototype (fixes desktop). */
 .view-toggle {
   position: fixed;
   top: 0;
@@ -18,6 +22,10 @@
   justify-content: flex-start;
   padding: 24px 0 0 24px;
   z-index: 11;
+  pointer-events: none;
+}
+.view-toggle:hover {
+  pointer-events: auto;
 }
 .view-toggle a,
 .view-toggle .view-toggle-btn {
@@ -49,6 +57,142 @@
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
+
+/* Nav menu: inside phone frame so on desktop it appears in the device */
+.nav-menu-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 110;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-radius: inherit;
+}
+.nav-menu-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.nav-menu-overlay:not(.is-open) {
+  pointer-events: none;
+}
+/* Desktop: panel looks like it's the phone screen (fills overlay, rounded to device) */
+.nav-menu-panel {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  overflow-y: auto;
+  box-shadow: none;
+  position: relative;
+  padding: 48px 24px 24px;
+}
+/* Desktop: nav fills the phone frame, looks like built-in screen */
+@media (min-width: 769px) {
+  .nav-menu-overlay {
+    padding: 0;
+    background: #fff;
+    backdrop-filter: none;
+  }
+  .nav-menu-panel {
+    border-radius: 0;
+    padding: 56px 24px 24px;
+  }
+}
+.nav-menu-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3a3a3c;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-menu-close:hover {
+  background: #f0f0f0;
+  color: #000;
+}
+.nav-menu-close svg {
+  width: 24px;
+  height: 24px;
+}
+.nav-menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.nav-menu-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.nav-menu-group-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8f8f8f;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  padding: 0 4px;
+  text-align: center;
+}
+.nav-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  min-height: 48px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #0d0d0d;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: background 0.15s ease;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.nav-menu-item:hover {
+  background: #f0f0f0;
+}
+.nav-menu-item:active {
+  background: #e5e5e7;
+}
+.nav-menu-item.is-active {
+  background: #EFF1F5;
+  color: #0d0d0d;
+  font-weight: 600;
+  font-size: 24px;
+}
+body.flow-anthropic .nav-menu-item.is-active {
+  background: #FAF8F5;
+}
+.nav-menu-close {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
 @font-face {
   font-family: 'GT Standard';
   src: url('fonts/GT-Standard-M-Standard-Light.woff2') format('woff2'),
@@ -89,6 +233,321 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Styrene (Anthropic flows) – ALC */
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-ThinItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-RegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Styrene';
+  src: url('fonts/styrene/StyreneALC-BlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Test Tiempos (Anthropic flows) – Text, Headline, Fine */
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-RegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-SemiboldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('fonts/tiempos/TestTiemposText-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-RegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-SemiboldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('fonts/tiempos/TestTiemposHeadline-BlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-RegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-SemiboldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Tiempos Fine';
+  src: url('fonts/tiempos/TestTiemposFine-BlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 * { box-sizing: border-box; }
 html, body {
   margin: 0;
@@ -97,6 +556,10 @@ html, body {
   font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #0d0d0d;
   overflow: hidden;
+  background: #F8F7F1;
+}
+body.flow-anthropic {
+  background: #FAF8F5;
 }
 
 /* Video as slide background (behind the mockup) */
@@ -153,7 +616,7 @@ html, body {
   opacity: 1;
 }
 
-/* Content on top of slide: centered phone mockup */
+/* Content on top of slide: centered phone mockup (explicit pointer-events so desktop clicks work) */
 .slide-content {
   position: relative;
   z-index: 1;
@@ -162,6 +625,7 @@ html, body {
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
+  pointer-events: auto;
 }
 
 /* Wrapper for zoom-in-on-top effect after full-screen transition */
@@ -194,6 +658,11 @@ html, body {
   display: flex;
   flex-direction: column;
   transition: height 0.5s ease, border-radius 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
+  pointer-events: auto;
+}
+.flow-anthropic .phone-frame,
+.flow-anthropic .phone-frame .chat-container {
+  background: #FAF8F5;
 }
 
 /* Initial state: only the input capsule visible (no frame, no background) */
@@ -234,6 +703,62 @@ html, body {
   opacity: 1;
   flex-shrink: 0;
   border-bottom: 1px solid #e3e7ea;
+}
+
+/* Flow-specific header: show generic or anthropic based on URL flow param */
+.header-anthropic {
+  display: none;
+}
+.flow-anthropic .header-generic {
+  display: none;
+}
+.flow-anthropic .header-anthropic {
+  display: flex;
+}
+.flow-anthropic .top-bar {
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: blur(10px);
+}
+.flow-anthropic .header-anthropic .header-center-anthropic {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: -0.43px;
+  color: #141413;
+  gap: 6px;
+}
+.header-anthropic-title {
+  letter-spacing: -0.85px;
+}
+.header-anthropic-version {
+  letter-spacing: -0.43px;
+}
+.header-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #141413;
+}
+.header-chevron svg {
+  width: 12px;
+  height: 7px;
+}
+.flow-anthropic .nav-icon-anthropic {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+}
+.flow-anthropic .nav-icon-anthropic .header-icon-img {
+  width: 44px;
+  height: 44px;
+  display: block;
+  object-fit: contain;
 }
 
 .header {
@@ -315,7 +840,7 @@ html, body {
   min-height: 0;
   min-width: 0;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: visible;
   padding: 16px;
   scroll-behavior: smooth;
   background: #EFF1F5;
@@ -323,6 +848,9 @@ html, body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   position: relative;
+}
+.flow-anthropic .chat-container {
+  overflow-x: visible;
 }
 .phone-frame .chat-container::-webkit-scrollbar {
   display: none;
@@ -353,6 +881,40 @@ html, body {
   text-align: center;
   max-width: 360px;
 }
+/* Anthropic flows: logo above text, Tiempos font */
+.chat-welcome-anthropic {
+  display: none;
+}
+.flow-anthropic .chat-welcome:not(.chat-welcome-anthropic) {
+  display: none;
+}
+.flow-anthropic .chat-welcome-anthropic {
+  display: flex;
+}
+.chat-welcome-anthropic-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 360px;
+}
+.chat-welcome-anthropic-logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+.chat-welcome-anthropic-text {
+  margin: 0;
+  font-family: 'Tiempos Text', 'Tiempos Headline', Georgia, serif;
+  font-size: 28px;
+  font-weight: 100;
+  line-height: 1.3;
+  letter-spacing: -0.43px;
+  color: rgba(61, 61, 58, 1);
+  text-align: center;
+}
 
 .message {
   margin-bottom: 16px;
@@ -380,10 +942,24 @@ html, body {
   color: #0d0d0d;
 }
 
+/* Anthropic flows: user prompt bubble (Figma 738-54223) */
+.flow-anthropic .bubble.user {
+  max-width: 289px;
+  padding: 10px 16px;
+  border-radius: 24px;
+  background: #efeee5;
+  font-family: 'Styrene', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 29px;
+  letter-spacing: -0.7px;
+  color: #141413;
+}
+
 /* AI message: left-aligned */
 .message.assistant {
   display: flex;
   justify-content: flex-start;
+  overflow: visible;
 }
 .bubble.assistant {
   max-width: 100%;
@@ -393,11 +969,32 @@ html, body {
   margin-bottom: 0;
   font-size: 17px;
   font-weight: 300;
-  line-height: 23px;
+  line-height: 28px;
   letter-spacing: -0.43px;
   color: #141413;
   background: transparent;
+  overflow: visible;
 }
+.bubble.assistant p,
+.bubble.assistant span,
+.bubble.assistant strong,
+.bubble.assistant ul,
+.bubble.assistant li {
+  line-height: 28px;
+}
+
+/* Anthropic flows: chat response in Tiempos Text Regular */
+.flow-anthropic .bubble.assistant,
+.flow-anthropic .bubble.assistant .text-block,
+.flow-anthropic .bubble.assistant .text-block p,
+.flow-anthropic .bubble.assistant ul,
+.flow-anthropic .bubble.assistant li {
+  font-family: 'Tiempos Text', Georgia, serif;
+  font-weight: 200;
+  line-height: 28px;
+  color: #141413;
+}
+
 .bubble.assistant .text-block {
   margin-bottom: 12px;
 }
@@ -450,7 +1047,7 @@ html, body {
   30% { transform: translateY(-2px); opacity: 1; }
 }
 
-/* Provider card – Figma 487-37654 */
+/* Provider card – Figma 487-37654 (base: generic flows) */
 .provider-card {
   background: #fff;
   border: 1px solid #e3e7ea;
@@ -499,8 +1096,94 @@ html, body {
   display: inline;
   vertical-align: middle;
 }
+
+/* Knee surgery flow (Generic Flow 1): provider carousel in assistant bubble */
+/* Full-bleed so cards can scroll to the edge of the screen (break out of chat padding) */
+.knee-provider-carousel {
+  margin: 24px -16px 0;
+  padding-left: 0;
+  padding-right: 0;
+  width: calc(100% + 32px);
+  overflow: visible;
+}
+.knee-provider-cards {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 0 16px 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
+  scroll-padding-inline: 16px;
+}
+.knee-provider-cards::-webkit-scrollbar {
+  display: none;
+}
+.knee-provider-card {
+  flex: 0 0 343px;
+  min-width: 280px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 0.5px solid #bbb;
+  background: #fff;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.knee-provider-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.knee-provider-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.knee-provider-card-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.knee-provider-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+}
+.knee-provider-card-rating .star {
+  color: #0d0d0d;
+  font-size: 13px;
+}
+.knee-provider-card-procedure {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: #3d3d3a;
+  margin: 0;
+}
+
 .provider-card-category {
   font-size: 13px;
+  font-weight: 400;
   color: #8f8f8f;
   margin-bottom: 12px;
 }
@@ -562,6 +1245,7 @@ html, body {
 }
 .provider-doctor-spec {
   font-size: 13px;
+  font-weight: 400;
   color: #8f8f8f;
   margin-top: 2px;
 }
@@ -584,10 +1268,912 @@ html, body {
 }
 .provider-disclaimer {
   font-size: 11px;
+  font-weight: 400;
   color: #8f8f8f;
   margin-top: 10px;
   line-height: 1.35;
   text-align: center;
+}
+
+/* Anthropic flows: provider card (Styrene, warm palette) */
+.flow-anthropic .provider-card {
+  background: rgba(248, 246, 243, 1);
+}
+.flow-anthropic .provider-card-title {
+  font-weight: 500;
+}
+.flow-anthropic .provider-card-rating {
+  font-family: 'Styrene', -apple-system, sans-serif;
+}
+.flow-anthropic .provider-card-category {
+  font-family: 'Styrene', -apple-system, sans-serif;
+}
+.flow-anthropic .provider-card-pill {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  background: rgba(248, 246, 243, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
+  border-image: none;
+}
+.flow-anthropic .provider-cost-label {
+  font-family: 'Styrene', -apple-system, sans-serif;
+}
+.flow-anthropic .provider-cost-value {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-weight: 500;
+}
+.flow-anthropic .provider-doctor-name {
+  font-weight: 500;
+}
+.flow-anthropic .provider-doctor-spec {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-weight: 300;
+}
+.flow-anthropic .provider-card .btn-primary {
+  background: rgba(20, 20, 19, 1);
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-weight: 400;
+}
+.flow-anthropic .provider-disclaimer {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-weight: 300;
+}
+
+/* Map component (Anthropic flows) – Figma 741-68784 */
+.map-component-wrap {
+  display: none;
+  margin: 16px 0;
+}
+.flow-anthropic .map-component-wrap {
+  display: block;
+}
+.flow-anthropic .map-component-wrap[aria-hidden="true"] {
+  display: none;
+}
+.flow-anthropic .map-component-wrap[aria-hidden="false"] {
+  display: block;
+}
+
+/* Standalone provider card in chat (same as map-card, for testing) */
+.chat-card-wrap {
+  display: none;
+  margin: 16px 0;
+}
+.flow-anthropic .chat-card-wrap[aria-hidden="true"] {
+  display: none;
+}
+.flow-anthropic .chat-card-wrap[aria-hidden="false"] {
+  display: block;
+}
+.chat-card-wrap .map-card {
+  max-width: 100%;
+  flex: none;
+  width: 100%;
+  box-shadow: none;
+}
+
+/* ========== Generic Flow 1: autocomplete bubble card (above input) ========== */
+.autocomplete-bubble {
+  display: none;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.35;
+  color: #0d0d0d;
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease;
+}
+body[data-flow="generic-1"] .autocomplete-bubble {
+  display: block;
+}
+#autocompleteBubbleFlow1Second,
+#autocompleteBubbleFlow1Third,
+#autocompleteBubbleFlow1Fourth {
+  display: none;
+}
+body[data-flow="generic-1"] #autocompleteBubbleFlow1Second.is-visible,
+body[data-flow="generic-1"] #autocompleteBubbleFlow1Third.is-visible,
+body[data-flow="generic-1"] #autocompleteBubbleFlow1Fourth.is-visible {
+  display: block;
+}
+body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
+  display: block;
+}
+.autocomplete-bubble--flow2 {
+  display: none;
+}
+.autocomplete-bubble:hover,
+.autocomplete-bubble:focus {
+  background: #fff;
+  outline: none;
+}
+.autocomplete-bubble.is-hidden {
+  display: none !important;
+}
+
+/* ========== Generic Flow 2: X-Ray file attachment chip ========== */
+.xray-file-attachment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #f8f7f1;
+  border: 0.5px solid #bbb;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.xray-file-attachment-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary, #0d0d0d);
+}
+.xray-file-attachment-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.xray-file-attachment-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 0;
+}
+.xray-file-attachment-name {
+  font-family: 'GT Standard', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: var(--text-primary, #0d0d0d);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.xray-file-attachment-ext {
+  font-family: 'GT Standard', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: #3d3d3a;
+}
+
+/* ========== Generic flow cards (separate from Anthropic – GT Standard styling) ========== */
+/* Map and cards: hidden by default. Show only when needed via JS (e.g. after user submits). */
+.generic-map-component-wrap,
+.generic-chat-card-wrap,
+.generic-chat-card-cta-wrap {
+  display: none;
+  margin: 16px 0;
+}
+/* Map inside assistant bubble (e.g. ACL response on Flow 1): show only name, procedure, star rating on cards */
+.bubble.assistant .generic-map-component-wrap {
+  display: block !important;
+  margin-top: 16px;
+}
+.bubble.assistant .generic-map-component-wrap .generic-map-cards-row {
+  display: flex;
+}
+.bubble.assistant .generic-map-component-wrap.price-version .generic-map-card-top {
+  flex: none;
+}
+.bubble.assistant .generic-map-component-wrap.price-version .generic-map-card-head {
+  flex: none;
+}
+.bubble.assistant .generic-map-component-wrap.price-version .generic-map-card-service {
+  margin-top: 0;
+  padding-top: 0;
+}
+.bubble.assistant .generic-map-component-wrap:not(.price-version):not(.generic-map-component-wrap--xray) .generic-map-card-bottom {
+  display: none !important;
+}
+/* CTA card (provider card with Book & Pay) when shown inside assistant bubble (e.g. Post Street estimate) */
+.bubble.assistant .generic-chat-card-cta-wrap {
+  display: block !important;
+  margin-top: 16px;
+}
+
+/* Lock Price card: same as map card (provider + Cigna + price) + Lock Price button (e.g. Post Street estimate) */
+.lock-price-card-wrap {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: #fff;
+  border: 1px solid #cdd4e1;
+  border-radius: 24px;
+  padding: 16px;
+  overflow: hidden;
+}
+.lock-price-card-wrap .generic-map-card {
+  flex: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.lock-price-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+.lock-price-card-btn {
+  display: block;
+  width: 100%;
+  height: 48px;
+  border: 0.5px solid rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  background: #01262b;
+  color: #fff;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.43px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.lock-price-card-btn:hover {
+  opacity: 0.9;
+}
+.lock-price-card-btn:active {
+  opacity: 0.85;
+}
+.lock-price-card-disclaimer {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #8f8f8f;
+  text-align: center;
+  margin: 0;
+}
+/* Sub-bullets in assistant response (e.g. procedure complexity) */
+.bubble.assistant ul li.sub-bullet {
+  padding-left: 1.25em;
+  list-style-type: circle;
+}
+.bubble.assistant .generic-map-component-wrap .generic-map-card-top {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.bubble.assistant .generic-map-component-wrap .generic-map-card-head {
+  flex: 1;
+  min-height: 0;
+}
+.bubble.assistant .generic-map-component-wrap .generic-map-card-service {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.generic-map-component {
+  border: 0.5px solid #d2d1ce;
+  border-radius: 16px;
+  overflow: visible;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.generic-map-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 8px 12px;
+  background: #fff;
+  border-bottom: 0.5px solid #d2d1ce;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+.generic-map-pin {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #141413;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.generic-map-pin svg {
+  width: 100%;
+  height: 100%;
+}
+.generic-map-header-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: #141413;
+  margin: 0;
+}
+.generic-map-body {
+  position: relative;
+  min-height: 560px;
+  overflow: visible;
+}
+.generic-map-image-area {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0 0 16px 16px;
+}
+.generic-map-google-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #e8eaed;
+}
+.generic-map-screenshot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.generic-map-pills {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.generic-map-pill {
+  position: absolute;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  background: #fff;
+  border: 0.87px solid #dcdfe4;
+  box-shadow: 0 7px 8px rgba(0, 0, 0, 0.14);
+  color: #0d0d0d;
+  transform: translate(-50%, -50%);
+}
+.generic-map-pill.is-selected {
+  background: #141413;
+  color: #fff;
+  border-color: #dcdfe4;
+}
+.generic-map-cards-row {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  padding: 0 0 0 16px;
+  z-index: 1;
+  pointer-events: auto;
+  overflow: visible;
+}
+.generic-map-cards {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 24px 16px 24px 32px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: -24px 0 -24px -16px;
+  scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
+  scroll-padding-inline: 32px 16px;
+}
+.generic-map-cards::-webkit-scrollbar {
+  display: none;
+}
+.generic-map-card {
+  flex: 0 0 343px;
+  min-width: 280px;
+  padding: 16px;
+  border-radius: 24px;
+  border: 0.5px solid #bbb;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.generic-chat-card-wrap .generic-map-card {
+  max-width: 100%;
+  flex: none;
+  width: 100%;
+  box-shadow: none;
+}
+.generic-map-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+}
+.generic-map-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.generic-map-card-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  color: #0d0d0d;
+  margin: 0;
+}
+.generic-map-card-rating {
+  flex-shrink: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+}
+.generic-map-card-rating .star {
+  color: #0d0d0d;
+}
+.generic-map-card-service {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: #3d3d3a;
+  margin: 0;
+}
+.generic-map-card-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+.generic-map-card-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  border: 1px solid #0d0d0d;
+  background-color: rgba(255, 255, 255, 1);
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  color: #0d0d0d;
+  box-sizing: border-box;
+}
+.generic-map-card-pill svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+.generic-map-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.generic-map-card-price-label {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: rgba(61, 61, 58, 0.5);
+}
+.generic-map-card-price-value {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+}
+.generic-map-google-logo {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 2;
+  font-size: 10px;
+  color: #5f6368;
+  font-family: -apple-system, sans-serif;
+}
+
+/* Generic flow: CTA card (image + Book & Pay) */
+.generic-map-card-cta {
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 24px;
+  padding: 24px;
+  background-color: rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 100%;
+  box-shadow: none;
+}
+.generic-map-card-cta-top {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.generic-map-card-cta-image-wrap {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e8eaed;
+}
+.generic-map-card-cta-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.generic-map-card-cta-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: space-between;
+  min-height: 100px;
+}
+.generic-map-card-cta-title {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 29px;
+  letter-spacing: -0.43px;
+  color: #0d0d0d;
+  margin: 0;
+}
+.generic-map-card-cta-service {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 29px;
+  letter-spacing: -0.43px;
+  color: rgba(20, 20, 19, 0.5);
+  margin: 0;
+}
+.generic-map-card-cta-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+.generic-map-card-cta-locked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+}
+.generic-map-card-cta-locked span {
+  font-size: 15px;
+}
+.generic-map-card-cta-locked-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: #0d0d0d;
+}
+.generic-map-card-cta-price {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+  white-space: nowrap;
+}
+.generic-map-card-cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+.generic-map-card-cta-btn {
+  display: block;
+  width: 100%;
+  height: 48px;
+  border: 0.5px solid rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  background: #141413;
+  color: #faf8f5;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.43px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.generic-map-card-cta-btn:hover {
+  opacity: 0.9;
+}
+.generic-map-card-cta-btn:active {
+  opacity: 0.85;
+}
+.generic-map-card-cta-disclaimer {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #8f8f8f;
+  text-align: center;
+  margin: 0;
+}
+
+.map-component {
+  border: 0.5px solid #d2d1ce;
+  border-radius: 16px;
+  overflow: visible;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.map-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 8px 12px;
+  background: #fff;
+  border-bottom: 0.5px solid #d2d1ce;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+.map-pin {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #141413;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.map-pin svg {
+  width: 100%;
+  height: 100%;
+}
+.map-header-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: #141413;
+  margin: 0;
+}
+
+.map-body {
+  position: relative;
+  min-height: 420px;
+  overflow: visible;
+}
+
+.map-image-area {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0 0 16px 16px;
+}
+.map-google-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #e8eaed;
+}
+.map-screenshot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.map-pills {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.map-pill {
+  position: absolute;
+  padding: 5px 9px;
+  border-radius: 32px;
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-size: 10.44px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  background: #fff;
+  border: 0.87px solid #dcdfe4;
+  box-shadow: 0 7px 8px rgba(0, 0, 0, 0.14);
+  color: #0d0d0d;
+  transform: translate(-50%, -50%);
+}
+.map-pill.is-selected {
+  background: #141413;
+  color: #fff;
+  border-color: #dcdfe4;
+  left: 10%;
+  top: 41%;
+}
+
+.map-cards-row {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  padding: 0 0 0 16px;
+  z-index: 1;
+  pointer-events: auto;
+  overflow: visible;
+}
+.map-cards {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 24px 16px 24px 32px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: -24px 0 -24px -16px;
+  scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
+  scroll-padding-inline: 32px 16px;
+}
+.map-cards::-webkit-scrollbar {
+  display: none;
+}
+.map-card {
+  flex: 0 0 343px;
+  min-width: 280px;
+  padding: 16px;
+  border-radius: 24px;
+  border: 0.5px solid #bbb;
+  background: #faf8f5;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.map-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.map-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.map-card-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'Tiempos Headline', 'Tiempos Text', Georgia, serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  color: #0d0d0d;
+  margin: 0;
+}
+.map-card-rating {
+  flex-shrink: 0;
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+}
+.map-card-rating .star {
+  color: #0d0d0d;
+}
+.map-card-service {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: #3d3d3a;
+  margin: 0;
+}
+.map-card-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+.map-card-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  border: 1px solid #0d0d0d;
+  background: #faf8f5;
+  font-size: 11.563px;
+  font-weight: 400;
+  line-height: 1;
+  color: #0d0d0d;
+}
+.map-card-pill svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+.map-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.map-card-price-label {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: rgba(61, 61, 58, 0.5);
+}
+.map-card-price-value {
+  font-family: 'Styrene', -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  color: #0d0d0d;
+}
+
+.map-google-logo {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 2;
+  font-size: 10px;
+  color: #5f6368;
+  font-family: -apple-system, sans-serif;
 }
 
 /* Turquoise / Sources */
@@ -618,6 +2204,9 @@ html, body {
   gap: 12px;
   flex-wrap: wrap;
 }
+.bubble.assistant > .sources-row {
+  margin-top: 16px;
+}
 .sources-pill {
   display: inline-flex;
   align-items: center;
@@ -630,6 +2219,9 @@ html, body {
   color: #8e8e93;
   font-size: 13px;
   font-weight: 500;
+}
+.flow-anthropic .sources-pill {
+  background-color: rgba(249, 247, 244, 1);
 }
 .sources-pill-icons {
   display: flex;
@@ -708,7 +2300,12 @@ html, body {
   background: #EFF1F5;
   padding: 12px 16px 40px;
 }
+.flow-anthropic .input-area {
+  background: #FAF8F5;
+}
 .input-suggestion {
+  position: relative;
+  z-index: 1;
   display: block;
   margin-bottom: 10px;
   padding: 10px 14px;
@@ -716,20 +2313,23 @@ html, body {
   line-height: 1.35;
   color: #0d0d0d;
   background: #fff;
-  border: 1px solid #e3e7ea;
+  border: none;
   border-radius: 12px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease;
 }
 .input-suggestion:hover,
 .input-suggestion:focus {
-  background: #f5f5f7;
-  border-color: #c7c7cc;
+  background: #fff;
   outline: none;
 }
 .input-suggestion.is-hidden {
   display: none;
+}
+/* Autocomplete suggestion: Styrene font only for Anthropic flows */
+.flow-anthropic .input-suggestion {
+  font-family: 'Styrene', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 .input-row {
   display: flex;
@@ -741,32 +2341,54 @@ html, body {
   min-height: 52px;
   border: 1px solid #e3e7ea;
 }
-.input-btn-icon.tap-submit {
-  animation: iconTap 0.32s ease-out;
+/* Anthropic only: show composer input, hide generic */
+.input-row-anthropic {
+  display: none;
 }
-@keyframes iconTap {
-  0% { transform: scale(1); }
-  18% { transform: scale(0.82); }
-  45% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+.flow-anthropic .input-row-generic {
+  display: none;
 }
-.input-btn-plus {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
+.flow-anthropic .input-row-anthropic {
+  display: flex;
+}
+/* Composer input – Anthropic flows only (Figma 735:39603) */
+.input-row-composer {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  padding: 9px 8px 8px 12px;
+  min-height: 0;
+  background: rgba(255, 255, 255, 0.85);
+  border: 0.75px solid rgba(255, 255, 255, 1);
+  border-radius: 24px;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+.input-composer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.input-composer-field-wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0;
-  color: #0d0d0d;
+  min-height: 24px;
+  padding: 10px 0;
 }
-.input-btn-plus svg {
-  width: 24px;
-  height: 24px;
+.input-composer-field-wrap .input-field {
+  flex: 1;
+  min-width: 0;
+}
+.input-composer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.input-composer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .input-field {
   flex: 1;
@@ -782,15 +2404,84 @@ html, body {
   overflow-y: hidden;
   min-height: 24px;
   padding: 0;
-  font-family: inherit;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 .input-field::placeholder {
   color: #8f8f8f;
+}
+.input-row-composer .input-field {
+  line-height: 24px;
+  letter-spacing: -0.32px;
+  font-family: 'Styrene', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.input-row-composer .input-field::placeholder {
+  color: #73716b;
+}
+.input-row-composer .input-btn-plus {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  color: #0d0d0d;
+  background: transparent;
+  border: none;
+}
+.input-row-composer .input-btn-plus svg,
+.input-row-composer .input-btn-plus .input-btn-icon-img {
+  width: 24px;
+  height: 24px;
+}
+.input-row-composer .input-btn-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  background: none;
+  border: none;
+  color: #0d0d0d;
+}
+.input-row-composer .input-btn-mic svg,
+.input-row-composer .input-btn-mic .input-btn-icon-img {
+  width: 36px;
+  height: 36px;
+}
+.input-row-composer .input-btn-send .input-btn-icon-img {
+  width: 36px;
+  height: 36px;
+}
+.input-btn-icon.tap-submit {
+  animation: iconTap 0.32s ease-out;
+}
+@keyframes iconTap {
+  0% { transform: scale(1); }
+  18% { transform: scale(0.82); }
+  45% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.input-btn-plus {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #0d0d0d;
+}
+.input-btn-plus svg {
+  width: 24px;
+  height: 24px;
 }
 .input-btn-icon {
   width: 40px;
   height: 40px;
   min-width: 40px;
+  min-height: 40px;
   border: none;
   background: none;
   padding: 0;
@@ -986,6 +2677,265 @@ html, body {
 }
 .drawer-overlay.drawer-after-loading .drawer-footer-btns-confirm {
   display: flex !important;
+}
+.drawer-footer-btns-xray {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-8, 16px);
+  width: 100%;
+}
+.drawer-footer-btn-icon {
+  display: inline-flex;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.drawer-overlay.drawer-xray-mode .drawer-footer-btns-initial,
+.drawer-overlay.drawer-xray-mode .drawer-footer-btns-confirm {
+  display: none !important;
+}
+.drawer-overlay.drawer-xray-mode .drawer-footer-btns-xray {
+  display: flex !important;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility {
+  display: flex !important;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--benefits {
+  display: none !important;
+}
+
+/* First card in X-Ray drawer (Figma 836-55353): Cost Share Expanded – top + facility only */
+.drawer-overlay.drawer-xray-mode .drawer-card--result {
+  position: relative;
+  overflow: hidden;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-top {
+  padding: 24px;
+  border-bottom: 1px solid var(--stroke-light, #e3e7ea);
+  flex-direction: row;
+  gap: 2px;
+  position: relative;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-top::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 101px;
+  background: linear-gradient(180deg, rgba(1, 38, 43, 0.03) 0%, transparent 100%);
+  pointer-events: none;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-left {
+  gap: 2px;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-meta {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.28px;
+  color: rgba(1, 38, 43, 0.5);
+  gap: 4px;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-meta .drawer-card-meta-icon {
+  width: 12px;
+  height: 12px;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-title {
+  font-family: 'GT Standard', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #01262b;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-price-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-price-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(1, 38, 43, 0.5);
+  margin-bottom: 0;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-price {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+  color: #01262b;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-result-cost-share-body {
+  display: none !important;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-divider {
+  display: none !important;
+}
+/* X-Ray result card facility block: Figma 841-103983 – logo+name row, then address (pin+text), then stars */
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 24px;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility .drawer-card-facility-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility .drawer-card-facility-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility .drawer-card-result-facility-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility .drawer-card-facility-name {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary, #121313);
+  margin: 0;
+}
+/* Address row: pin + text (Figma row 2) */
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility .drawer-card-result-address {
+  display: flex;
+  align-items: center;
+  gap: 3.5px;
+  font-size: 12px;
+  line-height: 17.4px;
+  color: #373c42;
+  margin: 0;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility .drawer-card-result-pin {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+/* Stars row (Figma row 3) */
+.drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility .drawer-card-result-stars {
+  font-size: 14px;
+  line-height: 1;
+}
+.drawer-card--xray-benefits {
+  display: none;
+  background: #fff;
+  border: 1px solid var(--stroke-light, #e3e7ea);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--xray-benefits {
+  display: block !important;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--xray-benefits .drawer-result-cost-share-body {
+  display: flex !important;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+/* X-Ray/Aetna card (Figma 837-55392): show main block, hide Cigna logo, collapse breakdown */
+.drawer-overlay.drawer-xray-mode .drawer-card--xray-benefits .drawer-result-cost-share-cigna .drawer-result-cost-share-cigna-logo {
+  display: none;
+}
+.drawer-result-cost-share-xray-main {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--xray-benefits .drawer-result-cost-share-xray-main {
+  display: flex !important;
+}
+.drawer-result-cost-share-negotiated {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+}
+.drawer-result-cost-share-negotiated-label {
+  font-weight: 400;
+}
+.drawer-result-cost-share-negotiated-value {
+  font-weight: 600;
+}
+.drawer-result-cost-share-bar {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  width: 100%;
+  height: 7px;
+  border-radius: 32px;
+  overflow: hidden;
+}
+.drawer-result-cost-share-bar-teal {
+  background: #218c88;
+  border-radius: 32px;
+}
+.drawer-result-cost-share-bar-dark {
+  background: #183a36;
+  border-radius: 32px;
+}
+.drawer-result-cost-share-dotted-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+.drawer-result-cost-share-dotted-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+}
+.drawer-result-cost-share-dotted-row .drawer-result-cost-share-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #218c88;
+}
+.drawer-result-cost-share-dotted-label {
+  flex: 1;
+  font-weight: 400;
+}
+.drawer-result-cost-share-dotted-value {
+  font-weight: 600;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--xray-benefits .drawer-result-cost-share-calc-body {
+  display: none !important;
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--xray-benefits .drawer-result-cost-share-calc {
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface-accent, #f8f8fa);
+  border: 1px solid var(--surface-border, #dddfe4);
+}
+.drawer-overlay.drawer-xray-mode .drawer-card--xray-benefits .drawer-result-cost-share-calc-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #dcdfe4;
+}
+/* Flow 2 cost breakdown (Figma 837-87756): Total Negotiated Rate label */
+.drawer-overlay.drawer-xray-mode .drawer-card--cost-breakdown .drawer-cost-breakdown-case-rate {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-quarternary, #89989b);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-skip-ink: none;
 }
 .drawer-footer-success {
   display: none;
@@ -1320,9 +3270,16 @@ html, body {
 .drawer-card--benefits {
   display: none;
   background: #fff;
-  padding: 0;
-  border: 1px solid #E3E7EA;
+  padding: 24px;
+  border: 1px solid var(--stroke-light, #e3e7ea);
   border-radius: 24px;
+  overflow: hidden;
+}
+.drawer-card--benefits .drawer-benefits-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
 .drawer-card--tips {
   display: none;
@@ -1331,16 +3288,126 @@ html, body {
   border: none;
   border-radius: 24px;
 }
+/* Flow 2: Select a Date & Time card (Figma 837-103946) – hidden unless xray mode */
+.drawer-card--date-time {
+  display: none;
+  background: #fff;
+  border: 1px solid var(--stroke-light, #e3e7ea);
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 24px;
+}
+.drawer-date-time-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.drawer-date-time-title {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #18323a;
+}
+.drawer-date-time-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.drawer-date-time-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+.drawer-date-time-group-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.drawer-date-time-day,
+.drawer-date-time-date {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary, #121313);
+}
+.drawer-date-time-dot {
+  font-size: 10px;
+  letter-spacing: -0.7px;
+  color: #141413;
+}
+.drawer-date-time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.drawer-date-time-slot {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-primary, #121313);
+  background: transparent;
+  border: 1px solid var(--text-primary, #121313);
+  border-radius: 8px;
+  cursor: pointer;
+  appearance: none;
+}
+.drawer-date-time-slot.is-selected {
+  background: #18323a;
+  border-color: #18323a;
+  color: #fff;
+}
+.drawer-date-time-more {
+  margin: 0;
+  padding: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary, #121313);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: left;
+  appearance: none;
+}
 .drawer-overlay:not(.drawer-after-loading) .drawer-card--cost-breakdown {
   display: none !important;
 }
-.drawer-overlay.drawer-after-loading .drawer-card:not(.drawer-card--result):not(.drawer-card--benefits):not(.drawer-card--cost-breakdown):not(.drawer-card--tips) {
+.drawer-overlay.drawer-after-loading .drawer-card:not(.drawer-card--result):not(.drawer-card--benefits):not(.drawer-card--xray-benefits):not(.drawer-card--cost-breakdown):not(.drawer-card--date-time):not(.drawer-card--tips):not(.drawer-card--lock-price-detail):not(.drawer-card--lock-price-doctor) {
   display: none !important;
 }
 .drawer-overlay.drawer-after-loading .drawer-card--result,
 .drawer-overlay.drawer-after-loading .drawer-card--benefits,
 .drawer-overlay.drawer-after-loading .drawer-card--cost-breakdown,
 .drawer-overlay.drawer-after-loading .drawer-card--tips {
+  display: block !important;
+}
+/* Flow 2 (X-Ray): show Aetna benefits card, hide generic benefits card */
+.drawer-overlay.drawer-after-loading.drawer-xray-mode .drawer-card--xray-benefits {
+  display: block !important;
+}
+.drawer-overlay.drawer-after-loading.drawer-xray-mode .drawer-card--benefits {
+  display: none !important;
+}
+/* Flow 2 (X-Ray): show Select a Date & Time card under Primary Service Cost */
+.drawer-overlay.drawer-after-loading.drawer-xray-mode .drawer-card--date-time {
+  display: block !important;
+}
+/* Show lock-price detail + doctor cards only in lock-price mode */
+.drawer-overlay.drawer-after-loading.drawer-lock-price-mode .drawer-card--lock-price-detail {
+  display: flex !important;
+}
+.drawer-overlay.drawer-after-loading.drawer-lock-price-mode .drawer-card--lock-price-doctor {
   display: block !important;
 }
 .drawer-overlay.drawer-after-loading .drawer-body-cards-helper {
@@ -1399,7 +3466,551 @@ html, body {
 .drawer-card-result-price {
   font-size: 22px;
   font-weight: 600;
+  line-height: 1.3;
   color: #16696d;
+}
+/* Cost Share Expanded layout (Figma 727-20824): result card header only, no facility/address/stars */
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-top {
+  padding: 24px;
+  border-bottom: 1px solid var(--stroke-light, #e3e7ea);
+  gap: 2px;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-left {
+  gap: 2px;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-meta {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.28px;
+  color: var(--text-quarternary, #89989b);
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--text-primary, #121313);
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-price-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-price-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #121313);
+  margin-bottom: 0;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-price {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+  color: var(--text-primary, #121313);
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-divider,
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-facility {
+  display: none !important;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-result-cost-share-body {
+  display: flex !important;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--benefits {
+  display: none !important;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-card--lock-price-detail {
+  display: flex !important;
+}
+/* Lock-price detail card (Figma 811-132034): segment control + content + disclaimer */
+.drawer-card--lock-price-detail {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid var(--stroke-light, #e3e7ea);
+  border-radius: 24px;
+}
+.drawer-lock-detail-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 8px;
+  background: var(--secondary-lighten-7, #f0f2f2);
+  border-radius: 8px;
+  width: 100%;
+}
+.drawer-lock-detail-tab {
+  appearance: none;
+  flex: 1 1 0;
+  min-height: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.18px;
+  color: var(--text-secondary, #4b595c);
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.drawer-lock-detail-tab:hover {
+  color: var(--text-primary, #121313);
+}
+.drawer-lock-detail-tab.is-selected {
+  background: #fff;
+  color: var(--text-primary, #121313);
+  border-radius: 8px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
+}
+.drawer-lock-detail-panel {
+  display: none;
+}
+.drawer-lock-detail-panel.is-active {
+  display: block;
+}
+.drawer-lock-detail-panel[aria-hidden="true"] {
+  display: none !important;
+}
+.drawer-lock-detail-section {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--stroke-light, #e3e7ea);
+}
+.drawer-lock-detail-section + .drawer-lock-detail-section {
+  padding-top: 16px;
+  margin-top: 0;
+}
+.drawer-lock-detail-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.drawer-lock-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.drawer-lock-detail-title {
+  flex: 1;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--text-primary, #121313);
+}
+.drawer-lock-detail-price {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 32px;
+  color: var(--text-primary, #121313);
+  flex-shrink: 0;
+}
+.drawer-lock-detail-negotiated {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+}
+.drawer-lock-detail-negotiated-label {
+  font-weight: 400;
+}
+.drawer-lock-detail-negotiated-value {
+  font-weight: 600;
+}
+.drawer-lock-detail-bar {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  height: 7px;
+  border-radius: 32px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.drawer-lock-detail-bar-teal {
+  background: #218c88;
+  border-radius: 32px;
+  flex-shrink: 0;
+}
+.drawer-lock-detail-bar-dark {
+  background: #183a36;
+  border-radius: 32px;
+  min-width: 0;
+}
+.drawer-lock-detail-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.drawer-lock-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.drawer-lock-detail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.drawer-lock-detail-dot--teal {
+  background: #218c88;
+}
+.drawer-lock-detail-dot--dark {
+  background: #183a36;
+}
+.drawer-lock-detail-row-label {
+  flex: 1;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+}
+.drawer-lock-detail-row-value {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+  flex-shrink: 0;
+}
+.drawer-lock-detail-disclaimer {
+  margin: 0;
+  padding: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-tertiary, #6e8081);
+  text-align: center;
+}
+/* Lock-price doctor card (Figma 798-96754): Your Doctor + facility */
+.drawer-card--lock-price-doctor {
+  display: none;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #E3E7EA;
+  border-radius: 24px;
+}
+.drawer-doctor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.drawer-doctor-title {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #19333b;
+}
+.drawer-doctor-edit {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #0d0d0d;
+}
+.drawer-doctor-edit svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+.drawer-doctor-block {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--stroke-light, #e3e7ea);
+}
+.drawer-doctor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e3e7ea;
+  flex-shrink: 0;
+}
+.drawer-doctor-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  padding-right: 24px;
+}
+.drawer-doctor-name {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  color: var(--text-primary, #0d0d0d);
+}
+.drawer-doctor-specialty {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #3d3d3a;
+  letter-spacing: -0.6px;
+}
+.drawer-doctor-verified {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #121313;
+}
+.drawer-doctor-verified svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+.drawer-doctor-meta {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.drawer-doctor-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.drawer-doctor-meta-item:first-child {
+  flex: 1;
+  min-width: 120px;
+}
+.drawer-doctor-meta-label {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 21px;
+  color: rgba(61, 61, 58, 0.5);
+  letter-spacing: -0.31px;
+}
+.drawer-doctor-meta-value {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  color: var(--text-primary, #0d0d0d);
+}
+.drawer-doctor-meta-value .drawer-doctor-star {
+  margin-left: 2px;
+}
+.drawer-doctor-facility {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--stroke-light, #e3e7ea);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.drawer-doctor-facility-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.drawer-doctor-facility-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.drawer-doctor-facility-name {
+  margin: 0;
+  flex: 1;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary, #121313);
+}
+.drawer-doctor-address {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17px;
+  color: #373c42;
+}
+.drawer-doctor-pin {
+  flex-shrink: 0;
+  color: #373c42;
+}
+.drawer-doctor-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.drawer-doctor-stars .drawer-doctor-star {
+  font-size: 14px;
+  line-height: 1;
+}
+.drawer-doctor-stars .drawer-doctor-star.filled {
+  color: #d4a017;
+}
+.drawer-doctor-stars .drawer-doctor-star:not(.filled) {
+  color: #e3e7ea;
+}
+/* Cost Share body: Cigna row (Figma 798-96632) */
+.drawer-result-cost-share-body {
+  display: none;
+}
+.drawer-result-cost-share-cigna {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.drawer-result-cost-share-cigna-logo {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.drawer-result-cost-share-cigna-plan {
+  flex: 1;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--text-primary, #121313);
+}
+.drawer-result-cost-share-edit {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #121313;
+}
+.drawer-result-cost-share-edit svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+/* Calculator block */
+.drawer-result-cost-share-calc {
+  background: var(--surface-accent, #f8f8fa);
+  border: 1px solid var(--surface-border, #dddfe4);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.drawer-result-cost-share-calc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 1px solid #dcdfe4;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+.drawer-result-cost-share-calc-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.drawer-result-cost-share-calc-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.drawer-result-cost-share-calc-title {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+}
+.drawer-result-cost-share-calc-member {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-tertiary, #6e8081);
+}
+.drawer-result-cost-share-calc-caret {
+  flex-shrink: 0;
+  color: #121313;
+}
+.drawer-result-cost-share-calc-caret svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+.drawer-result-cost-share-calc-body {
+  padding: 12px 16px;
+  border-bottom: 1px solid #dcdfe4;
+}
+.drawer-result-cost-share-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 0 8px;
+}
+.drawer-result-cost-share-row:last-child {
+  padding-bottom: 0;
+}
+.drawer-result-cost-share-label {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+}
+.drawer-result-cost-share-val {
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-primary, #121313);
+  flex-shrink: 0;
+}
+/* Collapsed state for cost-share breakdown */
+.drawer-result-cost-share-calc.is-collapsed .drawer-result-cost-share-calc-body {
+  display: none;
+}
+.drawer-result-cost-share-calc.is-collapsed .drawer-result-cost-share-calc-caret svg {
+  transform: rotate(180deg);
 }
 .drawer-card--result .drawer-card-divider {
   margin: 0 24px;
@@ -1445,21 +4056,23 @@ html, body {
   color: #e3e7ea;
 }
 
-/* Benefits card after loading (Figma 493-38318) */
+/* Benefits card (Figma 837-55392) */
 .drawer-benefits-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 20px 24px 16px;
+  gap: 8px;
+  width: 100%;
 }
 .drawer-benefits-plan {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
-  color: #121313;
+  line-height: 24px;
+  color: #19333b;
+  flex: 1;
+  min-width: 0;
 }
 .drawer-benefits-plan-icon {
   width: 24px;
@@ -1476,8 +4089,8 @@ html, body {
   display: block;
 }
 .drawer-benefits-edit {
-  width: 32px;
-  height: 32px;
+  width: 16px;
+  height: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1487,57 +4100,71 @@ html, body {
   cursor: pointer;
   padding: 0;
   border-radius: 8px;
+  flex-shrink: 0;
+}
+.drawer-benefits-edit svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 .drawer-benefits-edit:hover {
   color: #121313;
   background: #f0f0f0;
 }
+.drawer-benefits-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
 .drawer-benefits-negotiated {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 0 24px 8px;
-}
-.drawer-benefits-negotiated-label {
-  font-size: 15px;
-  font-weight: 400;
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
   color: #121313;
 }
+.drawer-benefits-negotiated-label {
+  font-weight: 400;
+}
 .drawer-benefits-negotiated-value {
-  font-size: 17px;
   font-weight: 600;
-  color: rgba(25, 51, 59, 1);
 }
 .drawer-benefits-bar {
   display: flex;
-  gap: 5px;
-  height: 8px;
-  border-radius: 4px;
+  gap: 0;
+  width: 100%;
+  height: 7px;
+  border-radius: 32px;
   overflow: hidden;
-  margin: 0 24px 16px;
-  background: #e3e7ea;
 }
 .drawer-benefits-bar-teal {
-  background: rgba(25, 51, 59, 1);
-  border-radius: 142px;
+  background: #218c88;
+  border-radius: 32px 0 0 32px;
   flex-shrink: 0;
 }
-.drawer-benefits-bar-purple {
-  background: rgba(33, 140, 136, 1);
-  border-radius: 144px;
-  flex-shrink: 0;
+.drawer-benefits-bar-dark {
+  background: #183a36;
+  border-radius: 0 32px 32px 0;
+  min-width: 0;
 }
 .drawer-benefits-rows {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 0 24px 16px;
+  gap: 4px;
+  width: 100%;
 }
 .drawer-benefits-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #121313;
+  width: 100%;
 }
 .drawer-benefits-dot {
   width: 8px;
@@ -1546,50 +4173,48 @@ html, body {
   flex-shrink: 0;
 }
 .drawer-benefits-dot--teal {
-  background: #16696d;
-}
-.drawer-benefits-dot--purple {
-  background: rgba(33, 140, 136, 1);
+  background: #218c88;
 }
 .drawer-benefits-row-label {
   flex: 1;
-  font-size: 15px;
   font-weight: 400;
-  color: #121313;
+  min-width: 0;
 }
 .drawer-benefits-row-value {
-  font-size: 15px;
   font-weight: 600;
-  color: #121313;
-}
-.drawer-benefits-value--teal {
-  color: rgba(25, 51, 59, 1);
+  flex-shrink: 0;
 }
 .drawer-benefits-breakdown {
-  margin: 0 24px 16px;
-  padding: 16px;
-  background: #f5f6f7;
-  border-radius: 12px;
+  margin: 0;
+  padding: 0;
+  background: var(--surface-accent, #f8f8fa);
+  border: 1px solid var(--surface-border, #dddfe4);
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
 }
 .drawer-benefits-breakdown-header {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 12px 16px;
   border: none;
-  background: none;
+  border-bottom: 1px solid #dcdfe4;
+  background: transparent;
   cursor: pointer;
   text-align: left;
   font: inherit;
   color: inherit;
 }
+.drawer-benefits-breakdown:not(.is-collapsed) .drawer-benefits-breakdown-header {
+  border-bottom-color: #dcdfe4;
+}
 .drawer-benefits-breakdown-icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  margin-top: 2px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1605,21 +4230,30 @@ html, body {
   min-width: 0;
 }
 .drawer-benefits-breakdown-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: #121313;
-  margin: 0 0 2px 0;
+  margin: 0 0 0 0;
+  line-height: 20px;
 }
 .drawer-benefits-breakdown-member {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
-  color: rgba(137, 152, 155, 0.9);
+  color: var(--text-tertiary, #6e8081);
   margin: 0;
+  line-height: 20px;
 }
 .drawer-benefits-breakdown-caret {
   flex-shrink: 0;
-  color: rgba(137, 152, 155, 0.8);
+  width: 16px;
+  height: 16px;
+  color: #121313;
   transition: transform 0.2s ease;
+}
+.drawer-benefits-breakdown-caret svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 .drawer-benefits-breakdown:not(.is-collapsed) .drawer-benefits-breakdown-caret {
   transform: rotate(180deg);
@@ -1654,9 +4288,9 @@ html, body {
 .drawer-benefits-note {
   font-size: 13px;
   font-weight: 400;
-  color: rgba(137, 152, 155, 0.9);
+  color: var(--text-tertiary, #6e8081);
   line-height: 1.45;
-  margin: 0 24px 20px;
+  margin: 0;
   padding: 0;
 }
 
@@ -2091,7 +4725,8 @@ html, body {
   color: #fff;
 }
 
-/* View toggle – top-left, visible on hover (Slides | Prototype) */
+/* View toggle – top-left, visible on hover (Slides | Prototype).
+   Bar uses pointer-events: none so it never blocks clicks on the prototype (fixes desktop). */
 .view-toggle {
   position: fixed;
   top: 0;
@@ -2103,6 +4738,10 @@ html, body {
   justify-content: flex-start;
   padding: 24px 0 0 24px;
   z-index: 11;
+  pointer-events: none;
+}
+.view-toggle:hover {
+  pointer-events: auto;
 }
 .view-toggle a,
 .view-toggle .view-toggle-btn {
@@ -2186,5 +4825,46 @@ html, body {
   }
   .drawer-overlay {
     position: fixed;
+  }
+  /* Nav menu: fill entire mobile viewport */
+  .nav-menu-overlay {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+    background: #fff;
+    backdrop-filter: none;
+  }
+  .nav-menu-panel {
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    padding: calc(env(safe-area-inset-top, 0px) + 56px) 24px calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+  .nav-menu-close {
+    top: calc(env(safe-area-inset-top, 0px) + 12px);
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+  .nav-menu-list {
+    gap: 32px;
+  }
+  .nav-menu-group {
+    gap: 12px;
+  }
+  .nav-menu-group-title {
+    margin-bottom: 12px;
+  }
+  .nav-menu-item {
+    min-height: 56px;
+    padding: 18px 24px;
+    border-radius: 14px;
   }
 }
