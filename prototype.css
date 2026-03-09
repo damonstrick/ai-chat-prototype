@@ -94,6 +94,10 @@ body.flow-anthropic .prototype-backdrop {
   box-shadow: none;
   position: relative;
   padding: 48px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 /* Desktop: nav fills the phone frame, looks like built-in screen */
 @media (min-width: 769px) {
@@ -2604,8 +2608,11 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
   min-height: 0;
   overflow-y: auto;
   padding: 12px;
-  padding-bottom: 180px;
+  padding-bottom: 12px;
   position: relative;
+}
+body[data-flow="generic-3"] .drawer-body {
+  padding-bottom: 148px;
 }
 .drawer-footer {
   position: absolute;
@@ -2987,6 +2994,224 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
 .drawer-overlay.drawer-showing-success .drawer-footer-success {
   display: flex !important;
 }
+
+/* Flow 2: Booking success screen (Figma 938-19268) */
+.drawer-booking-success {
+  display: none;
+  flex-direction: column;
+  background: #f8f7f1;
+  padding: 16px 12px 12px;
+  overflow-y: auto;
+  height: 100%;
+  min-height: 0;
+}
+.drawer-overlay.drawer-showing-booking-success .drawer-booking-success {
+  display: flex !important;
+}
+.drawer-overlay.drawer-showing-booking-success .drawer-body-cards {
+  display: none !important;
+}
+.drawer-overlay.drawer-showing-booking-success .drawer-footer-btns-xray {
+  display: none !important;
+}
+.drawer-footer-btns-booking-success {
+  display: none;
+  width: 100%;
+}
+.drawer-overlay.drawer-showing-booking-success .drawer-footer-btns-booking-success {
+  display: flex !important;
+  width: 100%;
+}
+.drawer-footer-btn-full {
+  width: 100%;
+}
+.drawer-booking-success-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 80px;
+}
+.drawer-booking-success-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  padding-bottom: 24px;
+}
+.drawer-booking-success-logo {
+  margin-bottom: 8px;
+}
+.drawer-booking-success-logo-img {
+  display: block;
+  width: auto;
+  height: 28px;
+  object-fit: contain;
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+.drawer-booking-success-icon {
+  width: 90px;
+  height: 75px;
+  flex-shrink: 0;
+}
+.drawer-booking-success-icon svg,
+.drawer-booking-success-icon .drawer-booking-success-icon-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.drawer-booking-success-title {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #01262b;
+  letter-spacing: -0.8px;
+}
+.drawer-booking-success-subtitle {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #01262b;
+  max-width: 320px;
+  letter-spacing: -0.6px;
+}
+.drawer-booking-success-card {
+  background: #fff;
+  border: 1px solid var(--stroke-light, #e3e7ea);
+  border-radius: 24px;
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.drawer-booking-success-card-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.drawer-booking-success-card-row--date {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--stroke-light, #e3e7ea);
+}
+.drawer-booking-success-card-row--date + .drawer-booking-success-card-row {
+  padding-top: 16px;
+}
+.drawer-booking-success-icon-sm {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: #0d0d0d;
+}
+.drawer-booking-success-icon-sm svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.drawer-booking-success-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.drawer-booking-success-card-primary {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  color: var(--text-primary, #0d0d0d);
+}
+.drawer-booking-success-link {
+  margin: 0;
+  padding: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #3d3d3a;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  letter-spacing: -0.6px;
+  text-align: left;
+  appearance: none;
+}
+.drawer-booking-success-card-name {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary, #121313);
+}
+.drawer-booking-success-card-address {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #3d3d3a;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  letter-spacing: -0.6px;
+}
+.drawer-booking-success-card--qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.drawer-booking-success-qr-copy {
+  margin: 0;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  color: var(--text-primary, #0d0d0d);
+  text-align: center;
+  width: 100%;
+}
+.drawer-booking-success-qr-placeholder {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+.drawer-booking-success-qr-placeholder svg,
+.drawer-booking-success-qr-placeholder .drawer-booking-success-qr-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.drawer-booking-success-apple-wallet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #000;
+  background: #fff;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  cursor: pointer;
+  appearance: none;
+}
+.drawer-booking-success-apple-wallet-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
 .drawer-card {
   border-radius: 24px;
   padding: 0;

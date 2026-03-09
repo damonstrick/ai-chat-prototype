@@ -28,28 +28,9 @@
       </button>
       <nav class="nav-menu-list" role="navigation" aria-label="Flow selection">
         <div class="nav-menu-group">
-          <div class="nav-menu-group-title">OpenAI</div>
-          <a href="#" class="nav-menu-item" data-flow="openai-1">Flow 1</a>
-          <a href="#" class="nav-menu-item" data-flow="openai-2">Flow 2</a>
-          <a href="#" class="nav-menu-item" data-flow="openai-3">Flow 3</a>
-        </div>
-        <div class="nav-menu-group">
-          <div class="nav-menu-group-title">Anthropic</div>
-          <a href="#" class="nav-menu-item" data-flow="anthropic-1">Flow 1</a>
-          <a href="#" class="nav-menu-item" data-flow="anthropic-2">Flow 2</a>
-          <a href="#" class="nav-menu-item" data-flow="anthropic-3">Flow 3</a>
-        </div>
-        <div class="nav-menu-group">
-          <div class="nav-menu-group-title">Counsel</div>
-          <a href="#" class="nav-menu-item" data-flow="counsel-1">Flow 1</a>
-          <a href="#" class="nav-menu-item" data-flow="counsel-2">Flow 2</a>
-          <a href="#" class="nav-menu-item" data-flow="counsel-3">Flow 3</a>
-        </div>
-        <div class="nav-menu-group">
-          <div class="nav-menu-group-title">Generic</div>
-          <a href="#" class="nav-menu-item is-active" data-flow="generic-1">Flow 1</a>
-          <a href="#" class="nav-menu-item" data-flow="generic-2">Flow 2</a>
-          <a href="#" class="nav-menu-item" data-flow="generic-3">Flow 3</a>
+          <a href="#" class="nav-menu-item is-active" data-flow="generic-1">Knee Surgery</a>
+          <a href="#" class="nav-menu-item" data-flow="generic-2">X-Ray</a>
+          <a href="#" class="nav-menu-item" data-flow="generic-3">Labor &amp; Delivery</a>
         </div>
       </nav>
     </div>
@@ -533,6 +514,51 @@
           </button>
         </div>
         <div class="drawer-body">
+          <!-- Flow 2: Booking success screen (Figma 938-19268) – shown after Book & Pay -->
+          <div class="drawer-booking-success" id="drawerBookingSuccess" aria-hidden="true">
+            <div class="drawer-booking-success-inner">
+              <div class="drawer-booking-success-header">
+                <div class="drawer-booking-success-logo" aria-hidden="true">
+                  <img src="assets/turquoise-logo-booking.png" alt="Turquoise Health" width="125" height="28" class="drawer-booking-success-logo-img">
+                </div>
+                <div class="drawer-booking-success-icon" aria-hidden="true">
+                  <img src="assets/booking-success-calendar.png" alt="" width="90" height="75" class="drawer-booking-success-icon-img">
+                </div>
+                <h2 class="drawer-booking-success-title">Appointment confirmed!</h2>
+                <p class="drawer-booking-success-subtitle">You are scheduled for an X-Ray at Denver Radiology &amp; Imaging Center.</p>
+              </div>
+              <div class="drawer-booking-success-card">
+                <div class="drawer-booking-success-card-row drawer-booking-success-card-row--date">
+                  <span class="drawer-booking-success-icon-sm" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </span>
+                  <div class="drawer-booking-success-card-text">
+                    <p class="drawer-booking-success-card-primary" id="drawerBookingSuccessDateTime">4:00 PM PST, Monday, February 12, 2026</p>
+                    <button type="button" class="drawer-booking-success-link">Add to Calendar</button>
+                  </div>
+                </div>
+                <div class="drawer-booking-success-card-row">
+                  <span class="drawer-booking-success-icon-sm" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </span>
+                  <div class="drawer-booking-success-card-text">
+                    <p class="drawer-booking-success-card-name">Denver Radiology &amp; Imaging Center</p>
+                    <p class="drawer-booking-success-card-address">1111 E McDowell Rd, Denver, CO 85006</p>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-booking-success-card drawer-booking-success-card--qr">
+                <p class="drawer-booking-success-qr-copy">Scan this QR code when you arrive at your appointment to check in.</p>
+                <div class="drawer-booking-success-qr-placeholder" id="drawerBookingSuccessQR" aria-hidden="true">
+                  <img src="assets/booking-success-qr.png" alt="QR code for appointment check-in" width="120" height="120" class="drawer-booking-success-qr-img">
+                </div>
+                <button type="button" class="drawer-booking-success-apple-wallet">
+                  <span class="drawer-booking-success-apple-wallet-icon" aria-hidden="true">&#63743;</span>
+                  Add to Apple Wallet
+                </button>
+              </div>
+            </div>
+          </div>
           <div class="drawer-body-cards" id="drawerBodyCards">
           <div class="drawer-card">
             <video id="drawerCardVideo" class="drawer-card-video" muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true">
@@ -543,8 +569,8 @@
             <div class="drawer-card-content">
               <h3 class="drawer-card-title">Estimated Price</h3>
               <p class="drawer-card-desc">This is the price you can expect to pay before your insurance benefits are applied.</p>
-              <p class="drawer-card-label">Starting at</p>
-              <p class="drawer-card-price">$3,896</p>
+              <p class="drawer-card-label">Ranges from</p>
+              <p class="drawer-card-price">$2,000 to $6,000</p>
               <div class="drawer-card-verified">
                 <span class="drawer-card-verified-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1016,6 +1042,9 @@
               Lock Price
             </button>
             <button type="button" class="drawer-footer-btn drawer-footer-btn-primary" id="drawerBookPayBtn">Book &amp; Pay Now</button>
+          </div>
+          <div class="drawer-footer-btns drawer-footer-btns-booking-success" id="drawerFooterBtnsBookingSuccess" aria-hidden="true">
+            <button type="button" class="drawer-footer-btn drawer-footer-btn-primary drawer-footer-btn-full" id="drawerBookingSuccessDone">Done</button>
           </div>
           <div class="drawer-footer-success" id="drawerFooterSuccess" aria-live="polite">
             <p class="drawer-success-text">Estimate confirmed!</p>

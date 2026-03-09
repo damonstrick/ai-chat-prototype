@@ -864,8 +864,11 @@
       min-height: 0;
       overflow-y: auto;
       padding: 12px;
-      padding-bottom: 180px;
+      padding-bottom: 12px;
       position: relative;
+    }
+    body[data-flow="generic-3"] .drawer-body {
+      padding-bottom: 148px;
     }
     .drawer-footer {
       position: absolute;
@@ -2056,8 +2059,8 @@
             <div class="drawer-card-content">
               <h3 class="drawer-card-title">Estimated Price</h3>
               <p class="drawer-card-desc">This is the price you can expect to pay before your insurance benefits are applied.</p>
-              <p class="drawer-card-label">Starting at</p>
-              <p class="drawer-card-price">$3,896</p>
+              <p class="drawer-card-label">Ranges from</p>
+              <p class="drawer-card-price">$2,000 to $6,000</p>
               <div class="drawer-card-verified">
                 <span class="drawer-card-verified-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2394,10 +2397,10 @@
 
     const userPrompt = "How much does it cost to have a baby at UCLA?";
     const aiResponseParts = [
-      { type: 'text', content: "The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen can be from $6,000 to $17,000 with your Cigna plan. But because you have insurance coverage, your out-of-pocket costs will be closer to " },
+      { type: 'text', content: "The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen (the provider you have been seeing) can range from $6,000 to $17,000 with your Cigna plan. I'm using the insurance details you've previously provided. After your insurance coverage applies, your out-of-pocket costs will be closer to " },
       { type: 'bold', content: "$2,000-$6,000" },
       { type: 'text', content: ".\n\nLet me know if the following has changed and I can update your estimate. Also, if you'd like to see the cost of a Cesarean delivery, I can calculate that for you too.\n\n" },
-      { type: 'bullets', items: ["Your insurance plan", "The type of birth you're hoping to have (vaginal or cesarean)", "If your preferred provider has changed at UCLA"] },
+      { type: 'bullets', items: ["Your insurance plan", "If your preferred provider has changed at UCLA"] },
       { type: 'text', content: "\n\nClick on " },
       { type: 'bold', content: "personalize estimate" },
       { type: 'text', content: " to enter your insurance details on Turquoise. I can also show you other providers near UCLA if you'd like to compare costs — just let me know!" },
@@ -2429,7 +2432,7 @@
       card.innerHTML = `
         <div class="provider-card-section">
           <div class="provider-card-header">
-            <span class="provider-card-title">UCLA Health - Santa Monica Medical Ce...</span>
+            <span class="provider-card-title">UCLA Health - Santa Monica Medical Center</span>
             <span class="provider-card-rating">4.8<span class="star">★</span></span>
           </div>
           <div class="provider-card-category">Labor & Delivery</div>
@@ -2439,8 +2442,8 @@
               Cigna
             </span>
             <div class="provider-cost-block">
-              <span class="provider-cost-label">Start at*</span>
-              <span class="provider-cost-value">$3,896</span>
+              <span class="provider-cost-label">Ranges from</span>
+              <span class="provider-cost-value">$2,000 to $6,000</span>
             </div>
           </div>
         </div>
@@ -2467,8 +2470,6 @@
       const wrap = document.createElement('div');
       wrap.className = 'sources-block';
       wrap.innerHTML = `
-        <a href="#" class="sources-link">Turquoise Health &gt;</a>
-        <div class="sources-desc">Healthcare data and technology company focused on price transparency and healthcare cost information.</div>
         <div class="sources-row">
           <div class="sources-pill">
             <span class="sources-pill-text">Sources</span>

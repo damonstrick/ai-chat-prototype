@@ -64,7 +64,8 @@
     var flow = document.body.getAttribute('data-flow');
     var isFlow1 = flow === 'generic-1';
     var isFlow2 = flow === 'generic-2';
-    var show = val.length === 0 && (!isAnthropicFlow() || !hasMessages) && !isFlow1 && !isFlow2;
+    var isFlow3 = flow === 'generic-3';
+    var show = val.length === 0 && (!isAnthropicFlow() || !hasMessages) && !isFlow1 && !isFlow2 && (!isFlow3 || !hasMessages);
     inputSuggestion.classList.toggle('is-hidden', !show);
   }
 
@@ -287,6 +288,35 @@
     setFlowClass(flowId);
   }
 
+  function resetChatToInitialState() {
+    if (!chatContainer) return;
+    var welcomeAnthropic = document.getElementById('chatWelcomeAnthropic');
+    var mapIds = ['genericMapComponentWrap', 'genericMapComponentWrapPrice', 'genericMapComponentWrapXray'];
+    var insertAfter = welcomeAnthropic || chatContainer.firstElementChild;
+    mapIds.forEach(function (id) {
+      var mapWrap = document.getElementById(id);
+      if (mapWrap && mapWrap.parentNode !== chatContainer) {
+        var next = insertAfter ? insertAfter.nextElementSibling : null;
+        chatContainer.insertBefore(mapWrap, next);
+        if (id === 'genericMapComponentWrapXray') mapWrap.setAttribute('aria-hidden', 'true');
+      }
+      if (mapWrap) insertAfter = mapWrap;
+    });
+    var messages = chatContainer.querySelectorAll('.message');
+    messages.forEach(function (msg) {
+      msg.remove();
+    });
+    var field = getActiveInputField();
+    if (field) {
+      field.value = '';
+      resizeInput();
+    }
+    updateWelcomeVisibility();
+    updateSuggestionVisibility();
+    updateAutocompleteBubbleVisibility();
+    updateSubmitIcon();
+  }
+
   function updateUrlForFlow(flowId) {
     var url = new URL(window.location.href);
     url.searchParams.set('flow', flowId);
@@ -301,8 +331,13 @@
 
   initFlowFromUrl();
   window.addEventListener('popstate', function (e) {
-    if (e.state && e.state.flow) setActiveFlow(e.state.flow);
-    else initFlowFromUrl();
+    if (e.state && e.state.flow) {
+      setActiveFlow(e.state.flow);
+      resetChatToInitialState();
+    } else {
+      initFlowFromUrl();
+      resetChatToInitialState();
+    }
   });
 
   document.querySelectorAll('.nav-menu-item').forEach(function (link) {
@@ -315,6 +350,7 @@
         return;
       }
       setActiveFlow(flowId);
+      resetChatToInitialState();
       updateUrlForFlow(flowId);
       closeNavMenu();
     });
@@ -334,7 +370,7 @@
     card.innerHTML =
       '<div class="provider-card-section">' +
         '<div class="provider-card-header">' +
-          '<span class="provider-card-title">UCLA Health - Santa Monica Medical Ce...</span>' +
+          '<span class="provider-card-title">UCLA Health - Santa Monica Medical Center</span>' +
           '<span class="provider-card-rating">4.8<span class="star">★</span></span>' +
         '</div>' +
         '<div class="provider-card-category">Labor & Delivery</div>' +
@@ -344,8 +380,8 @@
             'Cigna' +
           '</span>' +
           '<div class="provider-cost-block">' +
-            '<span class="provider-cost-label">Start at*</span>' +
-            '<span class="provider-cost-value">$3,896</span>' +
+            '<span class="provider-cost-label">Ranges from</span>' +
+            '<span class="provider-cost-value">$2,000 to $6,000</span>' +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -368,10 +404,10 @@
   }
 
   var aiResponseParts = [
-    { type: 'text', content: 'The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen can be from $6,000 to $17,000 with your Cigna plan. But because you have insurance coverage, your out-of-pocket costs will be closer to ' },
+    { type: 'text', content: "The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen (the provider you have been seeing) can range from $6,000 to $17,000 with your Cigna plan. I'm using the insurance details you've previously provided. After your insurance coverage applies, your out-of-pocket costs will be closer to " },
     { type: 'bold', content: '$2,000-$6,000' },
     { type: 'text', content: '.\n\nLet me know if the following has changed and I can update your estimate. Also, if you\'d like to see the cost of a Cesarean delivery, I can calculate that for you too.\n\n' },
-    { type: 'bullets', items: ['Your insurance plan', "The type of birth you're hoping to have (vaginal or cesarean)", 'If your preferred provider has changed at UCLA'] },
+    { type: 'bullets', items: ['Your insurance plan', 'If your preferred provider has changed at UCLA'] },
     { type: 'text', content: '\n\nClick on ' },
     { type: 'bold', content: 'personalize estimate' },
     { type: 'text', content: ' to enter your insurance details on Turquoise. I can also show you other providers near UCLA if you\'d like to compare costs — just let me know!' },
@@ -629,12 +665,13 @@
     return wrap;
   }
 
-  function createAssistantLoading() {
+  function createAssistantLoading(loadingMessage) {
+    var text = loadingMessage || 'Fetching data from Turquoise Health';
     var wrap = document.createElement('div');
     wrap.className = 'message assistant';
     wrap.innerHTML =
       '<div class="bubble assistant">' +
-        '<div class="loading-text">Fetching data from Turquoise Health<span class="loading-ellipsis"><span>.</span><span>.</span><span>.</span></span></div>' +
+        '<div class="loading-text">' + text + '<span class="loading-ellipsis"><span>.</span><span>.</span><span>.</span></span></div>' +
       '</div>';
     return wrap;
   }
@@ -643,8 +680,6 @@
     var wrap = document.createElement('div');
     wrap.className = 'sources-block';
     wrap.innerHTML =
-      '<a href="#" class="sources-link">Turquoise Health &gt;</a>' +
-      '<div class="sources-desc">Healthcare data and technology company focused on price transparency and healthcare cost information.</div>' +
       '<div class="sources-row">' +
         '<div class="sources-pill">' +
           '<span class="sources-pill-text">Sources</span>' +
@@ -675,7 +710,7 @@
     var bubble = document.createElement('div');
     bubble.className = 'bubble assistant';
     var p1 = document.createElement('p');
-    p1.appendChild(document.createTextNode('The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen can be from $6,000 to $17,000 with your Cigna plan. But because you have insurance coverage, your out-of-pocket costs will be closer to '));
+    p1.appendChild(document.createTextNode("The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen (the provider you have been seeing) can range from $6,000 to $17,000 with your Cigna plan. I'm using the insurance details you've previously provided. After your insurance coverage applies, your out-of-pocket costs will be closer to "));
     var strong1 = document.createElement('strong');
     strong1.textContent = '$2,000-$6,000';
     p1.appendChild(strong1);
@@ -685,7 +720,7 @@
     p2.textContent = "Let me know if the following has changed and I can update your estimate. Also, if you'd like to see the cost of a Cesarean delivery, I can calculate that for you too.";
     bubble.appendChild(p2);
     var ul = document.createElement('ul');
-    ['Your insurance plan', "The type of birth you're hoping to have (vaginal or cesarean)", 'If your preferred provider has changed at UCLA'].forEach(function (item) {
+    ['Your insurance plan', 'If your preferred provider has changed at UCLA'].forEach(function (item) {
       var li = document.createElement('li');
       li.textContent = item;
       ul.appendChild(li);
@@ -1186,7 +1221,9 @@
     if (drawerOverlay.classList.contains('drawer-xray-mode')) {
       restoreCostShareBodyIntoResultCard();
     }
-    drawerOverlay.classList.remove('is-open', 'drawer-after-loading', 'drawer-showing-success', 'drawer-lock-price-mode', 'drawer-xray-mode');
+    drawerOverlay.classList.remove('is-open', 'drawer-after-loading', 'drawer-showing-success', 'drawer-showing-booking-success', 'drawer-lock-price-mode', 'drawer-xray-mode');
+    var bookingSuccessPanel = document.getElementById('drawerBookingSuccess');
+    if (bookingSuccessPanel) bookingSuccessPanel.setAttribute('aria-hidden', 'true');
     drawerOverlay.setAttribute('aria-hidden', 'true');
     drawerPanel.classList.remove('is-loading');
     if (drawerBodyCards) drawerBodyCards.classList.remove('is-hidden');
@@ -1297,6 +1334,56 @@
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
 
+  function getBookingDetailsFromSuccessPanel() {
+    var dateTimeEl = document.getElementById('drawerBookingSuccessDateTime');
+    var facilityName = 'Denver Radiology & Imaging Center';
+    var address = '1111 E McDowell Rd, Denver, CO 85006';
+    var dateTime = dateTimeEl ? dateTimeEl.textContent.trim() : '4:00 PM PST, Monday, February 12, 2026';
+    return { dateTime: dateTime, facilityName: facilityName, address: address };
+  }
+
+  function appendBookingConfirmedMessage(booking) {
+    var dateTime = booking.dateTime || '';
+    var facilityName = booking.facilityName || '';
+    var address = booking.address || '';
+    var aiWrap = document.createElement('div');
+    aiWrap.className = 'message assistant';
+    var bubble = document.createElement('div');
+    bubble.className = 'bubble assistant';
+    var p1 = document.createElement('p');
+    p1.textContent = "Congratulations on booking your appointment! Your X-Ray is confirmed.";
+    bubble.appendChild(p1);
+    var p2 = document.createElement('p');
+    p2.textContent = "Here are your booking details:";
+    bubble.appendChild(p2);
+    var ul = document.createElement('ul');
+    if (dateTime) {
+      var li1 = document.createElement('li');
+      li1.textContent = 'Date & time: ' + dateTime;
+      ul.appendChild(li1);
+    }
+    if (facilityName) {
+      var li2 = document.createElement('li');
+      li2.textContent = 'Location: ' + facilityName;
+      ul.appendChild(li2);
+    }
+    if (address) {
+      var li3 = document.createElement('li');
+      li3.textContent = 'Address: ' + address;
+      ul.appendChild(li3);
+    }
+    bubble.appendChild(ul);
+    var p3 = document.createElement('p');
+    p3.textContent = "Scan the QR code from your confirmation when you arrive to check in. Have a great appointment!";
+    bubble.appendChild(p3);
+    var p4 = document.createElement('p');
+    p4.textContent = "Need to reschedule, add to your calendar, or have questions about your visit? Just ask.";
+    bubble.appendChild(p4);
+    aiWrap.appendChild(bubble);
+    chatContainer.appendChild(aiWrap);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
   if (drawerConfirmEstimateBtn) {
     drawerConfirmEstimateBtn.addEventListener('click', function () {
       var summary = getEstimateSummaryFromDrawer();
@@ -1312,6 +1399,40 @@
           appendCongratsMessage(summary);
         }, 1000);
       }, 1800);
+    });
+  }
+
+  var drawerBookPayBtn = document.getElementById('drawerBookPayBtn');
+  var drawerBookingSuccess = document.getElementById('drawerBookingSuccess');
+  var drawerBookingSuccessDone = document.getElementById('drawerBookingSuccessDone');
+  if (drawerBookPayBtn) {
+    drawerBookPayBtn.addEventListener('click', function () {
+      var dateTimeEl = document.getElementById('drawerBookingSuccessDateTime');
+      var selectedSlot = document.querySelector('.drawer-date-time-slot.is-selected');
+      var selectedGroup = selectedSlot ? selectedSlot.closest('.drawer-date-time-group') : null;
+      var dateLabel = selectedGroup ? (selectedGroup.querySelector('.drawer-date-time-date') || {}).textContent || '2/12' : '2/12';
+      var timeStr = selectedSlot ? (selectedSlot.textContent || '').trim() : '4:00 pm';
+      var parts = (dateLabel || '2/12').split('/');
+      var dayNum = parts.length > 1 ? parts[1] : '12';
+      var dateTimeStr = timeStr + ' PST, Monday, February ' + dayNum + ', 2026';
+      if (dateTimeEl) dateTimeEl.textContent = dateTimeStr;
+      drawerOverlay.classList.add('drawer-showing-booking-success');
+      if (drawerBookingSuccess) drawerBookingSuccess.setAttribute('aria-hidden', 'false');
+    });
+  }
+  if (drawerBookingSuccessDone) {
+    drawerBookingSuccessDone.addEventListener('click', function () {
+      drawerOverlay.classList.remove('drawer-showing-booking-success');
+      if (drawerBookingSuccess) drawerBookingSuccess.setAttribute('aria-hidden', 'true');
+      closeDrawer();
+      var booking = getBookingDetailsFromSuccessPanel();
+      var loadingMsg = createAssistantLoading("Confirming your booking");
+      chatContainer.appendChild(loadingMsg);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      setTimeout(function () {
+        loadingMsg.remove();
+        appendBookingConfirmedMessage(booking);
+      }, 1400);
     });
   }
 
@@ -1382,7 +1503,7 @@
   }
 
   document.addEventListener('click', function (e) {
-    if (e.target.closest('.btn-primary') && e.target.id !== 'drawerApplyBtn' && e.target.id !== 'drawerConfirmEstimateBtn') {
+    if (e.target.closest('.btn-primary') && e.target.id !== 'drawerApplyBtn' && e.target.id !== 'drawerConfirmEstimateBtn' && e.target.id !== 'drawerBookPayBtn' && e.target.id !== 'drawerBookingSuccessDone') {
       e.preventDefault();
       openDrawer();
     }
