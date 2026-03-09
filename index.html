@@ -186,10 +186,39 @@
     }
 
     .top-bar {
-      background: #F8F7F1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
       opacity: 1;
       flex-shrink: 0;
-      border-bottom: 1px solid #e3e7ea;
+      background: transparent;
+      border-bottom: 1px solid rgba(227, 231, 234, 0.5);
+    }
+    .top-bar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: rgba(248, 247, 241, 0.75);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.7) 55%, rgba(0, 0, 0, 0.25) 85%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.7) 55%, rgba(0, 0, 0, 0.25) 85%, transparent 100%);
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+    }
+    @supports not (backdrop-filter: blur(1px)) {
+      .top-bar::before {
+        display: none;
+      }
+      .top-bar {
+        background: #F8F7F1;
+      }
     }
 
     .header {
@@ -265,7 +294,7 @@
       height: 24px;
     }
 
-    /* Chat area: fills remaining height in phone, scrolls when content overflows */
+    /* Chat area: fills remaining height in phone, scrolls when content overflows; padding so content scrolls under top bar and input bar */
     .phone-frame .chat-container {
       flex: 1;
       min-height: 0;
@@ -273,6 +302,8 @@
       overflow-y: auto;
       overflow-x: hidden;
       padding: 16px;
+      padding-top: 100px;
+      padding-bottom: 168px;
       scroll-behavior: smooth;
       background: #F8F7F1;
       -webkit-overflow-scrolling: touch;
@@ -676,11 +707,40 @@
       height: 16px;
     }
 
-    /* Bottom bar – Figma 487-24847: single capsule, light gray */
-    .input-area {
+    /* Bottom bar – overlays chat so content scrolls behind; progressive glass (no hard line at top) */
+    .phone-frame .input-area {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
       flex-shrink: 0;
-      background: #F8F7F1;
+      background: transparent;
       padding: 12px 16px 40px;
+    }
+    .phone-frame .input-area::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: rgba(248, 247, 241, 0.75);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0.7) 45%, black 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0.7) 45%, black 100%);
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+    }
+    @supports not (backdrop-filter: blur(1px)) {
+      .phone-frame .input-area::before {
+        display: none;
+      }
+      .phone-frame .input-area {
+        background: #F8F7F1;
+      }
     }
     .input-row {
       display: flex;

@@ -709,18 +709,48 @@ body.flow-anthropic {
   border-bottom: 1px solid #e3e7ea;
 }
 .phone-frame.flow-generic .top-bar {
-  background: #F8F7F1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: transparent;
+  border-bottom-color: rgba(227, 231, 234, 0.5);
+}
+.phone-frame.flow-generic .top-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: rgba(248, 247, 241, 0.75);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.7) 55%, rgba(0, 0, 0, 0.25) 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.7) 55%, rgba(0, 0, 0, 0.25) 85%, transparent 100%);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .phone-frame.flow-generic .top-bar::before {
+    display: none;
+  }
+  .phone-frame.flow-generic .top-bar {
+    background: #F8F7F1;
+  }
 }
 
 /* Flow-specific header: show generic or anthropic based on URL flow param */
 .header-anthropic {
-  display: none;
+  display: none !important; /* Only generic flows in nav; keep Anthropic header hidden */
 }
 .flow-anthropic .header-generic {
   display: none;
 }
 .flow-anthropic .header-anthropic {
-  display: flex;
+  display: none; /* Keep hidden; nav only offers generic flows */
 }
 .flow-anthropic .top-bar {
   background: transparent;
@@ -858,6 +888,8 @@ body.flow-anthropic {
 }
 .phone-frame.flow-generic .chat-container {
   background: #F8F7F1;
+  padding-top: 100px;
+  padding-bottom: 168px;
 }
 .flow-anthropic .chat-container {
   overflow-x: visible;
@@ -2317,7 +2349,36 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
   padding: 12px 16px 40px;
 }
 .phone-frame.flow-generic .input-area {
-  background: #F8F7F1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: transparent;
+}
+.phone-frame.flow-generic .input-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: rgba(248, 247, 241, 0.75);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0.7) 45%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0.7) 45%, black 100%);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .phone-frame.flow-generic .input-area::before {
+    display: none;
+  }
+  .phone-frame.flow-generic .input-area {
+    background: #F8F7F1;
+  }
 }
 .flow-anthropic .input-area {
   background: #FAF8F5;
