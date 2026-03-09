@@ -273,6 +273,10 @@
     if (rowAnthropic) rowAnthropic.setAttribute('aria-hidden', prefix !== 'anthropic' ? 'true' : 'false');
     if (chatWelcome) chatWelcome.setAttribute('aria-hidden', isAnthropic ? 'true' : 'false');
     if (chatWelcomeAnthropic) chatWelcomeAnthropic.setAttribute('aria-hidden', !isAnthropic ? 'true' : 'false');
+    if (chatWelcome && !isAnthropic) {
+      var welcomeTextEl = chatWelcome.querySelector('.chat-welcome-text');
+      if (welcomeTextEl) welcomeTextEl.textContent = flowId === 'generic-3' ? 'Good Afternoon Meredith, how can we help?' : 'Good Afternoon Chris, how can we help?';
+    }
     updateSubmitIcon();
     updateSuggestionVisibility();
     updateAutocompleteBubbleVisibility();

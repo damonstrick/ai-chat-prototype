@@ -708,6 +708,9 @@ body.flow-anthropic {
   flex-shrink: 0;
   border-bottom: 1px solid #e3e7ea;
 }
+.phone-frame.flow-generic .top-bar {
+  background: #F8F7F1;
+}
 
 /* Flow-specific header: show generic or anthropic based on URL flow param */
 .header-anthropic {
@@ -853,6 +856,9 @@ body.flow-anthropic {
   -ms-overflow-style: none;
   position: relative;
 }
+.phone-frame.flow-generic .chat-container {
+  background: #F8F7F1;
+}
 .flow-anthropic .chat-container {
   overflow-x: visible;
 }
@@ -944,6 +950,9 @@ body.flow-anthropic {
   letter-spacing: -0.43px;
   background: #e3e7ea;
   color: #0d0d0d;
+}
+.phone-frame.flow-generic .bubble.user {
+  background: #E9E7DC;
 }
 
 /* Anthropic flows: user prompt bubble (Figma 738-54223) */
@@ -2224,6 +2233,9 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
   font-size: 13px;
   font-weight: 500;
 }
+.phone-frame.flow-generic .sources-pill {
+  background-color: #F8F7F1;
+}
 .flow-anthropic .sources-pill {
   background-color: rgba(249, 247, 244, 1);
 }
@@ -2303,6 +2315,9 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
   flex-shrink: 0;
   background: #EFF1F5;
   padding: 12px 16px 40px;
+}
+.phone-frame.flow-generic .input-area {
+  background: #F8F7F1;
 }
 .flow-anthropic .input-area {
   background: #FAF8F5;
