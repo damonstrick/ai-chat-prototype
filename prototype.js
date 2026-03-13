@@ -5,9 +5,11 @@
 
   var chatContainer = document.getElementById('chatContainer');
   var chatWelcome = document.getElementById('chatWelcome');
+  var chatWelcomeOpenai = document.getElementById('chatWelcomeOpenai');
   var chatWelcomeAnthropic = document.getElementById('chatWelcomeAnthropic');
   var inputField = document.getElementById('inputField');
   var inputFieldAnthropic = document.getElementById('inputFieldAnthropic');
+  var inputFieldOpenai = document.getElementById('inputFieldOpenai');
   var inputSuggestion = document.getElementById('inputSuggestion');
   var drawerOverlay = document.getElementById('drawerOverlay');
   var drawerPanel = document.getElementById('drawerPanel') || (drawerOverlay && drawerOverlay.querySelector('.drawer-panel'));
@@ -27,17 +29,28 @@
   var lastFocusedBeforeDrawer = null;
   var AUDIO_ICON = 'assets/audio-icon.png';
   var SEND_ICON = 'assets/send-icon.png';
+  var OPENAI_SEND_ICON = 'assets/send.svg';
 
   function isAnthropicFlow() {
     return phoneFrame && phoneFrame.classList.contains('flow-anthropic');
   }
+  function isOpenAIFlow() {
+    return phoneFrame && phoneFrame.classList.contains('flow-openai');
+  }
+  function isFlow1(flow) { return flow === 'generic-1' || flow === 'anthropic-1' || flow === 'openai-1'; }
+  function isFlow2(flow) { return flow === 'generic-2' || flow === 'anthropic-2' || flow === 'openai-2'; }
+  function isFlow3(flow) { return flow === 'generic-3' || flow === 'anthropic-3' || flow === 'openai-3'; }
 
   function getActiveInputField() {
-    return isAnthropicFlow() && inputFieldAnthropic ? inputFieldAnthropic : inputField;
+    if (isAnthropicFlow() && inputFieldAnthropic) return inputFieldAnthropic;
+    if (isOpenAIFlow() && inputFieldOpenai) return inputFieldOpenai;
+    return inputField;
   }
 
   function getActiveSubmitBtn() {
-    return isAnthropicFlow() ? document.getElementById('submitIconBtnAnthropic') : document.getElementById('submitIconBtn');
+    if (isAnthropicFlow()) return document.getElementById('submitIconBtnAnthropic');
+    if (isOpenAIFlow()) return document.getElementById('submitIconBtnOpenai');
+    return document.getElementById('submitIconBtn');
   }
 
   function updateSubmitIcon() {
@@ -46,7 +59,11 @@
     var submitImg = btn && btn.querySelector('.input-btn-icon-img');
     if (!submitImg || !field) return;
     var hasText = (field.value || '').trim().length > 0;
-    submitImg.src = hasText ? SEND_ICON : AUDIO_ICON;
+    if (isOpenAIFlow()) {
+      submitImg.src = hasText ? SEND_ICON : OPENAI_SEND_ICON;
+    } else {
+      submitImg.src = hasText ? SEND_ICON : AUDIO_ICON;
+    }
   }
 
   function resizeInput() {
@@ -62,10 +79,10 @@
     var val = (field && field.value || '').trim();
     var hasMessages = chatContainer && chatContainer.querySelectorAll('.message').length > 0;
     var flow = document.body.getAttribute('data-flow');
-    var isFlow1 = flow === 'generic-1';
-    var isFlow2 = flow === 'generic-2';
-    var isFlow3 = flow === 'generic-3';
-    var show = val.length === 0 && (!isAnthropicFlow() || !hasMessages) && !isFlow1 && !isFlow2 && (!isFlow3 || !hasMessages);
+    var flowIs1 = isFlow1(flow);
+    var flowIs2 = isFlow2(flow);
+    var flowIs3 = isFlow3(flow);
+    var show = val.length === 0 && (!isAnthropicFlow() || !hasMessages) && !flowIs1 && !flowIs2 && (!flowIs3 || !hasMessages);
     inputSuggestion.classList.toggle('is-hidden', !show);
   }
 
@@ -85,33 +102,33 @@
     var exactlyTwoExchanges = userCount === 2 && assistantCount === 2;
     var exactlyThreeExchanges = userCount === 3 && assistantCount === 3;
     if (autocompleteBubbleFlow1) {
-      var showFirst = flow === 'generic-1' && val.length === 0 && !hasMessages;
+      var showFirst = isFlow1(flow) && val.length === 0 && !hasMessages;
       autocompleteBubbleFlow1.classList.toggle('is-hidden', !showFirst);
     }
     if (autocompleteBubbleFlow1Second) {
-      var showSecond = flow === 'generic-1' && val.length === 0 && exactlyOneExchange;
+      var showSecond = isFlow1(flow) && val.length === 0 && exactlyOneExchange;
       autocompleteBubbleFlow1Second.classList.toggle('is-visible', showSecond);
       autocompleteBubbleFlow1Second.classList.toggle('is-hidden', !showSecond);
     }
     if (autocompleteBubbleFlow1Third) {
-      var showThird = flow === 'generic-1' && val.length === 0 && exactlyTwoExchanges;
+      var showThird = isFlow1(flow) && val.length === 0 && exactlyTwoExchanges;
       autocompleteBubbleFlow1Third.classList.toggle('is-visible', showThird);
       autocompleteBubbleFlow1Third.classList.toggle('is-hidden', !showThird);
     }
     if (autocompleteBubbleFlow1Fourth) {
-      var showFourth = flow === 'generic-1' && val.length === 0 && exactlyThreeExchanges;
+      var showFourth = isFlow1(flow) && val.length === 0 && exactlyThreeExchanges;
       autocompleteBubbleFlow1Fourth.classList.toggle('is-visible', showFourth);
       autocompleteBubbleFlow1Fourth.classList.toggle('is-hidden', !showFourth);
     }
     var autocompleteBubbleFlow2 = document.getElementById('autocompleteBubbleFlow2');
     if (autocompleteBubbleFlow2) {
-      var showFlow2 = flow === 'generic-2' && val.length === 0 && !hasMessages;
+      var showFlow2 = isFlow2(flow) && val.length === 0 && !hasMessages;
       autocompleteBubbleFlow2.classList.toggle('is-visible', showFlow2);
       autocompleteBubbleFlow2.classList.toggle('is-hidden', !showFlow2);
     }
     var autocompleteBubbleFlow2Second = document.getElementById('autocompleteBubbleFlow2Second');
     if (autocompleteBubbleFlow2Second) {
-      var showFlow2Second = flow === 'generic-2' && val.length === 0 && exactlyOneExchange;
+      var showFlow2Second = isFlow2(flow) && val.length === 0 && exactlyOneExchange;
       autocompleteBubbleFlow2Second.classList.toggle('is-visible', showFlow2Second);
       autocompleteBubbleFlow2Second.classList.toggle('is-hidden', !showFlow2Second);
     }
@@ -119,7 +136,7 @@
   }
 
   function updateWelcomeVisibility() {
-    var welcomeEl = isAnthropicFlow() ? chatWelcomeAnthropic : chatWelcome;
+    var welcomeEl = isAnthropicFlow() ? chatWelcomeAnthropic : (isOpenAIFlow() ? chatWelcomeOpenai : chatWelcome);
     if (!welcomeEl) return;
     var field = getActiveInputField();
     var hasInput = (field && field.value || '').trim().length > 0;
@@ -146,6 +163,7 @@
   }
   bindInputEvents(inputField);
   bindInputEvents(inputFieldAnthropic);
+  bindInputEvents(inputFieldOpenai);
 
   if (inputSuggestion) {
     inputSuggestion.addEventListener('click', function () {
@@ -226,6 +244,12 @@
       openNavMenu();
     });
   }
+  var headerMenuBtnOpenai = document.getElementById('headerMenuBtnOpenai');
+  if (headerMenuBtnOpenai) {
+    headerMenuBtnOpenai.addEventListener('click', function () {
+      openNavMenu();
+    });
+  }
   if (navMenuClose) {
     navMenuClose.addEventListener('click', closeNavMenu);
   }
@@ -239,6 +263,34 @@
       closeNavMenu();
     }
   });
+
+  /* Autocomplete bubble shine: driven by device orientation (gyro) */
+  (function initAutocompleteShineGyro() {
+    var root = document.documentElement;
+    root.style.setProperty('--autocomplete-shine-x', '50');
+    var permissionRequested = false;
+    function updateShineFromOrientation(beta, gamma) {
+      if (gamma == null || gamma === undefined) return;
+      var x = 50 + (gamma / 90) * 45;
+      x = Math.max(0, Math.min(100, x));
+      root.style.setProperty('--autocomplete-shine-x', String(x));
+    }
+    function onDeviceOrientation(e) {
+      updateShineFromOrientation(e.beta, e.gamma);
+    }
+    function requestPermission() {
+      if (permissionRequested) return;
+      permissionRequested = true;
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission().then(function () {}).catch(function () {});
+      }
+    }
+    if (typeof DeviceOrientationEvent !== 'undefined') {
+      window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
+      document.body.addEventListener('click', requestPermission, { once: true, passive: true });
+      document.body.addEventListener('touchstart', requestPermission, { once: true, passive: true });
+    }
+  })();
 
   var VALID_FLOWS = ['openai-1', 'openai-2', 'openai-3', 'anthropic-1', 'anthropic-2', 'anthropic-3', 'counsel-1', 'counsel-2', 'counsel-3', 'generic-1', 'generic-2', 'generic-3'];
   var DEFAULT_FLOW = 'generic-1';
@@ -255,10 +307,22 @@
     if (!phoneFrame) return;
     var prefix = flowId ? flowId.split('-')[0] : 'generic';
     var wasAnthropic = phoneFrame.classList.contains('flow-anthropic');
+    var wasOpenAI = phoneFrame.classList.contains('flow-openai');
     var isAnthropic = prefix === 'anthropic';
+    var isOpenAI = prefix === 'openai';
     if (wasAnthropic !== isAnthropic && inputField && inputFieldAnthropic) {
-      var v = (isAnthropic ? inputField : inputFieldAnthropic).value;
-      (isAnthropic ? inputFieldAnthropic : inputField).value = v;
+      var v;
+      if (isAnthropic) {
+        v = (wasOpenAI && inputFieldOpenai ? inputFieldOpenai : inputField).value;
+        inputFieldAnthropic.value = v;
+      } else {
+        v = inputFieldAnthropic.value;
+        (isOpenAI && inputFieldOpenai ? inputFieldOpenai : inputField).value = v;
+      }
+    }
+    if (wasOpenAI !== isOpenAI && inputField && inputFieldOpenai) {
+      var v2 = (isOpenAI ? inputField : inputFieldOpenai).value;
+      (isOpenAI ? inputFieldOpenai : inputField).value = v2;
     }
     ['generic', 'anthropic', 'openai', 'counsel'].forEach(function (name) {
       phoneFrame.classList.toggle('flow-' + name, name === prefix);
@@ -266,17 +330,31 @@
     document.body.setAttribute('data-flow', flowId || '');
     document.body.classList.toggle('flow-anthropic', isAnthropic);
     var headerGeneric = document.querySelector('.header-generic');
+    var headerOpenai = document.querySelector('.header-openai');
     var headerAnthropic = document.querySelector('.header-anthropic');
-    if (headerGeneric) headerGeneric.setAttribute('aria-hidden', prefix === 'anthropic' ? 'true' : 'false');
-    if (headerAnthropic) headerAnthropic.setAttribute('aria-hidden', prefix === 'anthropic' ? 'false' : 'true');
+    if (headerGeneric) headerGeneric.setAttribute('aria-hidden', prefix === 'anthropic' || prefix === 'openai' ? 'true' : 'false');
+    if (headerOpenai) headerOpenai.setAttribute('aria-hidden', prefix !== 'openai' ? 'true' : 'false');
+    if (headerAnthropic) headerAnthropic.setAttribute('aria-hidden', prefix !== 'anthropic' ? 'true' : 'false');
     var rowGeneric = document.getElementById('inputRow');
+    var rowOpenai = document.getElementById('inputRowOpenai');
     var rowAnthropic = document.getElementById('inputRowAnthropic');
+    if (rowGeneric) rowGeneric.setAttribute('aria-hidden', prefix === 'anthropic' || prefix === 'openai' ? 'true' : 'false');
+    if (rowOpenai) rowOpenai.setAttribute('aria-hidden', prefix !== 'openai' ? 'true' : 'false');
     if (rowAnthropic) rowAnthropic.setAttribute('aria-hidden', prefix !== 'anthropic' ? 'true' : 'false');
-    if (chatWelcome) chatWelcome.setAttribute('aria-hidden', isAnthropic ? 'true' : 'false');
+    if (chatWelcome) chatWelcome.setAttribute('aria-hidden', isAnthropic || isOpenAI ? 'true' : 'false');
+    if (chatWelcomeOpenai) chatWelcomeOpenai.setAttribute('aria-hidden', !isOpenAI ? 'true' : 'false');
     if (chatWelcomeAnthropic) chatWelcomeAnthropic.setAttribute('aria-hidden', !isAnthropic ? 'true' : 'false');
-    if (chatWelcome && !isAnthropic) {
+    if (chatWelcome && !isAnthropic && !isOpenAI) {
       var welcomeTextEl = chatWelcome.querySelector('.chat-welcome-text');
-      if (welcomeTextEl) welcomeTextEl.textContent = flowId === 'generic-3' ? 'Good Afternoon Meredith, how can we help?' : 'Good Afternoon Chris, how can we help?';
+      if (welcomeTextEl) welcomeTextEl.textContent = isFlow3(flowId) ? 'Good Afternoon Meredith, how can we help?' : 'Good Afternoon Chris, how can we help?';
+    }
+    if (chatWelcomeOpenai && isOpenAI) {
+      var welcomeOpenaiTextEl = chatWelcomeOpenai.querySelector('.chat-welcome-openai-text');
+      if (welcomeOpenaiTextEl) welcomeOpenaiTextEl.textContent = isFlow3(flowId) ? 'Good afternoon Meredith, how can we help?' : 'Good afternoon Chris, how can we help?';
+    }
+    if (chatWelcomeAnthropic && isAnthropic) {
+      var welcomeAnthropicText = chatWelcomeAnthropic.querySelector('.chat-welcome-anthropic-text');
+      if (welcomeAnthropicText) welcomeAnthropicText.textContent = isFlow3(flowId) ? 'Good afternoon Meredith, how can we help?' : 'Good afternoon Chris, how can we help?';
     }
     updateSubmitIcon();
     updateSuggestionVisibility();
@@ -300,10 +378,13 @@
     var insertAfter = welcomeAnthropic || chatContainer.firstElementChild;
     mapIds.forEach(function (id) {
       var mapWrap = document.getElementById(id);
-      if (mapWrap && mapWrap.parentNode !== chatContainer) {
-        var next = insertAfter ? insertAfter.nextElementSibling : null;
-        chatContainer.insertBefore(mapWrap, next);
-        if (id === 'genericMapComponentWrapXray') mapWrap.setAttribute('aria-hidden', 'true');
+      if (mapWrap) {
+        restoreMapCardsToBody(mapWrap);
+        if (mapWrap.parentNode !== chatContainer) {
+          var next = insertAfter ? insertAfter.nextElementSibling : null;
+          chatContainer.insertBefore(mapWrap, next);
+          if (id === 'genericMapComponentWrapXray') mapWrap.setAttribute('aria-hidden', 'true');
+        }
       }
       if (mapWrap) insertAfter = mapWrap;
     });
@@ -364,9 +445,35 @@
   function createUserBubble(text) {
     var wrap = document.createElement('div');
     wrap.className = 'message user';
-    wrap.innerHTML = '<div class="bubble user"><span class="user-text"></span></div>';
+    var flow = document.body.getAttribute('data-flow') || '';
+    var isOpenAI = flow.indexOf('openai-') === 0;
+    var copyIcon = '<img src="assets/icon-copy.png" alt="" width="20" height="20">';
+    var editIcon = '<img src="assets/icon-edit-pencil.png" alt="" width="20" height="20">';
+    var actionsHtml = isOpenAI
+      ? '<div class="bubble-user-actions">' +
+          '<button type="button" class="bubble-action-btn" aria-label="Copy" title="Copy">' + copyIcon + '</button>' +
+          '<button type="button" class="bubble-action-btn" aria-label="Edit" title="Edit">' + editIcon + '</button>' +
+        '</div>'
+      : '';
+    wrap.innerHTML =
+      '<div class="message-user-inner">' +
+        '<div class="bubble user"><span class="user-text"></span></div>' +
+        actionsHtml +
+      '</div>';
     wrap.querySelector('.user-text').textContent = text;
+    if (isOpenAI) {
+      var copyBtn = wrap.querySelector('.bubble-user-actions .bubble-action-btn[aria-label="Copy"]');
+      var editBtn = wrap.querySelector('.bubble-user-actions .bubble-action-btn[aria-label="Edit"]');
+      if (copyBtn) copyBtn.addEventListener('click', function () { copyToClipboard(text); });
+      if (editBtn) editBtn.addEventListener('click', function () { /* edit: could focus input with text */ });
+    }
     return wrap;
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () {});
+    }
   }
 
   function createProviderCard() {
@@ -497,12 +604,12 @@
   function getAiResponseParts(userText) {
     var flow = document.body.getAttribute('data-flow');
     var text = (userText || '').trim();
-    if (flow === 'generic-2') {
+    if (isFlow2(flow)) {
       if (isDenverRadiologyFollowUpPrompt(text)) return xrayFollowUpResponseParts;
       if (isXrayPrompt(text)) return xrayResponseParts;
       return aiResponseParts;
     }
-    if (flow !== 'generic-1') return aiResponseParts;
+    if (!isFlow1(flow)) return aiResponseParts;
     if (isInsuranceDetailsPrompt(text)) return insuranceResponseParts;
     if (text.indexOf(ACL_PROMPT_SUBSTRING) !== -1) return aclResponseParts;
     if (isPostStreetEstimatePrompt(text)) return postStreetEstimateResponseParts;
@@ -517,10 +624,30 @@
     { name: 'California Pacific Medical Center - Van Ness Campus', rating: '4.8', procedure: 'Arthroscopic - Knee Repair' }
   ];
 
+  function moveMapCardsOutsideForOpenAI(mapWrap) {
+    if (!isOpenAIFlow() || !mapWrap) return;
+    var mapComponent = mapWrap.querySelector('.generic-map-component');
+    var cardsRow = mapWrap.querySelector('.generic-map-cards-row');
+    var body = mapWrap.querySelector('.generic-map-body');
+    if (mapComponent && cardsRow && body && cardsRow.parentNode === body) {
+      mapWrap.appendChild(cardsRow);
+    }
+  }
+
+  function restoreMapCardsToBody(mapWrap) {
+    if (!mapWrap) return;
+    var cardsRow = mapWrap.querySelector('.generic-map-cards-row');
+    var body = mapWrap.querySelector('.generic-map-body');
+    if (cardsRow && body && cardsRow.parentNode !== body) {
+      body.appendChild(cardsRow);
+    }
+  }
+
   function moveMapComponentIntoBubble(bubble) {
     var mapWrap = document.getElementById('genericMapComponentWrap');
     if (!mapWrap || !bubble) return;
     bubble.appendChild(mapWrap);
+    moveMapCardsOutsideForOpenAI(mapWrap);
   }
 
   function moveMapComponentPriceIntoBubble(bubble) {
@@ -528,6 +655,7 @@
     if (!mapWrap || !bubble) return;
     bubble.appendChild(mapWrap);
     bindPriceMapSync(mapWrap);
+    moveMapCardsOutsideForOpenAI(mapWrap);
   }
 
   function moveMapComponentXrayIntoBubble(bubble) {
@@ -536,6 +664,7 @@
     mapWrap.removeAttribute('aria-hidden');
     bubble.appendChild(mapWrap);
     bindPriceMapSync(mapWrap);
+    moveMapCardsOutsideForOpenAI(mapWrap);
   }
 
   function createFileAttachmentChip(fileName, fileExt) {
@@ -591,18 +720,19 @@
   var XRAY_PROMPT_MARKER = 'Here are my latest records';
   function updateInputAttachmentVisibility() {
     var container = document.getElementById('inputAttachments');
-    if (!container) return;
+    var containerAnthropic = document.getElementById('inputAttachmentsAnthropic');
+    var activeContainer = isAnthropicFlow() ? containerAnthropic : container;
+    if (!activeContainer) return;
     var flow = document.body.getAttribute('data-flow');
     var hasMessages = chatContainer && chatContainer.querySelectorAll('.message').length > 0;
     var field = getActiveInputField();
     var hasXrayPrompt = field && (field.value || '').indexOf(XRAY_PROMPT_MARKER) !== -1;
-    var show = flow === 'generic-2' && !hasMessages && hasXrayPrompt;
-    container.innerHTML = '';
-    if (show) {
-      container.appendChild(createInputAttachmentChip('chris.s-medicalrecords-2026', '.txt'));
-      container.setAttribute('aria-hidden', 'false');
-    } else {
-      container.setAttribute('aria-hidden', 'true');
+    var show = isFlow2(flow) && !hasMessages && hasXrayPrompt;
+    if (container) { container.innerHTML = ''; container.setAttribute('aria-hidden', 'true'); }
+    if (containerAnthropic) { containerAnthropic.innerHTML = ''; containerAnthropic.setAttribute('aria-hidden', 'true'); }
+    if (show && activeContainer) {
+      activeContainer.appendChild(createInputAttachmentChip('chris.s-medicalrecords-2026', '.txt'));
+      activeContainer.setAttribute('aria-hidden', 'false');
     }
   }
 
@@ -765,6 +895,47 @@
     return row;
   }
 
+  function createResponseIconsRow() {
+    var wrap = document.createElement('div');
+    wrap.className = 'response-icons-row';
+    var icons = [
+      { src: 'assets/icon-response-Copy.png', label: 'Copy' },
+      { src: 'assets/icon-response-share.png', label: 'Share' },
+      { src: 'assets/icon-response-Play.png', label: 'Play' },
+      { src: 'assets/icon-response-Thumbs_Up.png', label: 'Thumbs up' },
+      { src: 'assets/icon-response-Thumbs_Down.png', label: 'Thumbs down' },
+      { src: 'assets/icon-response-Reload.png', label: 'Reload' }
+    ];
+    icons.forEach(function (icon) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'response-icon-btn';
+      btn.setAttribute('aria-label', icon.label);
+      btn.innerHTML = '<img src="' + icon.src + '" alt="" width="20" height="20">';
+      wrap.appendChild(btn);
+    });
+    return wrap;
+  }
+
+  function createSourcesOpenAI() {
+    var wrap = document.createElement('div');
+    wrap.className = 'sources-openai';
+    var arrowSvg = '<svg class="sources-openai-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>';
+    wrap.innerHTML =
+      '<div class="sources-openai-item">' +
+        '<div class="sources-openai-link-row">' +
+          '<a href="https://turquoise.health" target="_blank" rel="noopener" class="sources-openai-link">Turquoise Health</a>' +
+          arrowSvg +
+        '</div>' +
+        '<p class="sources-openai-desc">Healthcare data and technology company focused on price transparency and healthcare cost information.</p>' +
+        '<div class="sources-openai-pill">' +
+          '<img src="assets/turquoise-logomark.png" alt="" class="sources-openai-logomark">' +
+          '<span class="sources-openai-pill-text">Turquoise</span>' +
+        '</div>' +
+      '</div>';
+    return wrap;
+  }
+
   function buildAssistantBubbleContent() {
     var bubble = document.createElement('div');
     bubble.className = 'bubble assistant';
@@ -793,7 +964,8 @@
     p3.appendChild(document.createTextNode(' to enter your insurance details on Turquoise. I can also show you other providers near UCLA if you\'d like to compare costs — just let me know!'));
     bubble.appendChild(p3);
     bubble.appendChild(createProviderCard());
-    bubble.appendChild(createSourcesBlock());
+    bubble.appendChild(isOpenAIFlow() ? createSourcesOpenAI() : createSourcesBlock());
+    if (isOpenAIFlow()) bubble.appendChild(createResponseIconsRow());
     return bubble;
   }
 
@@ -805,6 +977,7 @@
 
     function streamNext() {
       if (partIndex >= responseParts.length) {
+        if (isOpenAIFlow()) bubble.appendChild(createResponseIconsRow());
         chatContainer.scrollTop = chatContainer.scrollHeight;
         updateAutocompleteBubbleVisibility();
         return;
@@ -862,7 +1035,7 @@
         chatContainer.scrollTop = chatContainer.scrollHeight;
         setTimeout(streamNext, 12);
       } else if (part.type === 'sources') {
-        bubble.appendChild(createSourcesBlock());
+        bubble.appendChild(isOpenAIFlow() ? createSourcesOpenAI() : createSourcesBlock());
         partIndex++;
         chatContainer.scrollTop = chatContainer.scrollHeight;
         setTimeout(streamNext, 12);
@@ -872,7 +1045,7 @@
         chatContainer.scrollTop = chatContainer.scrollHeight;
         setTimeout(streamNext, 12);
       } else if (part.type === 'sources_pill') {
-        bubble.appendChild(createSourcesPillOnly());
+        bubble.appendChild(isOpenAIFlow() ? createSourcesOpenAI() : createSourcesPillOnly());
         partIndex++;
         chatContainer.scrollTop = chatContainer.scrollHeight;
         setTimeout(streamNext, 12);
@@ -953,6 +1126,8 @@
   if (submitIconBtn) submitIconBtn.addEventListener('click', sendMessage);
   var submitIconBtnAnthropic = document.getElementById('submitIconBtnAnthropic');
   if (submitIconBtnAnthropic) submitIconBtnAnthropic.addEventListener('click', sendMessage);
+  var submitIconBtnOpenai = document.getElementById('submitIconBtnOpenai');
+  if (submitIconBtnOpenai) submitIconBtnOpenai.addEventListener('click', sendMessage);
   updateSubmitIcon();
 
   function restoreCostShareBodyIntoResultCard() {
@@ -1310,9 +1485,11 @@
     if (drawerOverlay.classList.contains('drawer-xray-mode')) {
       restoreCostShareBodyIntoResultCard();
     }
-    drawerOverlay.classList.remove('is-open', 'drawer-after-loading', 'drawer-showing-success', 'drawer-showing-booking-success', 'drawer-lock-price-mode', 'drawer-xray-mode');
+    drawerOverlay.classList.remove('is-open', 'drawer-after-loading', 'drawer-showing-success', 'drawer-showing-booking-success', 'drawer-showing-lock-success', 'drawer-lock-price-mode', 'drawer-xray-mode');
     var bookingSuccessPanel = document.getElementById('drawerBookingSuccess');
     if (bookingSuccessPanel) bookingSuccessPanel.setAttribute('aria-hidden', 'true');
+    var lockSuccessPanel = document.getElementById('drawerLockSuccess');
+    if (lockSuccessPanel) lockSuccessPanel.setAttribute('aria-hidden', 'true');
     drawerOverlay.setAttribute('aria-hidden', 'true');
     drawerPanel.classList.remove('is-loading');
     if (drawerBodyCards) drawerBodyCards.classList.remove('is-hidden');
@@ -1381,10 +1558,98 @@
     drawerCancelBtn.addEventListener('click', closeDrawer);
   }
 
+  function appendLockPriceConfirmedMessage(summary) {
+    var procedure = summary.procedure || 'your procedure';
+    var totalPay = summary.totalPay || '';
+    var facility = summary.facility || '';
+    var aiWrap = document.createElement('div');
+    aiWrap.className = 'message assistant';
+    var bubble = document.createElement('div');
+    bubble.className = 'bubble assistant';
+    var p1 = document.createElement('p');
+    p1.textContent = "Your price has been locked! You're all set with a guaranteed estimate for your care.";
+    bubble.appendChild(p1);
+    var p2 = document.createElement('p');
+    p2.textContent = "Here's what happens next:";
+    bubble.appendChild(p2);
+    var ul = document.createElement('ul');
+    var li1 = document.createElement('li');
+    li1.textContent = 'Procedure: ' + procedure;
+    ul.appendChild(li1);
+    if (totalPay) {
+      var li2 = document.createElement('li');
+      li2.textContent = 'Locked price: ' + totalPay;
+      ul.appendChild(li2);
+    }
+    if (facility) {
+      var li3 = document.createElement('li');
+      li3.textContent = 'Provider: ' + facility;
+      ul.appendChild(li3);
+    }
+    var li4 = document.createElement('li');
+    li4.textContent = "You'll receive a confirmation email with next steps to schedule your procedure.";
+    ul.appendChild(li4);
+    bubble.appendChild(ul);
+    var p3 = document.createElement('p');
+    p3.textContent = "Would you like help scheduling your appointment, or do you have questions about the procedure?";
+    bubble.appendChild(p3);
+    if (isOpenAIFlow()) bubble.appendChild(createResponseIconsRow());
+    aiWrap.appendChild(bubble);
+    chatContainer.appendChild(aiWrap);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
   var drawerLockPriceKneeBtn = document.getElementById('drawerLockPriceKneeBtn');
   var drawerContactProviderBtn = document.getElementById('drawerContactProviderBtn');
   if (drawerLockPriceKneeBtn) {
-    drawerLockPriceKneeBtn.addEventListener('click', function () { closeDrawer(); });
+    drawerLockPriceKneeBtn.addEventListener('click', function () {
+      if (!drawerLoading || !drawerBodyCards) return;
+      var loadingTextEl = drawerLoading.querySelector('.drawer-loading-text');
+      if (loadingTextEl) loadingTextEl.textContent = "Locking your price...";
+      drawerBodyCards.classList.add('is-hidden');
+      if (drawerPanel) drawerPanel.classList.add('is-loading');
+      drawerLoading.classList.add('is-visible');
+      drawerLoading.removeAttribute('hidden');
+      var progress = drawerLoading.querySelector('.drawer-loading-progress');
+      if (progress) progress.classList.add('is-expanded');
+      if (drawerLoadingVideo) {
+        var p = drawerLoadingVideo.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      }
+      setTimeout(function () {
+        if (loadingTextEl) loadingTextEl.textContent = "One sec, we're verifying your coverage";
+        if (drawerPanel) drawerPanel.classList.remove('is-loading');
+        drawerLoading.classList.remove('is-visible');
+        drawerLoading.setAttribute('hidden', '');
+        if (progress) progress.classList.remove('is-expanded');
+        if (drawerLoadingVideo) drawerLoadingVideo.pause();
+        drawerBodyCards.classList.remove('is-hidden');
+        var priceEl = document.getElementById('drawerLockSuccessPrice');
+        var resultCard = document.getElementById('drawerResultCard');
+        var resultPriceEl = resultCard && resultCard.querySelector('.drawer-card-result-price');
+        if (priceEl && resultPriceEl) priceEl.textContent = (resultPriceEl.textContent || '').trim() || '$50';
+        drawerOverlay.classList.add('drawer-showing-lock-success');
+        var drawerLockSuccess = document.getElementById('drawerLockSuccess');
+        if (drawerLockSuccess) drawerLockSuccess.setAttribute('aria-hidden', 'false');
+      }, 3000);
+    });
+  }
+  var drawerLockSuccessDone = document.getElementById('drawerLockSuccessDone');
+  if (drawerLockSuccessDone) {
+    drawerLockSuccessDone.addEventListener('click', function () {
+      drawerOverlay.classList.remove('drawer-showing-lock-success');
+      var drawerLockSuccess = document.getElementById('drawerLockSuccess');
+      if (drawerLockSuccess) drawerLockSuccess.setAttribute('aria-hidden', 'true');
+      closeDrawer();
+      var summary = getEstimateSummaryFromDrawer();
+      var loadingMsg = createAssistantLoading("Locking your price");
+      chatContainer.appendChild(loadingMsg);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      setTimeout(function () {
+        loadingMsg.remove();
+        appendLockPriceConfirmedMessage(summary);
+      }, 1000);
+    });
   }
   if (drawerContactProviderBtn) {
     drawerContactProviderBtn.addEventListener('click', function () { closeDrawer(); });
@@ -1399,6 +1664,11 @@
     var totalPay = priceEl ? (priceEl.textContent || '').trim() : '';
     var facilityEl = resultCard.querySelector('.drawer-card-facility-name');
     var facility = facilityEl ? (facilityEl.textContent || '').trim() : '';
+    if (!facility) {
+      var doctorCard = document.getElementById('drawerLockPriceDoctorCard');
+      var doctorFacilityEl = doctorCard && doctorCard.querySelector('.drawer-doctor-facility-name');
+      facility = doctorFacilityEl ? (doctorFacilityEl.textContent || '').trim() : '';
+    }
     return { procedure: procedure, totalPay: totalPay, facility: facility };
   }
 
@@ -1437,6 +1707,7 @@
     var p4 = document.createElement('p');
     p4.textContent = "Want help comparing this with other hospitals nearby, or exploring payment plans and financial assistance options?";
     bubble.appendChild(p4);
+    if (isOpenAIFlow()) bubble.appendChild(createResponseIconsRow());
     aiWrap.appendChild(bubble);
     chatContainer.appendChild(aiWrap);
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -1487,6 +1758,7 @@
     var p4 = document.createElement('p');
     p4.textContent = "Need to reschedule, add to your calendar, or have questions about your visit? Just ask.";
     bubble.appendChild(p4);
+    if (isOpenAIFlow()) bubble.appendChild(createResponseIconsRow());
     aiWrap.appendChild(bubble);
     chatContainer.appendChild(aiWrap);
     chatContainer.scrollTop = chatContainer.scrollHeight;

@@ -23,9 +23,22 @@
       </button>
       <nav class="nav-menu-list" role="navigation" aria-label="Flow selection">
         <div class="nav-menu-group">
+          <span class="nav-menu-group-title">Generic</span>
           <a href="#" class="nav-menu-item is-active" data-flow="generic-1">Knee Surgery</a>
           <a href="#" class="nav-menu-item" data-flow="generic-2">X-Ray</a>
           <a href="#" class="nav-menu-item" data-flow="generic-3">Labor &amp; Delivery</a>
+        </div>
+        <div class="nav-menu-group">
+          <span class="nav-menu-group-title">OpenAI</span>
+          <a href="#" class="nav-menu-item" data-flow="openai-1">Knee Surgery</a>
+          <a href="#" class="nav-menu-item" data-flow="openai-2">X-Ray</a>
+          <a href="#" class="nav-menu-item" data-flow="openai-3">Labor &amp; Delivery</a>
+        </div>
+        <div class="nav-menu-group">
+          <span class="nav-menu-group-title">Anthropic</span>
+          <a href="#" class="nav-menu-item" data-flow="anthropic-1">Knee Surgery</a>
+          <a href="#" class="nav-menu-item" data-flow="anthropic-2">X-Ray</a>
+          <a href="#" class="nav-menu-item" data-flow="anthropic-3">Labor &amp; Delivery</a>
         </div>
       </nav>
     </div>
@@ -44,6 +57,26 @@
       <div class="header-right">
         <button type="button" class="nav-icon" aria-label="Chat">
           <img src="assets/header-chat.png" alt="" class="header-icon-img">
+        </button>
+      </div>
+    </header>
+    <header class="header header-openai" aria-hidden="true">
+      <div class="header-left header-openai-left">
+        <button type="button" class="nav-icon nav-icon-openai" id="headerMenuBtnOpenai" aria-label="Open menu">
+          <img src="assets/openai-sidebar-menu.svg" alt="" class="header-icon-img">
+        </button>
+        <div class="header-openai-title-wrap">
+          <span class="header-openai-title">ChatGPT</span>
+          <span class="header-openai-version">5.2</span>
+          <img src="assets/openai-chevron-right.svg" alt="" class="header-openai-chevron">
+        </div>
+      </div>
+      <div class="header-right header-openai-right">
+        <button type="button" class="nav-icon nav-icon-openai" aria-label="New chat">
+          <svg class="header-icon-img" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.6729 3.91324C16.8918 2.69429 18.8682 2.69429 20.0871 3.91324C21.3061 5.13219 21.3061 7.1085 20.0871 8.32745L14.1499 14.2646C13.3849 15.0296 12.3925 15.5259 11.3215 15.6789L9.14142 15.9903C8.82983 16.0348 8.51546 15.93 8.29289 15.7074C8.07033 15.4849 7.96554 15.1705 8.01005 14.8589L8.32149 12.6789C8.47449 11.6079 8.97072 10.6154 9.7357 9.85043L15.6729 3.91324ZM18.6729 5.32745C18.235 4.88955 17.525 4.88955 17.0871 5.32745L11.1499 11.2646C10.6909 11.7236 10.3932 12.3191 10.3014 12.9617L10.1785 13.8218L11.0386 13.699C11.6812 13.6072 12.2767 13.3094 12.7357 12.8504L18.6729 6.91324C19.1108 6.47533 19.1108 5.76535 18.6729 5.32745ZM11 3.99965C11.0004 4.55194 10.5531 5 10.0008 5.00043C9.00227 5.00121 8.29769 5.00864 7.74651 5.06101C7.20685 5.11228 6.88488 5.20153 6.63803 5.32731C6.07354 5.61493 5.6146 6.07387 5.32698 6.63836C5.19279 6.90172 5.10062 7.2494 5.05118 7.85457C5.00078 8.47141 5 9.26372 5 10.4003V13.6003C5 14.7369 5.00078 15.5293 5.05118 16.1461C5.10062 16.7513 5.19279 17.0989 5.32698 17.3623C5.6146 17.9268 6.07354 18.3857 6.63803 18.6734C6.90138 18.8075 7.24907 18.8997 7.85424 18.9492C8.47108 18.9996 9.26339 19.0003 10.4 19.0003H13.6C14.7366 19.0003 15.5289 18.9996 16.1458 18.9492C16.7509 18.8997 17.0986 18.8075 17.362 18.6734C17.9265 18.3857 18.3854 17.9268 18.673 17.3623C18.7988 17.1154 18.8881 16.7935 18.9393 16.2538C18.9917 15.7026 18.9991 14.9981 18.9999 13.9996C19.0003 13.4473 19.4484 12.9999 20.0007 13.0003C20.553 13.0008 21.0003 13.4488 20.9999 14.0011C20.9991 14.9793 20.9932 15.7811 20.9304 16.443C20.8664 17.1163 20.7385 17.714 20.455 18.2703C19.9757 19.2111 19.2108 19.976 18.27 20.4554C17.6777 20.7572 17.0375 20.883 16.3086 20.9425C15.6008 21.0003 14.7266 21.0003 13.6428 21.0003H10.3572C9.27339 21.0003 8.39925 21.0003 7.69138 20.9425C6.96253 20.883 6.32234 20.7572 5.73005 20.4554C4.78924 19.976 4.02433 19.2111 3.54497 18.2703C3.24318 17.678 3.11737 17.0378 3.05782 16.309C2.99998 15.6011 2.99999 14.7269 3 13.6431V10.3575C2.99999 9.27374 2.99998 8.39959 3.05782 7.69171C3.11737 6.96286 3.24318 6.32267 3.54497 5.73038C4.02433 4.78957 4.78924 4.02467 5.73005 3.5453C6.28633 3.26186 6.88399 3.13395 7.55735 3.06997C8.21919 3.00709 9.02103 3.00119 9.99922 3.00043C10.5515 3 10.9996 3.44737 11 3.99965Z" fill="#0D0D0D"/></svg>
+        </button>
+        <button type="button" class="nav-icon nav-icon-openai" aria-label="More options">
+          <svg class="header-icon-img" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12ZM10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12ZM17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12Z" fill="#0D0D0D"/></svg>
         </button>
       </div>
     </header>
@@ -71,6 +104,12 @@
   <main class="chat-container" id="chatContainer">
     <div class="chat-welcome" id="chatWelcome" aria-hidden="false">
       <p class="chat-welcome-text">Good Afternoon Chris, how can we help?</p>
+    </div>
+    <div class="chat-welcome chat-welcome-openai" id="chatWelcomeOpenai" aria-hidden="true">
+      <div class="chat-welcome-openai-inner">
+        <span class="chat-welcome-openai-emoji" aria-hidden="true">☀️</span>
+        <p class="chat-welcome-openai-text">Good afternoon Chris, how can we help?</p>
+      </div>
     </div>
     <div class="chat-welcome chat-welcome-anthropic" id="chatWelcomeAnthropic" aria-hidden="true">
       <div class="chat-welcome-anthropic-inner">
@@ -462,7 +501,7 @@
     <div class="autocomplete-bubble autocomplete-bubble--flow2" id="autocompleteBubbleFlow2" role="button" tabindex="0" aria-label="Use suggested question about x-ray cost" data-suggestion="The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?">The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?</div>
     <div class="autocomplete-bubble autocomplete-bubble--flow2" id="autocompleteBubbleFlow2Second" role="button" tabindex="0" aria-label="Use suggested follow-up about Denver Radiology" data-suggestion="I'm interested in Denver Radiology &amp; Imaging Center">I'm interested in Denver Radiology &amp; Imaging Center</div>
     <div class="input-suggestion" id="inputSuggestion" role="button" tabindex="0" aria-label="Use suggested question: How much does it cost to have a baby at UCLA?">How much does it cost to have a baby at UCLA?</div>
-    <!-- Generic / OpenAI / Counsel: original single-row input -->
+    <!-- Generic / Counsel: original single-row input -->
     <div class="input-row input-row-generic" id="inputRow">
       <div class="input-attachments" id="inputAttachments" aria-hidden="true"></div>
       <div class="input-row-inner">
@@ -478,8 +517,27 @@
       </button>
       </div>
     </div>
+    <!-- OpenAI only: Figma composer-style input -->
+    <div class="input-row input-row-openai" id="inputRowOpenai" aria-hidden="true">
+      <div class="input-attachments" id="inputAttachmentsOpenai" aria-hidden="true"></div>
+      <div class="input-row-inner input-row-openai-inner">
+        <button type="button" class="input-btn-plus input-btn-openai-plus" aria-label="Add">
+          <img src="assets/openai-input-plus.png" alt="" class="input-btn-icon-img">
+        </button>
+        <div class="input-field-wrap-openai">
+          <textarea class="input-field" id="inputFieldOpenai" placeholder="Ask anything" rows="1"></textarea>
+          <button type="button" class="input-btn-icon input-btn-openai-mic" aria-label="Microphone">
+            <img src="assets/openai-input-mic.png" alt="" class="input-btn-icon-img">
+          </button>
+          <button type="button" class="input-btn-icon input-btn-openai-send" id="submitIconBtnOpenai" aria-label="Send">
+            <img src="assets/send.svg" alt="" class="input-btn-icon-img">
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- Anthropic only: composer-style input -->
     <div class="input-row input-row-composer input-row-anthropic" id="inputRowAnthropic" aria-hidden="true">
+      <div class="input-attachments" id="inputAttachmentsAnthropic" aria-hidden="true"></div>
       <div class="input-composer-inner">
         <div class="input-composer-field-wrap">
           <textarea class="input-field" id="inputFieldAnthropic" placeholder="Chat with Claude" rows="1"></textarea>
@@ -552,6 +610,43 @@
                 </div>
                 <button type="button" class="drawer-booking-success-apple-wallet">
                   <span class="drawer-booking-success-apple-wallet-icon" aria-hidden="true">&#63743;</span>
+                  Add to Apple Wallet
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Lock price success (knee surgery) – Figma 942:38328 – shown after Lock Price -->
+          <div class="drawer-lock-success" id="drawerLockSuccess" aria-hidden="true">
+            <div class="drawer-lock-success-inner">
+              <div class="drawer-lock-success-header">
+                <div class="drawer-lock-success-logo" aria-hidden="true">
+                  <img src="assets/turquoise-logo-booking.png" alt="Turquoise Health" width="125" height="28" class="drawer-lock-success-logo-img">
+                </div>
+                <div class="drawer-lock-success-icon" aria-hidden="true">
+                  <img src="assets/booking-success-calendar.png" alt="" width="90" height="75" class="drawer-lock-success-icon-img">
+                </div>
+                <h2 class="drawer-lock-success-title">Price guaranteed!</h2>
+                <p class="drawer-lock-success-subtitle">You've successfully locked in your price! The cost of your visit will not change.</p>
+              </div>
+              <div class="drawer-lock-success-card">
+                <div class="drawer-lock-success-card-row">
+                  <div class="drawer-lock-success-card-left">
+                    <span class="drawer-lock-success-meta">SSP CO000 <button type="button" class="drawer-lock-success-meta-icon" aria-label="More information"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></button></span>
+                    <p class="drawer-lock-success-procedure">Consult for Knee Repair</p>
+                  </div>
+                  <div class="drawer-lock-success-card-right">
+                    <p class="drawer-lock-success-price-label">Total you pay</p>
+                    <p class="drawer-lock-success-price" id="drawerLockSuccessPrice">$50</p>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-lock-success-card drawer-lock-success-card--qr">
+                <p class="drawer-lock-success-qr-copy">Scan this QR code when you arrive at appointment to complete your payment.</p>
+                <div class="drawer-lock-success-qr-placeholder">
+                  <img src="assets/booking-success-qr.png" alt="QR code for payment" width="120" height="120" class="drawer-lock-success-qr-img">
+                </div>
+                <button type="button" class="drawer-lock-success-apple-wallet">
+                  <span class="drawer-lock-success-apple-wallet-icon" aria-hidden="true">&#63743;</span>
                   Add to Apple Wallet
                 </button>
               </div>
@@ -1059,6 +1154,9 @@
           </div>
           <div class="drawer-footer-btns drawer-footer-btns-booking-success" id="drawerFooterBtnsBookingSuccess" aria-hidden="true">
             <button type="button" class="drawer-footer-btn drawer-footer-btn-primary drawer-footer-btn-full" id="drawerBookingSuccessDone">Done</button>
+          </div>
+          <div class="drawer-footer-btns drawer-footer-btns-lock-success" id="drawerFooterBtnsLockSuccess" aria-hidden="true">
+            <button type="button" class="drawer-footer-btn drawer-footer-btn-primary drawer-footer-btn-full" id="drawerLockSuccessDone">Done</button>
           </div>
           <div class="drawer-footer-success" id="drawerFooterSuccess" aria-live="polite">
             <p class="drawer-success-text">Estimate confirmed!</p>
