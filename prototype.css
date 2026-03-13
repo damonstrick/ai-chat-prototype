@@ -1012,6 +1012,14 @@ body[data-flow^="openai"] .prototype-backdrop {
 .phone-frame.has-flow-starters.flow-anthropic .chat-container {
   padding-bottom: 320px;
 }
+/* Smaller screens: use viewport-relative padding to prevent overlap */
+@media (max-height: 700px) {
+  .phone-frame.has-flow-starters.flow-generic .chat-container,
+  .phone-frame.has-flow-starters.flow-openai .chat-container,
+  .phone-frame.has-flow-starters.flow-anthropic .chat-container {
+    padding-bottom: max(320px, 55vh);
+  }
+}
 .phone-frame.flow-generic .chat-container {
   background: #F8F7F1;
 }
@@ -1035,6 +1043,11 @@ body[data-flow^="openai"] .prototype-backdrop {
   padding: 16px;
   pointer-events: none;
   transition: opacity 0.35s ease;
+}
+@media (max-height: 700px) {
+  .chat-welcome {
+    bottom: min(280px, 45vh);
+  }
 }
 .chat-welcome.is-faded {
   opacity: 0;
@@ -1529,7 +1542,7 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
 
 /* Anthropic flows: provider card (Styrene, warm palette) */
 .flow-anthropic .provider-card {
-  background: rgba(248, 246, 243, 1);
+  background: #fff;
 }
 .flow-anthropic .provider-card-title {
   font-weight: 500;
@@ -1750,6 +1763,10 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
   background: #f8f7f1;
   border: 0.5px solid #bbb;
   border-radius: 16px;
+}
+.phone-frame.flow-openai .xray-file-attachment {
+  background: #fff;
+  border-color: #e5e5e5;
   overflow: hidden;
 }
 .xray-file-attachment-upload-spinner svg {
@@ -2931,10 +2948,15 @@ body:not([data-flow^="openai"]) .response-icons-row {
   border: none;
   border-radius: 24px 24px 0 0;
   min-height: 101px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .phone-frame.flow-openai .input-row-openai-inner {
+  flex: 1;
+  min-width: 0;
   gap: 8px;
   padding-bottom: 6px;
+  display: flex;
 }
 .phone-frame.flow-openai .input-btn-openai-plus {
   width: 44px;
@@ -2949,9 +2971,23 @@ body:not([data-flow^="openai"]) .response-icons-row {
   width: 24px;
   height: 24px;
 }
+.phone-frame.flow-openai .input-row-openai:has(.input-attachments-openai:not(:empty)) {
+  flex-direction: column;
+  align-items: stretch;
+}
+.phone-frame.flow-openai .input-row-openai:has(.input-attachments-openai:not(:empty)) .input-attachments-openai {
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.phone-frame.flow-openai .input-attachments-openai .input-attachment-chip {
+  background: rgba(0, 0, 0, 0.08);
+  font-size: 13px;
+}
 .phone-frame.flow-openai .input-field-wrap-openai {
   flex: 1;
   min-height: 44px;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -2959,7 +2995,6 @@ body:not([data-flow^="openai"]) .response-icons-row {
   background: #F3F3F3;
   border-radius: 22px;
   border: 1px solid #F3F3F3;
-  min-width: 0;
 }
 .phone-frame.flow-openai .input-field-wrap-openai .input-field {
   flex: 1;
@@ -4170,7 +4205,6 @@ body[data-flow="openai-3"] .drawer-body {
   display: none;
   position: absolute;
   inset: 0;
-  border-radius: 24px;
   overflow: hidden;
   flex-direction: column;
   align-items: center;
@@ -4178,6 +4212,7 @@ body[data-flow="openai-3"] .drawer-body {
   gap: 24px;
   padding: 24px;
   margin: 0 -12px;
+  contain: layout;
 }
 .drawer-loading.is-visible {
   display: flex;
@@ -4188,13 +4223,12 @@ body[data-flow="openai-3"] .drawer-body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 24px;
+  object-position: center center;
 }
 .drawer-loading-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
-  border-radius: 24px;
   pointer-events: none;
 }
 .drawer-loading-content {
@@ -4204,11 +4238,12 @@ body[data-flow="openai-3"] .drawer-body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  width: 400px;
-  max-width: 400px;
+  width: min(400px, 100%);
+  max-width: 100%;
 }
 .drawer-loading-text {
-  width: 400px;
+  width: min(400px, 100%);
+  max-width: 100%;
   font-size: 17px;
   font-weight: 500;
   line-height: 1.35;
@@ -5950,6 +5985,24 @@ body[data-flow="openai-3"] .drawer-body {
   .drawer-overlay {
     position: fixed;
   }
+  /* Drawer loading: prevent zoom/overflow on small screens */
+  .drawer-loading {
+    padding: 16px;
+    margin: 0;
+  }
+  .drawer-loading-content {
+    width: 100%;
+    max-width: 100%;
+  }
+  .drawer-loading-text {
+    width: 100%;
+    max-width: 100%;
+    font-size: 15px;
+  }
+  .drawer-loading-video {
+    object-fit: cover;
+    object-position: center center;
+  }
   /* Nav menu: fill entire mobile viewport */
   .nav-menu-overlay {
     padding: 0;
@@ -5990,5 +6043,35 @@ body[data-flow="openai-3"] .drawer-body {
     min-height: 56px;
     padding: 18px 24px;
     border-radius: 14px;
+  }
+}
+
+/* Short viewports: extra chat padding to prevent overlap with autocomplete */
+@media (max-height: 600px) {
+  .phone-frame.has-flow-starters.flow-generic .chat-container,
+  .phone-frame.has-flow-starters.flow-openai .chat-container,
+  .phone-frame.has-flow-starters.flow-anthropic .chat-container {
+    padding-bottom: max(360px, 58vh);
+  }
+  .chat-welcome {
+    bottom: max(280px, 48vh);
+  }
+}
+
+/* Narrow screens: ensure autocomplete and input don't overflow */
+@media (max-width: 400px) {
+  .autocomplete-flow-starters,
+  .autocomplete-flow-followups {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+  .phone-frame.flow-openai .autocomplete-flow-starters,
+  .phone-frame.flow-openai .autocomplete-flow-followups {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+  .autocomplete-bubble {
+    padding: 8px 12px;
+    font-size: 14px;
   }
 }

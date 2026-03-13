@@ -728,15 +728,17 @@
   var XRAY_PROMPT_MARKER = 'Here are my latest records';
   function updateInputAttachmentVisibility() {
     var container = document.getElementById('inputAttachments');
+    var containerOpenai = document.getElementById('inputAttachmentsOpenai');
     var containerAnthropic = document.getElementById('inputAttachmentsAnthropic');
-    var activeContainer = isAnthropicFlow() ? containerAnthropic : container;
+    var activeContainer = isAnthropicFlow() ? containerAnthropic : (isOpenAIFlow() ? containerOpenai : container);
     if (!activeContainer) return;
     var flow = document.body.getAttribute('data-flow');
     var hasMessages = chatContainer && chatContainer.querySelectorAll('.message').length > 0;
     var field = getActiveInputField();
     var hasXrayPrompt = field && (field.value || '').indexOf(XRAY_PROMPT_MARKER) !== -1;
-    var show = isFlow2(flow) && !hasMessages && hasXrayPrompt;
+    var show = !hasMessages && hasXrayPrompt;
     if (container) { container.innerHTML = ''; container.setAttribute('aria-hidden', 'true'); }
+    if (containerOpenai) { containerOpenai.innerHTML = ''; containerOpenai.setAttribute('aria-hidden', 'true'); }
     if (containerAnthropic) { containerAnthropic.innerHTML = ''; containerAnthropic.setAttribute('aria-hidden', 'true'); }
     if (show && activeContainer) {
       activeContainer.appendChild(createInputAttachmentChip('chris.s-medicalrecords-2026', '.txt'));
@@ -1341,7 +1343,7 @@
         panelOther.setAttribute('aria-hidden', 'true');
       }
       var lockDisclaimer = lockDetailCard.querySelector('.drawer-lock-detail-disclaimer');
-      if (lockDisclaimer) lockDisclaimer.textContent = "This provider enables you to lock in an estimate for an initial consult. This guarantees you'll not pay more than this estimate for this service. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.";
+      if (lockDisclaimer) lockDisclaimer.textContent = "This provider enables you to lock in an estimate for the initial consult. This guarantees you'll not pay more than this estimate for this service.";
     }
     var lockDoctorCard = document.getElementById('drawerLockPriceDoctorCard');
     if (lockDoctorCard) lockDoctorCard.setAttribute('aria-hidden', 'false');
@@ -1881,8 +1883,8 @@
 
   /* Lock price detail card: switch between Price Lock and Other Estimates tabs */
   var lockDetailCard = document.getElementById('drawerLockPriceDetailCard');
-  var LOCK_DISCLAIMER_INITIAL = "This provider enables you to lock in an estimate for an initial consult. This guarantees you'll not pay more than this estimate for this service. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.";
-  var LOCK_DISCLAIMER_PROCEDURE = "This provider enables you to lock in an estimate for an arthroscopic knee repair. This guarantees you'll not pay more than this estimate for this service. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.";
+  var LOCK_DISCLAIMER_INITIAL = "This provider enables you to lock in an estimate for the initial consult. This guarantees you'll not pay more than this estimate for this service.";
+  var LOCK_DISCLAIMER_PROCEDURE = "This is an estimate for an arthroscopic knee repair. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.";
   if (lockDetailCard) {
     var lockDetailTabs = lockDetailCard.querySelectorAll('.drawer-lock-detail-tab');
     var lockDetailPanels = lockDetailCard.querySelectorAll('.drawer-lock-detail-panel');
