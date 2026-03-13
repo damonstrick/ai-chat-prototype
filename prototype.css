@@ -2843,6 +2843,19 @@ body[data-flow="generic-3"] .drawer-body {
 .drawer-overlay.drawer-xray-mode .drawer-footer-btns-xray {
   display: flex !important;
 }
+.drawer-footer-btns-lock-price {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-8, 16px);
+  width: 100%;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-footer-btns-initial,
+.drawer-overlay.drawer-lock-price-mode .drawer-footer-btns-confirm {
+  display: none !important;
+}
+.drawer-overlay.drawer-lock-price-mode .drawer-footer-btns-lock-price {
+  display: flex !important;
+}
 .drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-facility {
   display: flex !important;
 }

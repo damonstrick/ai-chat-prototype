@@ -1381,6 +1381,15 @@
     drawerCancelBtn.addEventListener('click', closeDrawer);
   }
 
+  var drawerLockPriceKneeBtn = document.getElementById('drawerLockPriceKneeBtn');
+  var drawerContactProviderBtn = document.getElementById('drawerContactProviderBtn');
+  if (drawerLockPriceKneeBtn) {
+    drawerLockPriceKneeBtn.addEventListener('click', function () { closeDrawer(); });
+  }
+  if (drawerContactProviderBtn) {
+    drawerContactProviderBtn.addEventListener('click', function () { closeDrawer(); });
+  }
+
   function getEstimateSummaryFromDrawer() {
     var resultCard = document.getElementById('drawerResultCard');
     if (!resultCard) return { procedure: 'your procedure', totalPay: '', facility: '' };
@@ -1611,7 +1620,7 @@
   }
 
   document.addEventListener('click', function (e) {
-    if (e.target.closest('.btn-primary') && e.target.id !== 'drawerApplyBtn' && e.target.id !== 'drawerConfirmEstimateBtn' && e.target.id !== 'drawerBookPayBtn' && e.target.id !== 'drawerBookingSuccessDone') {
+    if (e.target.closest('.btn-primary') && e.target.id !== 'drawerApplyBtn' && e.target.id !== 'drawerConfirmEstimateBtn' && e.target.id !== 'drawerBookPayBtn' && e.target.id !== 'drawerBookingSuccessDone' && e.target.id !== 'drawerContactProviderBtn') {
       e.preventDefault();
       openDrawer();
     }
