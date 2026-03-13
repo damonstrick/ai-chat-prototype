@@ -802,7 +802,12 @@ body[data-flow^="openai"] .prototype-backdrop {
 .flow-anthropic .header-anthropic {
   display: flex !important;
 }
-.flow-anthropic .top-bar {
+.phone-frame.flow-anthropic .top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
   background: transparent;
   border-bottom: none;
   backdrop-filter: blur(10px);
@@ -1002,23 +1007,10 @@ body[data-flow^="openai"] .prototype-backdrop {
   position: relative;
 }
 .phone-frame.flow-generic .chat-container,
-.phone-frame.flow-openai .chat-container {
+.phone-frame.flow-openai .chat-container,
+.phone-frame.flow-anthropic .chat-container {
   padding-top: 100px;
-  padding-bottom: 168px;
-}
-/* Extra padding when flow starter bubbles are visible (3 stacked) so final response isn't covered */
-.phone-frame.has-flow-starters.flow-generic .chat-container,
-.phone-frame.has-flow-starters.flow-openai .chat-container,
-.phone-frame.has-flow-starters.flow-anthropic .chat-container {
-  padding-bottom: 320px;
-}
-/* Smaller screens: use viewport-relative padding to prevent overlap */
-@media (max-height: 700px) {
-  .phone-frame.has-flow-starters.flow-generic .chat-container,
-  .phone-frame.has-flow-starters.flow-openai .chat-container,
-  .phone-frame.has-flow-starters.flow-anthropic .chat-container {
-    padding-bottom: max(320px, 55vh);
-  }
+  padding-bottom: 24px;
 }
 .phone-frame.flow-generic .chat-container {
   background: #F8F7F1;
@@ -1033,7 +1025,7 @@ body[data-flow^="openai"] .prototype-backdrop {
 /* Welcome screen: centered between header bottom and top of autocomplete bubbles. Styled to match Figma frame 538:22011 (AI-x-TQ). */
 .chat-welcome {
   position: absolute;
-  top: 100px;
+  top: 180px;
   left: 0;
   right: 0;
   bottom: 280px;
@@ -1104,8 +1096,8 @@ body[data-flow^="openai"] .prototype-backdrop {
 }
 .flow-anthropic .chat-welcome-anthropic {
   display: flex;
-  top: 100px;
-  bottom: 0;
+  top: 180px;
+  bottom: 280px;
 }
 .chat-welcome-anthropic-inner {
   display: flex;
@@ -1865,8 +1857,8 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
   border-radius: 16px;
 }
 .phone-frame.flow-openai .generic-map-body {
-  min-height: 420px;
-  height: 420px;
+  min-height: 450px;
+  height: 450px;
 }
 .phone-frame.flow-openai .generic-map-pills {
   transform: translate(10%, 22%);
@@ -1919,7 +1911,8 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
 }
 .generic-map-body {
   position: relative;
-  min-height: 560px;
+  min-height: 450px;
+  height: 450px;
   overflow: visible;
 }
 .generic-map-image-area {
@@ -2755,17 +2748,18 @@ body:not([data-flow^="openai"]) .response-icons-row {
   -webkit-mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
 }
+/* Generic: no gradient overlay so response text stays readable (OpenAI keeps display:none from earlier rule) */
+.phone-frame.flow-generic .input-area::before,
+.phone-frame.flow-generic .input-area::after {
+  display: none;
+}
+.phone-frame.flow-generic .input-area {
+  background: rgba(248, 247, 241, 0.95);
+}
 @supports not (backdrop-filter: blur(1px)) {
-  .phone-frame.flow-generic .input-area::before {
+  .phone-frame.flow-openai .input-area::before {
     background: linear-gradient(to bottom, rgba(248, 247, 241, 0) 0%, rgba(248, 247, 241, 0.85) 100%);
   }
-  .phone-frame.flow-generic .input-area::after {
-    display: none;
-  }
-  .phone-frame.flow-generic .input-area {
-    background: transparent;
-  }
-  .phone-frame.flow-openai .input-area::before,
   .phone-frame.flow-openai .input-area::after {
     display: none;
   }
@@ -5939,15 +5933,10 @@ body[data-flow="openai-3"] .drawer-body {
   }
 }
 
-/* Short viewports: extra chat padding to prevent overlap with autocomplete */
+/* Short viewports: keep chat padding consistent */
 @media (max-height: 600px) {
-  .phone-frame.has-flow-starters.flow-generic .chat-container,
-  .phone-frame.has-flow-starters.flow-openai .chat-container,
-  .phone-frame.has-flow-starters.flow-anthropic .chat-container {
-    padding-bottom: max(360px, 58vh);
-  }
   .chat-welcome {
-    bottom: max(280px, 48vh);
+    bottom: min(280px, 45vh);
   }
 }
 

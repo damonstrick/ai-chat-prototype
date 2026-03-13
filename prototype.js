@@ -112,6 +112,7 @@
     var phoneFrame = document.getElementById('phoneFrame');
     if (phoneFrame) {
       phoneFrame.classList.toggle('has-flow-starters', showFlowStarters);
+      phoneFrame.classList.toggle('has-flow-followups', showFollowups);
     }
     if (showFlowStarters && chatContainer) {
       chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -145,6 +146,26 @@
       if (autocompleteBubbleFlow1Fourth) autocompleteBubbleFlow1Fourth.classList.add('is-hidden');
       if (autocompleteBubbleFlow2Second) autocompleteBubbleFlow2Second.classList.add('is-hidden');
     }
+    updateChatContainerPadding();
+  }
+
+  var GAP_ABOVE_AUTOCOMPLETE = 24;
+  function updateChatContainerPadding() {
+    if (!chatContainer) return;
+    var inputArea = chatContainer.nextElementSibling;
+    if (!inputArea || !inputArea.classList.contains('input-area')) return;
+    var paddingPx;
+    if (isAnthropicFlow()) {
+      paddingPx = GAP_ABOVE_AUTOCOMPLETE;
+    } else {
+      var pos = window.getComputedStyle(inputArea).position;
+      if (pos === 'absolute' || pos === 'fixed') {
+        paddingPx = GAP_ABOVE_AUTOCOMPLETE + inputArea.offsetHeight;
+      } else {
+        paddingPx = GAP_ABOVE_AUTOCOMPLETE;
+      }
+    }
+    chatContainer.style.paddingBottom = paddingPx + 'px';
   }
 
   function updateWelcomeVisibility() {
@@ -915,6 +936,7 @@
     function streamNext() {
       if (partIndex >= responseParts.length) {
         if (isOpenAIFlow()) bubble.appendChild(createResponseIconsRow());
+        updateAutocompleteBubbleVisibility();
         chatContainer.scrollTop = chatContainer.scrollHeight;
         updateAutocompleteBubbleVisibility();
         return;
@@ -1069,6 +1091,12 @@
   var submitIconBtnOpenai = document.getElementById('submitIconBtnOpenai');
   if (submitIconBtnOpenai) submitIconBtnOpenai.addEventListener('click', sendMessage);
   updateSubmitIcon();
+
+  var inputAreaEl = chatContainer && chatContainer.nextElementSibling;
+  if (inputAreaEl && inputAreaEl.classList.contains('input-area') && typeof ResizeObserver !== 'undefined') {
+    var ro = new ResizeObserver(function () { updateChatContainerPadding(); });
+    ro.observe(inputAreaEl);
+  }
 
   function restoreCostShareBodyIntoResultCard() {
     var costShareBody = document.getElementById('drawerResultCostShareBody');
