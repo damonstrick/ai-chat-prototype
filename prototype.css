@@ -1612,7 +1612,7 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
   content: '';
   position: absolute;
   top: 0;
-  left: calc(var(--autocomplete-shine-x, 50) * 1% - 25%);
+  left: -100%;
   width: 50%;
   height: 100%;
   background: linear-gradient(
@@ -1621,9 +1621,9 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
     rgba(255, 255, 255, 0.25) 50%,
     transparent 100%
   );
+  animation: autocomplete-bubble-shine 2.5s ease-in-out infinite;
   pointer-events: none;
   border-radius: inherit;
-  transition: left 0.2s ease-out;
 }
 body[data-flow="generic-1"] .autocomplete-bubble,
 body[data-flow="anthropic-1"] .autocomplete-bubble,
@@ -1679,6 +1679,10 @@ body[data-flow="openai-2"] .autocomplete-bubble--flow2.is-visible {
 .phone-frame.flow-openai .autocomplete-bubble:hover,
 .phone-frame.flow-openai .autocomplete-bubble:focus {
   background: #1a1a1a;
+}
+@keyframes autocomplete-bubble-shine {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
 
 /* Input attachments (e.g. X-ray flow – shown after autocomplete click) */

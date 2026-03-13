@@ -264,34 +264,6 @@
     }
   });
 
-  /* Autocomplete bubble shine: driven by device orientation (gyro) */
-  (function initAutocompleteShineGyro() {
-    var root = document.documentElement;
-    root.style.setProperty('--autocomplete-shine-x', '50');
-    var permissionRequested = false;
-    function updateShineFromOrientation(beta, gamma) {
-      if (gamma == null || gamma === undefined) return;
-      var x = 50 + (gamma / 90) * 45;
-      x = Math.max(0, Math.min(100, x));
-      root.style.setProperty('--autocomplete-shine-x', String(x));
-    }
-    function onDeviceOrientation(e) {
-      updateShineFromOrientation(e.beta, e.gamma);
-    }
-    function requestPermission() {
-      if (permissionRequested) return;
-      permissionRequested = true;
-      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission().then(function () {}).catch(function () {});
-      }
-    }
-    if (typeof DeviceOrientationEvent !== 'undefined') {
-      window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
-      document.body.addEventListener('click', requestPermission, { once: true, passive: true });
-      document.body.addEventListener('touchstart', requestPermission, { once: true, passive: true });
-    }
-  })();
-
   var VALID_FLOWS = ['openai-1', 'openai-2', 'openai-3', 'anthropic-1', 'anthropic-2', 'anthropic-3', 'counsel-1', 'counsel-2', 'counsel-3', 'generic-1', 'generic-2', 'generic-3'];
   var DEFAULT_FLOW = 'generic-1';
 
