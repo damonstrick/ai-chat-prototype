@@ -3073,6 +3073,9 @@ body:not([data-flow^="openai"]) .response-icons-row {
 .input-row-composer .input-field::placeholder {
   color: #73716b;
 }
+.flow-anthropic .input-field {
+  font-size: 16px;
+}
 .input-row-composer .input-btn-plus {
   width: 40px;
   height: 40px;
