@@ -22,24 +22,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
       <nav class="nav-menu-list" role="navigation" aria-label="Flow selection">
-        <div class="nav-menu-group">
-          <span class="nav-menu-group-title">Generic</span>
-          <a href="#" class="nav-menu-item is-active" data-flow="generic-1">Knee Surgery</a>
-          <a href="#" class="nav-menu-item" data-flow="generic-2">X-Ray</a>
-          <a href="#" class="nav-menu-item" data-flow="generic-3">Labor &amp; Delivery</a>
-        </div>
-        <div class="nav-menu-group">
-          <span class="nav-menu-group-title">OpenAI</span>
-          <a href="#" class="nav-menu-item" data-flow="openai-1">Knee Surgery</a>
-          <a href="#" class="nav-menu-item" data-flow="openai-2">X-Ray</a>
-          <a href="#" class="nav-menu-item" data-flow="openai-3">Labor &amp; Delivery</a>
-        </div>
-        <div class="nav-menu-group">
-          <span class="nav-menu-group-title">Anthropic</span>
-          <a href="#" class="nav-menu-item" data-flow="anthropic-1">Knee Surgery</a>
-          <a href="#" class="nav-menu-item" data-flow="anthropic-2">X-Ray</a>
-          <a href="#" class="nav-menu-item" data-flow="anthropic-3">Labor &amp; Delivery</a>
-        </div>
+        <a href="#" class="nav-menu-item nav-menu-item-brand is-active" data-flow="generic-1">Generic</a>
+        <a href="#" class="nav-menu-item nav-menu-item-brand" data-flow="openai-1">OpenAI</a>
+        <a href="#" class="nav-menu-item nav-menu-item-brand" data-flow="anthropic-1">Anthropic</a>
       </nav>
     </div>
   </div>
@@ -492,14 +477,19 @@
   </main>
 
   <div class="input-area">
-    <!-- Generic Flow 1: autocomplete suggestions above input -->
-    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1" role="button" tabindex="0" aria-label="Use suggested question: Who's the best knee surgeon in San Francisco?" data-suggestion="Who's the best knee surgeon in San Francisco?">Who's the best knee surgeon in San Francisco?</div>
-    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1Second" role="button" tabindex="0" aria-label="Use suggested follow-up about ACL surgery" data-suggestion="I tore my ACL so I'll need surgery to repair that. I'm looking for the best provider closest to me with the highest ratings.">I tore my ACL so I'll need surgery to repair that. I'm looking for the best provider closest to me with the highest ratings.</div>
-    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1Third" role="button" tabindex="0" aria-label="Use suggested insurance details" data-suggestion="Cigna&#10;Meredith Palmer&#10;11000362778&#10;01/01/1980">Cigna, Meredith Palmer, 11000362778, 01/01/1980</div>
-    <div class="autocomplete-bubble" id="autocompleteBubbleFlow1Fourth" role="button" tabindex="0" aria-label="Use suggested question about Post Street estimate" data-suggestion="I'm interested in learning more about Post Street Surgery Center LLC and would like an estimate for the procedure">I'm interested in learning more about Post Street Surgery Center LLC and would like an estimate for the procedure</div>
-    <!-- Generic Flow 2: X-Ray / Denver prompt -->
-    <div class="autocomplete-bubble autocomplete-bubble--flow2" id="autocompleteBubbleFlow2" role="button" tabindex="0" aria-label="Use suggested question about x-ray cost" data-suggestion="The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?">The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?</div>
-    <div class="autocomplete-bubble autocomplete-bubble--flow2" id="autocompleteBubbleFlow2Second" role="button" tabindex="0" aria-label="Use suggested follow-up about Denver Radiology" data-suggestion="I'm interested in Denver Radiology &amp; Imaging Center">I'm interested in Denver Radiology &amp; Imaging Center</div>
+    <!-- Flow starter bubbles: shown when no messages or after flow complete (booking/estimate/lock confirmed) -->
+    <div class="autocomplete-flow-starters" id="autocompleteFlowStarters">
+      <div class="autocomplete-bubble autocomplete-bubble--flow-starter" id="autocompleteBubbleFlowStart1" role="button" tabindex="0" aria-label="Start Knee Surgery flow" data-suggestion="Who's the best knee surgeon in San Francisco?" data-flow-type="1">Who's the best knee surgeon in San Francisco?</div>
+      <div class="autocomplete-bubble autocomplete-bubble--flow-starter" id="autocompleteBubbleFlowStart2" role="button" tabindex="0" aria-label="Start X-Ray flow" data-suggestion="The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?" data-flow-type="2">The last time I went to the doctor they recommended I get an x-ray for my hand. Here are my latest records, can you tell me how much this might cost me?</div>
+      <div class="autocomplete-bubble autocomplete-bubble--flow-starter" id="autocompleteBubbleFlowStart3" role="button" tabindex="0" aria-label="Start Labor &amp; Delivery flow" data-suggestion="How much does it cost to have a baby at UCLA?" data-flow-type="3">How much does it cost to have a baby at UCLA?</div>
+    </div>
+    <!-- Follow-up bubbles: shown during flow after each exchange -->
+    <div class="autocomplete-flow-followups" id="autocompleteFlowFollowups">
+      <div class="autocomplete-bubble autocomplete-bubble--followup" id="autocompleteBubbleFlow1Second" role="button" tabindex="0" aria-label="Use suggested follow-up about ACL surgery" data-suggestion="I tore my ACL so I'll need surgery to repair that. I'm looking for the best provider closest to me with the highest ratings.">I tore my ACL so I'll need surgery to repair that. I'm looking for the best provider closest to me with the highest ratings.</div>
+      <div class="autocomplete-bubble autocomplete-bubble--followup" id="autocompleteBubbleFlow1Third" role="button" tabindex="0" aria-label="Use suggested insurance details" data-suggestion="Cigna&#10;Meredith Palmer&#10;11000362778&#10;01/01/1980">Cigna, Meredith Palmer, 11000362778, 01/01/1980</div>
+      <div class="autocomplete-bubble autocomplete-bubble--followup" id="autocompleteBubbleFlow1Fourth" role="button" tabindex="0" aria-label="Use suggested question about Post Street estimate" data-suggestion="I'm interested in learning more about Post Street Surgery Center LLC and would like an estimate for the procedure">I'm interested in learning more about Post Street Surgery Center LLC and would like an estimate for the procedure</div>
+      <div class="autocomplete-bubble autocomplete-bubble--followup autocomplete-bubble--flow2" id="autocompleteBubbleFlow2Second" role="button" tabindex="0" aria-label="Use suggested follow-up about Denver Radiology" data-suggestion="I'm interested in Denver Radiology &amp; Imaging Center">I'm interested in Denver Radiology &amp; Imaging Center</div>
+    </div>
     <div class="input-suggestion" id="inputSuggestion" role="button" tabindex="0" aria-label="Use suggested question: How much does it cost to have a baby at UCLA?">How much does it cost to have a baby at UCLA?</div>
     <!-- Generic / Counsel: original single-row input -->
     <div class="input-row input-row-generic" id="inputRow">

@@ -1006,6 +1006,12 @@ body[data-flow^="openai"] .prototype-backdrop {
   padding-top: 100px;
   padding-bottom: 168px;
 }
+/* Extra padding when flow starter bubbles are visible (3 stacked) so final response isn't covered */
+.phone-frame.has-flow-starters.flow-generic .chat-container,
+.phone-frame.has-flow-starters.flow-openai .chat-container,
+.phone-frame.has-flow-starters.flow-anthropic .chat-container {
+  padding-bottom: 320px;
+}
 .phone-frame.flow-generic .chat-container {
   background: #F8F7F1;
 }
@@ -1592,12 +1598,23 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
   box-shadow: none;
 }
 
-/* ========== Generic Flow 1: autocomplete bubble card (above input) ========== */
+/* ========== Flow starter autocomplete bubbles (stacked above input) ========== */
+.autocomplete-flow-starters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+.autocomplete-flow-starters.is-hidden {
+  display: none !important;
+}
 .autocomplete-bubble {
   display: none;
   position: relative;
   z-index: 1;
-  margin-bottom: 10px;
+  margin-bottom: 0;
   padding: 10px 14px;
   font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
@@ -1628,34 +1645,8 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
   pointer-events: none;
   border-radius: inherit;
 }
-body[data-flow="generic-1"] .autocomplete-bubble,
-body[data-flow="anthropic-1"] .autocomplete-bubble,
-body[data-flow="openai-1"] .autocomplete-bubble {
+.autocomplete-flow-starters .autocomplete-bubble--flow-starter {
   display: block;
-}
-#autocompleteBubbleFlow1Second,
-#autocompleteBubbleFlow1Third,
-#autocompleteBubbleFlow1Fourth {
-  display: none;
-}
-body[data-flow="generic-1"] #autocompleteBubbleFlow1Second.is-visible,
-body[data-flow="generic-1"] #autocompleteBubbleFlow1Third.is-visible,
-body[data-flow="generic-1"] #autocompleteBubbleFlow1Fourth.is-visible,
-body[data-flow="anthropic-1"] #autocompleteBubbleFlow1Second.is-visible,
-body[data-flow="anthropic-1"] #autocompleteBubbleFlow1Third.is-visible,
-body[data-flow="anthropic-1"] #autocompleteBubbleFlow1Fourth.is-visible,
-body[data-flow="openai-1"] #autocompleteBubbleFlow1Second.is-visible,
-body[data-flow="openai-1"] #autocompleteBubbleFlow1Third.is-visible,
-body[data-flow="openai-1"] #autocompleteBubbleFlow1Fourth.is-visible {
-  display: block;
-}
-body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible,
-body[data-flow="anthropic-2"] .autocomplete-bubble--flow2.is-visible,
-body[data-flow="openai-2"] .autocomplete-bubble--flow2.is-visible {
-  display: block;
-}
-.autocomplete-bubble--flow2 {
-  display: none;
 }
 .autocomplete-bubble:hover,
 .autocomplete-bubble:focus {
@@ -1670,6 +1661,10 @@ body[data-flow="openai-2"] .autocomplete-bubble--flow2.is-visible {
   margin-right: 16px;
   background: #000;
   color: #fff;
+}
+.phone-frame.flow-openai .autocomplete-flow-starters {
+  margin-left: 16px;
+  margin-right: 16px;
 }
 .phone-frame.flow-openai .autocomplete-bubble::before {
   background: linear-gradient(
@@ -1686,6 +1681,29 @@ body[data-flow="openai-2"] .autocomplete-bubble--flow2.is-visible {
 @keyframes autocomplete-bubble-shine {
   0% { left: -100%; }
   100% { left: 200%; }
+}
+
+/* Follow-up autocomplete bubbles (during flow, after each exchange) */
+.autocomplete-flow-followups {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+.autocomplete-flow-followups.is-hidden {
+  display: none !important;
+}
+.autocomplete-flow-followups .autocomplete-bubble--followup {
+  display: none;
+}
+.autocomplete-flow-followups .autocomplete-bubble--followup.is-visible {
+  display: block;
+}
+.phone-frame.flow-openai .autocomplete-flow-followups {
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
 /* Input attachments (e.g. X-ray flow – shown after autocomplete click) */

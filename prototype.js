@@ -75,21 +75,23 @@
 
   function updateSuggestionVisibility() {
     if (!inputSuggestion) return;
-    var field = getActiveInputField();
-    var val = (field && field.value || '').trim();
-    var hasMessages = chatContainer && chatContainer.querySelectorAll('.message').length > 0;
-    var flow = document.body.getAttribute('data-flow');
-    var flowIs1 = isFlow1(flow);
-    var flowIs2 = isFlow2(flow);
-    var flowIs3 = isFlow3(flow);
-    var show = val.length === 0 && (!isAnthropicFlow() || !hasMessages) && !flowIs1 && !flowIs2 && (!flowIs3 || !hasMessages);
-    inputSuggestion.classList.toggle('is-hidden', !show);
+    inputSuggestion.classList.add('is-hidden');
   }
 
-  var autocompleteBubbleFlow1 = document.getElementById('autocompleteBubbleFlow1');
+  var autocompleteFlowStarters = document.getElementById('autocompleteFlowStarters');
+  var autocompleteBubbleFlowStart1 = document.getElementById('autocompleteBubbleFlowStart1');
+  var autocompleteBubbleFlowStart2 = document.getElementById('autocompleteBubbleFlowStart2');
+  var autocompleteBubbleFlowStart3 = document.getElementById('autocompleteBubbleFlowStart3');
+  var autocompleteFlowFollowups = document.getElementById('autocompleteFlowFollowups');
   var autocompleteBubbleFlow1Second = document.getElementById('autocompleteBubbleFlow1Second');
   var autocompleteBubbleFlow1Third = document.getElementById('autocompleteBubbleFlow1Third');
   var autocompleteBubbleFlow1Fourth = document.getElementById('autocompleteBubbleFlow1Fourth');
+  var autocompleteBubbleFlow2Second = document.getElementById('autocompleteBubbleFlow2Second');
+  function isFlowComplete() {
+    if (!chatContainer) return false;
+    var lastMsg = chatContainer.querySelector('.message:last-child');
+    return lastMsg && lastMsg.classList.contains('message--flow-complete');
+  }
   function updateAutocompleteBubbleVisibility() {
     var flow = document.body.getAttribute('data-flow');
     var field = getActiveInputField();
@@ -101,36 +103,47 @@
     var exactlyOneExchange = userCount === 1 && assistantCount === 1;
     var exactlyTwoExchanges = userCount === 2 && assistantCount === 2;
     var exactlyThreeExchanges = userCount === 3 && assistantCount === 3;
-    if (autocompleteBubbleFlow1) {
-      var showFirst = isFlow1(flow) && val.length === 0 && !hasMessages;
-      autocompleteBubbleFlow1.classList.toggle('is-hidden', !showFirst);
+    var showFlowStarters = val.length === 0 && (!hasMessages || isFlowComplete());
+    var hasFollowupToShow = (isFlow1(flow) && (exactlyOneExchange || exactlyTwoExchanges || exactlyThreeExchanges)) || (isFlow2(flow) && exactlyOneExchange);
+    var showFollowups = val.length === 0 && hasMessages && !isFlowComplete() && hasFollowupToShow;
+    if (autocompleteFlowStarters) {
+      autocompleteFlowStarters.classList.toggle('is-hidden', !showFlowStarters);
     }
-    if (autocompleteBubbleFlow1Second) {
-      var showSecond = isFlow1(flow) && val.length === 0 && exactlyOneExchange;
-      autocompleteBubbleFlow1Second.classList.toggle('is-visible', showSecond);
-      autocompleteBubbleFlow1Second.classList.toggle('is-hidden', !showSecond);
+    var phoneFrame = document.getElementById('phoneFrame');
+    if (phoneFrame) {
+      phoneFrame.classList.toggle('has-flow-starters', showFlowStarters);
     }
-    if (autocompleteBubbleFlow1Third) {
-      var showThird = isFlow1(flow) && val.length === 0 && exactlyTwoExchanges;
-      autocompleteBubbleFlow1Third.classList.toggle('is-visible', showThird);
-      autocompleteBubbleFlow1Third.classList.toggle('is-hidden', !showThird);
+    if (showFlowStarters && chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-    if (autocompleteBubbleFlow1Fourth) {
-      var showFourth = isFlow1(flow) && val.length === 0 && exactlyThreeExchanges;
-      autocompleteBubbleFlow1Fourth.classList.toggle('is-visible', showFourth);
-      autocompleteBubbleFlow1Fourth.classList.toggle('is-hidden', !showFourth);
+    if (autocompleteFlowFollowups) {
+      autocompleteFlowFollowups.classList.toggle('is-hidden', !showFollowups);
     }
-    var autocompleteBubbleFlow2 = document.getElementById('autocompleteBubbleFlow2');
-    if (autocompleteBubbleFlow2) {
-      var showFlow2 = isFlow2(flow) && val.length === 0 && !hasMessages;
-      autocompleteBubbleFlow2.classList.toggle('is-visible', showFlow2);
-      autocompleteBubbleFlow2.classList.toggle('is-hidden', !showFlow2);
+    if (showFollowups && autocompleteBubbleFlow1Second) {
+      var showFlow1Second = isFlow1(flow) && exactlyOneExchange;
+      autocompleteBubbleFlow1Second.classList.toggle('is-visible', showFlow1Second);
+      autocompleteBubbleFlow1Second.classList.toggle('is-hidden', !showFlow1Second);
     }
-    var autocompleteBubbleFlow2Second = document.getElementById('autocompleteBubbleFlow2Second');
-    if (autocompleteBubbleFlow2Second) {
-      var showFlow2Second = isFlow2(flow) && val.length === 0 && exactlyOneExchange;
+    if (showFollowups && autocompleteBubbleFlow1Third) {
+      var showFlow1Third = isFlow1(flow) && exactlyTwoExchanges;
+      autocompleteBubbleFlow1Third.classList.toggle('is-visible', showFlow1Third);
+      autocompleteBubbleFlow1Third.classList.toggle('is-hidden', !showFlow1Third);
+    }
+    if (showFollowups && autocompleteBubbleFlow1Fourth) {
+      var showFlow1Fourth = isFlow1(flow) && exactlyThreeExchanges;
+      autocompleteBubbleFlow1Fourth.classList.toggle('is-visible', showFlow1Fourth);
+      autocompleteBubbleFlow1Fourth.classList.toggle('is-hidden', !showFlow1Fourth);
+    }
+    if (showFollowups && autocompleteBubbleFlow2Second) {
+      var showFlow2Second = isFlow2(flow) && exactlyOneExchange;
       autocompleteBubbleFlow2Second.classList.toggle('is-visible', showFlow2Second);
       autocompleteBubbleFlow2Second.classList.toggle('is-hidden', !showFlow2Second);
+    }
+    if (!showFollowups) {
+      if (autocompleteBubbleFlow1Second) autocompleteBubbleFlow1Second.classList.add('is-hidden');
+      if (autocompleteBubbleFlow1Third) autocompleteBubbleFlow1Third.classList.add('is-hidden');
+      if (autocompleteBubbleFlow1Fourth) autocompleteBubbleFlow1Fourth.classList.add('is-hidden');
+      if (autocompleteBubbleFlow2Second) autocompleteBubbleFlow2Second.classList.add('is-hidden');
     }
     updateInputAttachmentVisibility();
   }
@@ -184,6 +197,30 @@
       }
     });
   }
+  function bindFlowStarterBubble(bubbleEl) {
+    if (!bubbleEl) return;
+    bubbleEl.addEventListener('click', function () {
+      var field = getActiveInputField();
+      var text = this.getAttribute('data-suggestion') || this.textContent.trim();
+      var flowType = this.getAttribute('data-flow-type');
+      if (field) {
+        field.value = text;
+        if (flowType) document.body.setAttribute('data-pending-flow-type', flowType);
+        resizeInput();
+        updateSuggestionVisibility();
+        updateAutocompleteBubbleVisibility();
+        updateSubmitIcon();
+        updateWelcomeVisibility();
+        field.focus();
+      }
+    });
+    bubbleEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        bubbleEl.click();
+      }
+    });
+  }
   function bindAutocompleteBubble(bubbleEl) {
     if (!bubbleEl) return;
     bubbleEl.addEventListener('click', function () {
@@ -206,19 +243,15 @@
       }
     });
   }
-  if (autocompleteBubbleFlow1) bindAutocompleteBubble(autocompleteBubbleFlow1);
+  if (autocompleteBubbleFlowStart1) bindFlowStarterBubble(autocompleteBubbleFlowStart1);
+  if (autocompleteBubbleFlowStart2) bindFlowStarterBubble(autocompleteBubbleFlowStart2);
+  if (autocompleteBubbleFlowStart3) bindFlowStarterBubble(autocompleteBubbleFlowStart3);
   if (autocompleteBubbleFlow1Second) bindAutocompleteBubble(autocompleteBubbleFlow1Second);
   if (autocompleteBubbleFlow1Third) bindAutocompleteBubble(autocompleteBubbleFlow1Third);
   if (autocompleteBubbleFlow1Fourth) bindAutocompleteBubble(autocompleteBubbleFlow1Fourth);
-  var autocompleteBubbleFlow2 = document.getElementById('autocompleteBubbleFlow2');
-  if (autocompleteBubbleFlow2) bindAutocompleteBubble(autocompleteBubbleFlow2);
-  var autocompleteBubbleFlow2Second = document.getElementById('autocompleteBubbleFlow2Second');
   if (autocompleteBubbleFlow2Second) bindAutocompleteBubble(autocompleteBubbleFlow2Second);
   if (inputSuggestion) updateSuggestionVisibility();
-  if (autocompleteBubbleFlow1) updateAutocompleteBubbleVisibility();
-  if (autocompleteBubbleFlow1Second) updateAutocompleteBubbleVisibility();
-  if (autocompleteBubbleFlow1Third) updateAutocompleteBubbleVisibility();
-  if (autocompleteBubbleFlow1Fourth) updateAutocompleteBubbleVisibility();
+  if (autocompleteFlowStarters) updateAutocompleteBubbleVisibility();
 
   function openNavMenu() {
     if (navMenuOverlay) {
@@ -337,14 +370,17 @@
   }
 
   function setActiveFlow(flowId) {
+    var brand = (flowId || '').split('-')[0];
     document.querySelectorAll('.nav-menu-item').forEach(function (el) {
-      el.classList.toggle('is-active', el.getAttribute('data-flow') === flowId);
+      var elBrand = (el.getAttribute('data-flow') || '').split('-')[0];
+      el.classList.toggle('is-active', elBrand === brand);
     });
     setFlowClass(flowId);
   }
 
   function resetChatToInitialState() {
     if (!chatContainer) return;
+    document.body.removeAttribute('data-pending-flow-type');
     var welcomeAnthropic = document.getElementById('chatWelcomeAnthropic');
     var mapIds = ['genericMapComponentWrap', 'genericMapComponentWrapPrice', 'genericMapComponentWrapXray'];
     var insertAfter = welcomeAnthropic || chatContainer.firstElementChild;
@@ -1064,6 +1100,17 @@
     var text = (field && field.value || '').trim();
     if (!text) return;
 
+    var pendingFlowType = document.body.getAttribute('data-pending-flow-type');
+    if (pendingFlowType) {
+      document.body.removeAttribute('data-pending-flow-type');
+      var flow = document.body.getAttribute('data-flow') || '';
+      var brand = flow.split('-')[0] || 'generic';
+      var newFlowId = brand + '-' + pendingFlowType;
+      setActiveFlow(newFlowId);
+      resetChatToInitialState();
+      updateUrlForFlow(newFlowId);
+    }
+
     var userWrap = createUserBubble(text);
     chatContainer.appendChild(userWrap);
     if (field) field.value = '';
@@ -1535,7 +1582,7 @@
     var totalPay = summary.totalPay || '';
     var facility = summary.facility || '';
     var aiWrap = document.createElement('div');
-    aiWrap.className = 'message assistant';
+    aiWrap.className = 'message assistant message--flow-complete';
     var bubble = document.createElement('div');
     bubble.className = 'bubble assistant';
     var p1 = document.createElement('p');
@@ -1569,6 +1616,7 @@
     aiWrap.appendChild(bubble);
     chatContainer.appendChild(aiWrap);
     chatContainer.scrollTop = chatContainer.scrollHeight;
+    updateAutocompleteBubbleVisibility();
   }
 
   var drawerLockPriceKneeBtn = document.getElementById('drawerLockPriceKneeBtn');
@@ -1649,7 +1697,7 @@
     var totalPay = summary.totalPay || '';
     var facility = summary.facility || '';
     var aiWrap = document.createElement('div');
-    aiWrap.className = 'message assistant';
+    aiWrap.className = 'message assistant message--flow-complete';
     var bubble = document.createElement('div');
     bubble.className = 'bubble assistant';
     var p1 = document.createElement('p');
@@ -1683,6 +1731,7 @@
     aiWrap.appendChild(bubble);
     chatContainer.appendChild(aiWrap);
     chatContainer.scrollTop = chatContainer.scrollHeight;
+    updateAutocompleteBubbleVisibility();
   }
 
   function getBookingDetailsFromSuccessPanel() {
@@ -1698,7 +1747,7 @@
     var facilityName = booking.facilityName || '';
     var address = booking.address || '';
     var aiWrap = document.createElement('div');
-    aiWrap.className = 'message assistant';
+    aiWrap.className = 'message assistant message--flow-complete';
     var bubble = document.createElement('div');
     bubble.className = 'bubble assistant';
     var p1 = document.createElement('p');
@@ -1734,6 +1783,7 @@
     aiWrap.appendChild(bubble);
     chatContainer.appendChild(aiWrap);
     chatContainer.scrollTop = chatContainer.scrollHeight;
+    updateAutocompleteBubbleVisibility();
   }
 
   if (drawerConfirmEstimateBtn) {
