@@ -1091,6 +1091,8 @@ body[data-flow^="openai"] .prototype-backdrop {
 }
 .flow-anthropic .chat-welcome-anthropic {
   display: flex;
+  top: 100px;
+  bottom: 0;
 }
 .chat-welcome-anthropic-inner {
   display: flex;
