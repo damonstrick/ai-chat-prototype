@@ -115,6 +115,7 @@
       autocompleteBubbleFlow2Second.classList.toggle('is-visible', showFlow2Second);
       autocompleteBubbleFlow2Second.classList.toggle('is-hidden', !showFlow2Second);
     }
+    updateInputAttachmentVisibility();
   }
 
   function updateWelcomeVisibility() {
@@ -408,9 +409,9 @@
   }
 
   var aiResponseParts = [
-    { type: 'text', content: "The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen (the provider you have been seeing) can range from $6,000 to $17,000 with your Cigna plan. I'm using the insurance details you've previously provided. After your insurance coverage applies, your out-of-pocket costs will be closer to " },
-    { type: 'bold', content: '$2,000-$6,000' },
-    { type: 'text', content: '.\n\nLet me know if the following has changed and I can update your estimate. Also, if you\'d like to see the cost of a Cesarean delivery, I can calculate that for you too.\n\n' },
+    { type: 'text', content: "The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen (the provider you have been seeing) can range from $6,000 to $17,000 with your Cigna plan. I'm using the insurance details you've previously provided. " },
+    { type: 'semibold', content: 'After your insurance coverage applies, your out-of-pocket costs will be closer to $2,000-$6,000.' },
+    { type: 'text', content: '\n\nLet me know if the following has changed and I can update your estimate. Also, if you\'d like to see the cost of a Cesarean delivery, I can calculate that for you too.\n\n' },
     { type: 'bullets', items: ['Your insurance plan', 'If your preferred provider has changed at UCLA'] },
     { type: 'text', content: '\n\nClick on ' },
     { type: 'bold', content: 'personalize estimate' },
@@ -448,7 +449,7 @@
   }
   var insuranceResponseParts = [
     { type: 'text', content: "Great! I've updated the map with estimates for the initial consult tailored to your benefit.  " },
-    { type: 'bold', content: "You have a $50 co-pay to see a specialist for the initial consult." },
+    { type: 'semibold', content: "You have a $50 co-pay to see a specialist for the initial consult." },
     { type: 'text', content: "\n\nThe cost of the actual procedure will vary based on the outcome of the consult. Would you like to see a estimate for the procedure as well? I can give you a range depending on the complexity of the procedure you'll need. Just let me know!\n\n" },
     { type: 'map_component_price' },
     { type: 'sources_pill' }
@@ -461,14 +462,14 @@
   var postStreetEstimateResponseParts = [
     { type: 'text', content: 'For Post Street Surgery Center LLC, your total costs may look like:\n\n' },
     { type: 'bullets', items: [
-      '$50 for the initial consult',
+      { parts: [{ text: '$50', semiBold: true }, { text: ' for the initial consult' }] },
       { text: 'you have a $50 co-pay to see a specialist', sub: true },
-      '$1,243 - $1,563 for the procedure',
-      { text: '$1,243 for low complexity', sub: true },
-      { text: '$1,563 for high complexity', sub: true },
+      { parts: [{ text: '$1,243', semiBold: true }, { text: ' - ' }, { text: '$1,563', semiBold: true }, { text: ' for the procedure' }] },
+      { parts: [{ text: '$1,243', semiBold: true }, { text: ' for low complexity' }], sub: true },
+      { parts: [{ text: '$1,563', semiBold: true }, { text: ' for high complexity' }], sub: true },
       { text: 'the procedure will be applied to your remaining deductible and then trigger your co-insurance benefit', sub: true }
     ]},
-    { type: 'text', content: '\n\nFor your initial consult, you should plan to pay up to $50 after your benefits have been applied.\n\n' },
+    { type: 'semibold', content: 'For your initial consult, you should plan to pay up to $50 after your benefits have been applied.\n\n' },
     { type: 'text', content: "This provider enables patients to lock in an estimate ahead of their visit. This guarantees you will not pay more than the estimate above for the consult. Let me know if you'd like to learn more!\n\n" },
     { type: 'provider_cta_card' },
     { type: 'sources_pill' }
@@ -549,6 +550,60 @@
         '<span class="xray-file-attachment-ext">' + (fileExt || '') + '</span>' +
       '</div>';
     return wrap;
+  }
+
+  function createFileAttachmentChipWithUploadAnimation(fileName, fileExt, onComplete) {
+    var wrap = document.createElement('div');
+    wrap.className = 'xray-file-attachment xray-file-attachment--uploading';
+    wrap.innerHTML =
+      '<span class="xray-file-attachment-icon xray-file-attachment-upload-spinner" aria-hidden="true">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="20" height="20"><circle cx="12" cy="12" r="10" stroke-dasharray="32 32" stroke-dashoffset="12"/></svg>' +
+      '</span>' +
+      '<div class="xray-file-attachment-text">' +
+        '<span class="xray-file-attachment-name">Uploading ' + (fileName || '') + (fileExt || '') + '...</span>' +
+      '</div>';
+    var UPLOAD_DURATION_MS = 1200;
+    setTimeout(function () {
+      wrap.classList.remove('xray-file-attachment--uploading');
+      wrap.classList.add('xray-file-attachment--complete');
+      wrap.innerHTML =
+        '<span class="xray-file-attachment-icon" aria-hidden="true">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' +
+        '</span>' +
+        '<div class="xray-file-attachment-text">' +
+          '<span class="xray-file-attachment-name">' + (fileName || '') + '</span>' +
+          '<span class="xray-file-attachment-ext">' + (fileExt || '') + '</span>' +
+        '</div>';
+      if (typeof onComplete === 'function') onComplete();
+    }, UPLOAD_DURATION_MS);
+    return wrap;
+  }
+
+  function createInputAttachmentChip(fileName, fileExt) {
+    var chip = document.createElement('div');
+    chip.className = 'input-attachment-chip';
+    chip.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' +
+      '<span>' + (fileName || '') + (fileExt || '') + '</span>';
+    return chip;
+  }
+
+  var XRAY_PROMPT_MARKER = 'Here are my latest records';
+  function updateInputAttachmentVisibility() {
+    var container = document.getElementById('inputAttachments');
+    if (!container) return;
+    var flow = document.body.getAttribute('data-flow');
+    var hasMessages = chatContainer && chatContainer.querySelectorAll('.message').length > 0;
+    var field = getActiveInputField();
+    var hasXrayPrompt = field && (field.value || '').indexOf(XRAY_PROMPT_MARKER) !== -1;
+    var show = flow === 'generic-2' && !hasMessages && hasXrayPrompt;
+    container.innerHTML = '';
+    if (show) {
+      container.appendChild(createInputAttachmentChip('chris.s-medicalrecords-2026', '.txt'));
+      container.setAttribute('aria-hidden', 'false');
+    } else {
+      container.setAttribute('aria-hidden', 'true');
+    }
   }
 
   function bindPriceMapSync(mapWrap) {
@@ -714,11 +769,11 @@
     var bubble = document.createElement('div');
     bubble.className = 'bubble assistant';
     var p1 = document.createElement('p');
-    p1.appendChild(document.createTextNode("The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen (the provider you have been seeing) can range from $6,000 to $17,000 with your Cigna plan. I'm using the insurance details you've previously provided. After your insurance coverage applies, your out-of-pocket costs will be closer to "));
-    var strong1 = document.createElement('strong');
-    strong1.textContent = '$2,000-$6,000';
-    p1.appendChild(strong1);
-    p1.appendChild(document.createTextNode('.'));
+    p1.appendChild(document.createTextNode("The total cost of a vaginal birth at UCLA Health in Santa Monica with Dr. Nguyen (the provider you have been seeing) can range from $6,000 to $17,000 with your Cigna plan. I'm using the insurance details you've previously provided. "));
+    var semibold1 = document.createElement('span');
+    semibold1.style.fontWeight = '600';
+    semibold1.textContent = 'After your insurance coverage applies, your out-of-pocket costs will be closer to $2,000-$6,000.';
+    p1.appendChild(semibold1);
     bubble.appendChild(p1);
     var p2 = document.createElement('p');
     p2.textContent = "Let me know if the following has changed and I can update your estimate. Also, if you'd like to see the cost of a Cesarean delivery, I can calculate that for you too.";
@@ -755,7 +810,7 @@
         return;
       }
       var part = responseParts[partIndex];
-      if (part.type === 'text' || part.type === 'bold') {
+      if (part.type === 'text' || part.type === 'bold' || part.type === 'semibold') {
         if (wordIndex === 0) currentWords = part.content.split(/(\s+)/);
         if (wordIndex < currentWords.length) {
           var word = currentWords[wordIndex];
@@ -766,6 +821,7 @@
             bubble.appendChild(document.createElement('br'));
           } else {
             var el = document.createElement(part.type === 'bold' ? 'strong' : 'span');
+            if (part.type === 'semibold') el.style.fontWeight = '600';
             el.appendChild(document.createTextNode(word));
             bubble.appendChild(el);
           }
@@ -781,10 +837,19 @@
         var ul = document.createElement('ul');
         part.items.forEach(function (item) {
           var li = document.createElement('li');
-          var itemText = typeof item === 'string' ? item : item.text;
           var isSub = typeof item === 'object' && item.sub;
-          li.textContent = itemText;
           if (isSub) li.classList.add('sub-bullet');
+          if (item.parts) {
+            item.parts.forEach(function (p) {
+              var span = document.createElement('span');
+              span.textContent = p.text;
+              if (p.semiBold) span.style.fontWeight = '600';
+              li.appendChild(span);
+            });
+          } else {
+            var itemText = typeof item === 'string' ? item : item.text;
+            li.textContent = itemText;
+          }
           ul.appendChild(li);
         });
         bubble.appendChild(ul);
@@ -822,11 +887,13 @@
         chatContainer.scrollTop = chatContainer.scrollHeight;
         setTimeout(streamNext, 12);
       } else if (part.type === 'file_attachment') {
-        var chip = createFileAttachmentChip(part.fileName, part.fileExt);
+        var chip = createFileAttachmentChipWithUploadAnimation(part.fileName, part.fileExt, function () {
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+          partIndex++;
+          setTimeout(streamNext, 12);
+        });
         bubble.appendChild(chip);
-        partIndex++;
         chatContainer.scrollTop = chatContainer.scrollHeight;
-        setTimeout(streamNext, 12);
       } else if (part.type === 'map_component_xray') {
         moveMapComponentXrayIntoBubble(bubble);
         partIndex++;
@@ -925,7 +992,7 @@
       var breakdownRows = benefitsCard.querySelectorAll('.drawer-benefits-breakdown-row');
       if (breakdownRows.length >= 3) {
         var labels = ['Deductible', 'Out-of-pocket max remaining', 'Your co-insurance'];
-        var vals = ['Met', '$500', '$3,869'];
+        var vals = ['Met', '$5,000', '$3,869'];
         for (var i = 0; i < 3 && i < breakdownRows.length; i++) {
           var lab = breakdownRows[i].querySelector('.drawer-benefits-breakdown-label');
           var val = breakdownRows[i].querySelector('.drawer-benefits-breakdown-val');
@@ -992,7 +1059,7 @@
       }
       var metaEl = resultCard.querySelector('.drawer-card-result-meta');
       if (metaEl && metaEl.firstChild && metaEl.firstChild.nodeType === 3) {
-        metaEl.firstChild.textContent = 'SSP MS006';
+        metaEl.firstChild.textContent = 'SSP CO000';
       }
       var priceLabel = resultCard.querySelector('.drawer-card-result-price-label');
       if (priceLabel) priceLabel.textContent = 'Total you pay';
@@ -1079,6 +1146,8 @@
         panelOther.classList.remove('is-active');
         panelOther.setAttribute('aria-hidden', 'true');
       }
+      var lockDisclaimer = lockDetailCard.querySelector('.drawer-lock-detail-disclaimer');
+      if (lockDisclaimer) lockDisclaimer.textContent = "This provider enables you to lock in an estimate for an initial consult. This guarantees you'll not pay more than this estimate for this service. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.";
     }
     var lockDoctorCard = document.getElementById('drawerLockPriceDoctorCard');
     if (lockDoctorCard) lockDoctorCard.setAttribute('aria-hidden', 'false');
@@ -1188,6 +1257,14 @@
     lastFocusedBeforeDrawer = document.activeElement;
     drawerOverlay.classList.add('is-open');
     drawerOverlay.setAttribute('aria-hidden', 'false');
+    var resultTopVideo = document.getElementById('drawerResultTopVideo');
+    if (resultTopVideo) {
+      resultTopVideo.playsInline = true;
+      resultTopVideo.muted = true;
+      resultTopVideo.load();
+      var p = resultTopVideo.play();
+      if (p && typeof p.catch === 'function') p.catch(function () {});
+    }
     if (drawerClose) drawerClose.focus();
     document.addEventListener('keydown', handleDrawerKeydown);
   }
@@ -1217,6 +1294,14 @@
     lastFocusedBeforeDrawer = document.activeElement;
     drawerOverlay.classList.add('is-open');
     drawerOverlay.setAttribute('aria-hidden', 'false');
+    var resultTopVideo = document.getElementById('drawerResultTopVideo');
+    if (resultTopVideo) {
+      resultTopVideo.playsInline = true;
+      resultTopVideo.muted = true;
+      resultTopVideo.load();
+      var p = resultTopVideo.play();
+      if (p && typeof p.catch === 'function') p.catch(function () {});
+    }
     if (drawerClose) drawerClose.focus();
     document.addEventListener('keydown', handleDrawerKeydown);
   }
@@ -1236,6 +1321,8 @@
       drawerLoading.setAttribute('hidden', '');
       if (drawerLoadingVideo) drawerLoadingVideo.pause();
     }
+    var resultTopVideo = document.getElementById('drawerResultTopVideo');
+    if (resultTopVideo) resultTopVideo.pause();
     document.removeEventListener('keydown', handleDrawerKeydown);
     if (lastFocusedBeforeDrawer && typeof lastFocusedBeforeDrawer.focus === 'function') {
       lastFocusedBeforeDrawer.focus();
@@ -1278,6 +1365,14 @@
         if (drawerLoadingVideo) drawerLoadingVideo.pause();
         drawerBodyCards.classList.remove('is-hidden');
         drawerOverlay.classList.add('drawer-after-loading');
+        var resultTopVideo = document.getElementById('drawerResultTopVideo');
+        if (resultTopVideo) {
+          resultTopVideo.playsInline = true;
+          resultTopVideo.muted = true;
+          resultTopVideo.load();
+          var p = resultTopVideo.play();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        }
       }, 3000);
     });
   }
@@ -1483,9 +1578,17 @@
 
   /* Lock price detail card: switch between Price Lock and Other Estimates tabs */
   var lockDetailCard = document.getElementById('drawerLockPriceDetailCard');
+  var LOCK_DISCLAIMER_INITIAL = "This provider enables you to lock in an estimate for an initial consult. This guarantees you'll not pay more than this estimate for this service. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.";
+  var LOCK_DISCLAIMER_PROCEDURE = "This provider enables you to lock in an estimate for an arthroscopic knee repair. This guarantees you'll not pay more than this estimate for this service. If the initial consult results in a different recommendation, your provider will work with you for a new estimate.";
   if (lockDetailCard) {
     var lockDetailTabs = lockDetailCard.querySelectorAll('.drawer-lock-detail-tab');
     var lockDetailPanels = lockDetailCard.querySelectorAll('.drawer-lock-detail-panel');
+    var lockDisclaimer = lockDetailCard.querySelector('.drawer-lock-detail-disclaimer');
+    function setLockDisclaimerForTab(index) {
+      if (lockDisclaimer) {
+        lockDisclaimer.textContent = index === 0 ? LOCK_DISCLAIMER_INITIAL : LOCK_DISCLAIMER_PROCEDURE;
+      }
+    }
     lockDetailTabs.forEach(function (tab, index) {
       tab.addEventListener('click', function () {
         lockDetailTabs.forEach(function (t) {
@@ -1502,6 +1605,7 @@
           lockDetailPanels[index].classList.add('is-active');
           lockDetailPanels[index].setAttribute('aria-hidden', 'false');
         }
+        setLockDisclaimerForTab(index);
       });
     });
   }

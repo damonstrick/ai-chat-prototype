@@ -1046,7 +1046,7 @@ body.flow-anthropic {
 .bubble.assistant .text-block p { margin: 0 0 8px; }
 .bubble.assistant .text-block strong { font-weight: 600; }
 .bubble.assistant ul {
-  margin: 8px 0 12px;
+  margin: 8px 0 16px;
   padding-left: 20px;
 }
 .bubble.assistant li { margin-bottom: 4px; }
@@ -1442,6 +1442,35 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
   display: none !important;
 }
 
+/* Input attachments (e.g. X-ray flow – shown after autocomplete click) */
+.input-attachments {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+}
+.input-attachments:not(:empty) {
+  display: flex;
+}
+.input-attachments .input-attachment-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0d0d0d;
+}
+.input-attachments .input-attachment-chip svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #3d3d3a;
+}
+
 /* ========== Generic Flow 2: X-Ray file attachment chip ========== */
 .xray-file-attachment {
   display: flex;
@@ -1453,6 +1482,13 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
   border: 0.5px solid #bbb;
   border-radius: 16px;
   overflow: hidden;
+}
+.xray-file-attachment-upload-spinner svg {
+  animation: xray-upload-spin 0.8s linear infinite;
+}
+@keyframes xray-upload-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 .xray-file-attachment-icon {
   flex-shrink: 0;
@@ -1588,8 +1624,9 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
 }
 /* Sub-bullets in assistant response (e.g. procedure complexity) */
 .bubble.assistant ul li.sub-bullet {
-  padding-left: 1.25em;
-  list-style-type: circle;
+  padding-left: 8px;
+  margin-left: 1em;
+  list-style-type: disc;
 }
 .bubble.assistant .generic-map-component-wrap .generic-map-card-top {
   display: flex;
@@ -2434,6 +2471,23 @@ body[data-flow="generic-2"] .autocomplete-bubble--flow2.is-visible {
   min-height: 52px;
   border: 1px solid #e3e7ea;
 }
+.input-row:has(.input-attachments:not(:empty)) {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+.input-row:has(.input-attachments:not(:empty)) .input-attachments {
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.input-row-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
 /* Anthropic only: show composer input, hide generic */
 .input-row-anthropic {
   display: none;
@@ -2704,10 +2758,7 @@ body[data-flow="generic-3"] .drawer-body {
   padding-bottom: 148px;
 }
 .drawer-footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  flex-shrink: 0;
   padding: 12px 16px 24px;
   background: rgba(255, 255, 255, 0.75);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
@@ -2840,7 +2891,7 @@ body[data-flow="generic-3"] .drawer-body {
   font-size: 20px;
   font-weight: 700;
   line-height: 24px;
-  color: #01262b;
+  color: rgba(2, 54, 61, 1);
 }
 .drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-card-result-price-block {
   display: flex;
@@ -2858,7 +2909,7 @@ body[data-flow="generic-3"] .drawer-body {
   font-size: 28px;
   font-weight: 700;
   line-height: 32px;
-  color: #01262b;
+  color: rgba(2, 54, 61, 1);
 }
 .drawer-overlay.drawer-xray-mode .drawer-card--result .drawer-result-cost-share-body {
   display: none !important;
@@ -3524,8 +3575,6 @@ body[data-flow="generic-3"] .drawer-body {
 .drawer-card-meta-icon {
   width: 20px;
   height: 20px;
-  border-radius: 50%;
-  background: #e3e7ea;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3533,11 +3582,12 @@ body[data-flow="generic-3"] .drawer-body {
   border: none;
   cursor: pointer;
   padding: 0;
+  background: transparent;
 }
 .drawer-card-meta-icon svg {
   width: 12px;
   height: 12px;
-  color: #89989b;
+  color: rgba(2, 54, 61, 0.5);
 }
 .drawer-card-divider {
   height: 1px;
@@ -3724,15 +3774,47 @@ body[data-flow="generic-3"] .drawer-body {
 .drawer-overlay.drawer-after-loading.drawer-lock-price-mode .drawer-card--lock-price-doctor {
   display: block !important;
 }
+/* Hide cost breakdown in lock-price (knee surgery) flow */
+.drawer-overlay.drawer-after-loading.drawer-lock-price-mode .drawer-card--cost-breakdown {
+  display: none !important;
+}
 .drawer-overlay.drawer-after-loading .drawer-body-cards-helper {
   display: none !important;
 }
 .drawer-card-result-top {
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   padding: 16px 24px 12px;
+  overflow: hidden;
+}
+.drawer-card-result-top-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.drawer-card-result-top-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+}
+.drawer-card-result-top-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
 }
 .drawer-card-result-left {
   display: flex;
@@ -3747,14 +3829,14 @@ body[data-flow="generic-3"] .drawer-body {
   gap: 6px;
   font-size: 12px;
   font-weight: 400;
-  color: rgba(137, 152, 155, 0.9);
+  color: rgba(2, 54, 61, 0.5);
 }
 .drawer-card-result-title {
   margin: 0;
   font-size: 17px;
   font-weight: 600;
   line-height: 1.3;
-  color: #16696d;
+  color: rgba(2, 54, 61, 1);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -3774,20 +3856,23 @@ body[data-flow="generic-3"] .drawer-body {
   display: block;
   font-size: 12px;
   font-weight: 400;
-  color: rgba(137, 152, 155, 0.9);
+  color: rgba(2, 54, 61, 0.5);
   margin-bottom: 2px;
 }
 .drawer-card-result-price {
   font-size: 22px;
   font-weight: 600;
   line-height: 1.3;
-  color: #16696d;
+  color: rgba(2, 54, 61, 1);
 }
 /* Cost Share Expanded layout (Figma 727-20824): result card header only, no facility/address/stars */
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-top {
+  position: relative;
+  overflow: hidden;
   padding: 24px;
   border-bottom: 1px solid var(--stroke-light, #e3e7ea);
   gap: 2px;
+  min-height: 98px;
 }
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-left {
   gap: 2px;
@@ -3796,13 +3881,13 @@ body[data-flow="generic-3"] .drawer-body {
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.28px;
-  color: var(--text-quarternary, #89989b);
+  color: rgba(2, 54, 61, 0.5);
 }
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-title {
   font-size: 20px;
   font-weight: 700;
   line-height: 24px;
-  color: var(--text-primary, #121313);
+  color: rgba(2, 54, 61, 1);
 }
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-price-block {
   display: flex;
@@ -3813,14 +3898,14 @@ body[data-flow="generic-3"] .drawer-body {
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-price-label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary, #121313);
+  color: rgba(2, 54, 61, 0.5);
   margin-bottom: 0;
 }
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-price {
   font-size: 28px;
   font-weight: 700;
   line-height: 32px;
-  color: var(--text-primary, #121313);
+  color: rgba(2, 54, 61, 1);
 }
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-divider,
 .drawer-overlay.drawer-lock-price-mode .drawer-card--result .drawer-card-result-facility {
@@ -4573,8 +4658,8 @@ body[data-flow="generic-3"] .drawer-body {
   transform: rotate(180deg);
 }
 .drawer-benefits-breakdown-body {
-  margin-top: 12px;
-  padding-top: 12px;
+  margin: 0;
+  padding: 12px 16px 16px;
   border-top: 1px solid #e3e7ea;
 }
 .drawer-benefits-breakdown.is-collapsed .drawer-benefits-breakdown-body {
