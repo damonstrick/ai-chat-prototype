@@ -749,6 +749,9 @@ body[data-flow^="openai"] .prototype-backdrop {
   background: transparent;
   border-bottom-color: rgba(227, 231, 234, 0.5);
 }
+.phone-frame.flow-openai .top-bar {
+  border-bottom: none;
+}
 .phone-frame.flow-generic .top-bar::before,
 .phone-frame.flow-openai .top-bar::before {
   content: '';
