@@ -1022,10 +1022,13 @@ body[data-flow^="openai"] .prototype-backdrop {
   display: none;
 }
 
-/* Welcome screen: centered when chat is empty, fades out when user types. Styled to match Figma frame 538:22011 (AI-x-TQ). */
+/* Welcome screen: centered between header bottom and top of autocomplete bubbles. Styled to match Figma frame 538:22011 (AI-x-TQ). */
 .chat-welcome {
   position: absolute;
-  inset: 0;
+  top: 100px;
+  left: 0;
+  right: 0;
+  bottom: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
