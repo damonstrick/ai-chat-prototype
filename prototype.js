@@ -145,7 +145,6 @@
       if (autocompleteBubbleFlow1Fourth) autocompleteBubbleFlow1Fourth.classList.add('is-hidden');
       if (autocompleteBubbleFlow2Second) autocompleteBubbleFlow2Second.classList.add('is-hidden');
     }
-    updateInputAttachmentVisibility();
   }
 
   function updateWelcomeVisibility() {
@@ -599,7 +598,6 @@
     return t.indexOf('denver radiology') !== -1 && (t.indexOf('interested') !== -1 || t.indexOf('interested in') !== -1);
   }
   var xrayResponseParts = [
-    { type: 'file_attachment', fileName: 'chris.s-medicalrecords-2026', fileExt: '.txt' },
     { type: 'text', content: "I see Dr. Perry's recommendation for an x-ray from your virtual visit last week. You reported swelling and tenderness in your right hand after a fall.\n\nHere are some providers near you in Denver that accept your Aetna insurance plan. Let me know if your insurance details have changed or if there's a specific provider you're interested in!\n\n" },
     { type: 'map_component_xray' },
     { type: 'sources_pill' }
@@ -673,77 +671,6 @@
     bubble.appendChild(mapWrap);
     bindPriceMapSync(mapWrap);
     moveMapCardsOutsideForOpenAI(mapWrap);
-  }
-
-  function createFileAttachmentChip(fileName, fileExt) {
-    var wrap = document.createElement('div');
-    wrap.className = 'xray-file-attachment';
-    wrap.innerHTML =
-      '<span class="xray-file-attachment-icon" aria-hidden="true">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' +
-      '</span>' +
-      '<div class="xray-file-attachment-text">' +
-        '<span class="xray-file-attachment-name">' + (fileName || '') + '</span>' +
-        '<span class="xray-file-attachment-ext">' + (fileExt || '') + '</span>' +
-      '</div>';
-    return wrap;
-  }
-
-  function createFileAttachmentChipWithUploadAnimation(fileName, fileExt, onComplete) {
-    var wrap = document.createElement('div');
-    wrap.className = 'xray-file-attachment xray-file-attachment--uploading';
-    wrap.innerHTML =
-      '<span class="xray-file-attachment-icon xray-file-attachment-upload-spinner" aria-hidden="true">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="20" height="20"><circle cx="12" cy="12" r="10" stroke-dasharray="32 32" stroke-dashoffset="12"/></svg>' +
-      '</span>' +
-      '<div class="xray-file-attachment-text">' +
-        '<span class="xray-file-attachment-name">Uploading ' + (fileName || '') + (fileExt || '') + '...</span>' +
-      '</div>';
-    var UPLOAD_DURATION_MS = 1200;
-    setTimeout(function () {
-      wrap.classList.remove('xray-file-attachment--uploading');
-      wrap.classList.add('xray-file-attachment--complete');
-      wrap.innerHTML =
-        '<span class="xray-file-attachment-icon" aria-hidden="true">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' +
-        '</span>' +
-        '<div class="xray-file-attachment-text">' +
-          '<span class="xray-file-attachment-name">' + (fileName || '') + '</span>' +
-          '<span class="xray-file-attachment-ext">' + (fileExt || '') + '</span>' +
-        '</div>';
-      if (typeof onComplete === 'function') onComplete();
-    }, UPLOAD_DURATION_MS);
-    return wrap;
-  }
-
-  function createInputAttachmentChip(fileName, fileExt) {
-    var chip = document.createElement('div');
-    chip.className = 'input-attachment-chip';
-    chip.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>' +
-      '<span>' + (fileName || '') + (fileExt || '') + '</span>';
-    return chip;
-  }
-
-  var XRAY_PROMPT_MARKER = 'Here are my latest records';
-  function updateInputAttachmentVisibility() {
-    var container = document.getElementById('inputAttachments');
-    var containerOpenai = document.getElementById('inputAttachmentsOpenai');
-    var containerAnthropic = document.getElementById('inputAttachmentsAnthropic');
-    var activeContainer = isAnthropicFlow() ? containerAnthropic : (isOpenAIFlow() ? containerOpenai : container);
-    if (!activeContainer) return;
-    var flow = document.body.getAttribute('data-flow');
-    var hasMessages = chatContainer && chatContainer.querySelectorAll('.message').length > 0;
-    var field = getActiveInputField();
-    var hasXrayPrompt = field && (field.value || '').indexOf(XRAY_PROMPT_MARKER) !== -1;
-    var show = !hasMessages && hasXrayPrompt;
-    if (container) { container.innerHTML = ''; container.setAttribute('aria-hidden', 'true'); }
-    if (containerOpenai) { containerOpenai.innerHTML = ''; containerOpenai.setAttribute('aria-hidden', 'true'); }
-    if (containerAnthropic) { containerAnthropic.innerHTML = ''; containerAnthropic.setAttribute('aria-hidden', 'true'); }
-    if (show && activeContainer) {
-      activeContainer.appendChild(createInputAttachmentChip('chris.s-medicalrecords-2026', '.txt'));
-      activeContainer.setAttribute('aria-hidden', 'false');
-    }
   }
 
   function bindPriceMapSync(mapWrap) {
@@ -1069,14 +996,6 @@
         partIndex++;
         chatContainer.scrollTop = chatContainer.scrollHeight;
         setTimeout(streamNext, 12);
-      } else if (part.type === 'file_attachment') {
-        var chip = createFileAttachmentChipWithUploadAnimation(part.fileName, part.fileExt, function () {
-          chatContainer.scrollTop = chatContainer.scrollHeight;
-          partIndex++;
-          setTimeout(streamNext, 12);
-        });
-        bubble.appendChild(chip);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
       } else if (part.type === 'map_component_xray') {
         moveMapComponentXrayIntoBubble(bubble);
         partIndex++;

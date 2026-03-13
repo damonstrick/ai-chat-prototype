@@ -1724,95 +1724,6 @@ body:not([data-flow^="openai"]) .bubble-user-actions {
   margin-right: 16px;
 }
 
-/* Input attachments (e.g. X-ray flow – shown after autocomplete click) */
-.input-attachments {
-  display: none;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 0;
-}
-.input-attachments:not(:empty) {
-  display: flex;
-}
-.input-attachments .input-attachment-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
-  font-family: 'GT Standard', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #0d0d0d;
-}
-.input-attachments .input-attachment-chip svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  color: #3d3d3a;
-}
-
-/* ========== Generic Flow 2: X-Ray file attachment chip ========== */
-.xray-file-attachment {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background: #f8f7f1;
-  border: 0.5px solid #bbb;
-  border-radius: 16px;
-}
-.phone-frame.flow-openai .xray-file-attachment {
-  background: #fff;
-  border-color: #e5e5e5;
-  overflow: hidden;
-}
-.xray-file-attachment-upload-spinner svg {
-  animation: xray-upload-spin 0.8s linear infinite;
-}
-@keyframes xray-upload-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.xray-file-attachment-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-primary, #0d0d0d);
-}
-.xray-file-attachment-icon svg {
-  width: 20px;
-  height: 20px;
-}
-.xray-file-attachment-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1 1 0;
-}
-.xray-file-attachment-name {
-  font-family: 'GT Standard', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 21px;
-  letter-spacing: -0.31px;
-  color: var(--text-primary, #0d0d0d);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.xray-file-attachment-ext {
-  font-family: 'GT Standard', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: -0.6px;
-  color: #3d3d3a;
-}
-
 /* ========== Generic flow cards (separate from Anthropic – GT Standard styling) ========== */
 /* Map and cards: hidden by default. Show only when needed via JS (e.g. after user submits). */
 .generic-map-component-wrap,
@@ -2903,17 +2814,6 @@ body:not([data-flow^="openai"]) .response-icons-row {
   min-height: 52px;
   border: 1px solid #e3e7ea;
 }
-.input-row:has(.input-attachments:not(:empty)) {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0;
-}
-.input-row:has(.input-attachments:not(:empty)) .input-attachments,
-.input-row-anthropic:has(.input-attachments:not(:empty)) .input-attachments {
-  padding-bottom: 8px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
 .input-row-inner {
   display: flex;
   align-items: center;
@@ -2970,19 +2870,6 @@ body:not([data-flow^="openai"]) .response-icons-row {
 .phone-frame.flow-openai .input-btn-openai-plus .input-btn-icon-img {
   width: 24px;
   height: 24px;
-}
-.phone-frame.flow-openai .input-row-openai:has(.input-attachments-openai:not(:empty)) {
-  flex-direction: column;
-  align-items: stretch;
-}
-.phone-frame.flow-openai .input-row-openai:has(.input-attachments-openai:not(:empty)) .input-attachments-openai {
-  padding-bottom: 8px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-.phone-frame.flow-openai .input-attachments-openai .input-attachment-chip {
-  background: rgba(0, 0, 0, 0.08);
-  font-size: 13px;
 }
 .phone-frame.flow-openai .input-field-wrap-openai {
   flex: 1;
@@ -5978,6 +5865,12 @@ body[data-flow="openai-3"] .drawer-body {
   }
   .input-area {
     padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+  /* Generic/OpenAI: use static positioning on mobile so input moves with iOS keyboard (like Anthropic) */
+  .phone-frame.flow-generic .input-area,
+  .phone-frame.flow-openai .input-area {
+    position: static;
+    flex-shrink: 0;
   }
   .drawer-panel {
     border-radius: 0;
